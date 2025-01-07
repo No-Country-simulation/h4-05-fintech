@@ -1,0 +1,26 @@
+name: backend
+
+on:
+  push:
+    branches: 
+      - main
+    paths:
+      - 'server/**'
+  pull_request:
+    branches: ["*"]
+    paths:
+      - 'server/**'
+
+jobs:
+  Testing:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Node Setup
+        uses: actions/setup-node@v4
+        with:
+          node: 18
