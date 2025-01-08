@@ -1,8 +1,8 @@
-import { Module } from "@nestjs/common";
-import { TaskService } from "./task.service";
+import { Module } from '@nestjs/common';
+import { TaskService } from './task.service';
 
 @Module({
-    providers: [TaskService],
-    exports: [TaskService]
+  providers: [TaskService],
+  exports: [TaskService],
 })
-export class TaskModule()
+export class TaskModule {}
