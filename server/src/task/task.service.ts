@@ -1,9 +1,12 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { Task } from '@prisma/client';
 
 @Injectable()
-export class TaskService extends PrismaClient implements OnModuleInit {
-  async onModuleInit() {
-    await this.$connect();
+export class TaskService {
+  constructor(private prisma: PrismaService) {}
+
+  async getAllTasks(): Promise<Task[]> {
+    return this.prisma.task.findMany();
   }
 }
