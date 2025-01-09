@@ -19,6 +19,8 @@ export class AuthService {
 
     const hashed = await bcrypt.hash(data.password, 10);
 
+    // Implementar un proveedor de correos electrónicos
+
     await this.userService.createUser({ email: data.email, password: hashed });
 
     return { message: 'User successfully registered!' };
