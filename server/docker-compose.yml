@@ -8,7 +8,7 @@ services:
     restart: always
     environment:
       POSTGRES_USER: 'iupi-fintech'
-      POSTGRES_PASSWORD: f8a3a36efe0d522a
+      POSTGRES_PASSWORD: 1cf4eb8f04a84637
       POSTGRES_DB: 'iupi-fintech-db'
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U lawcase -d lawcase-db']
@@ -37,7 +37,7 @@ services:
     volumes:
       - redis-data:/data
     networks:
-      - lawcase-server
+      - iupi-server
 
 volumes:
   postgres-data:
@@ -46,5 +46,4 @@ volumes:
 networks:
   iupi-server:
     driver: bridge
-    external: true
     name: iupi_default
