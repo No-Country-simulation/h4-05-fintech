@@ -11,11 +11,11 @@ export class AuthService {
   async registry(data: RegistryDto) {
     const userFound = await this.userService.getUser(data.email);
 
-    if (userFound) throw new ConflictException('User already registered!');
+    if (userFound) throw new ConflictException('user already registered');
 
     const isMatch = data.password === data.confirmPassword;
 
-    if (!isMatch) throw new BadRequestException(`the passwords don't maych`);
+    if (!isMatch) throw new BadRequestException(`the passwords don't match`);
 
     const hashed = await bcrypt.hash(data.password, 10);
 
@@ -23,6 +23,6 @@ export class AuthService {
 
     await this.userService.createUser({ email: data.email, password: hashed });
 
-    return { message: 'User successfully registered!' };
+    return { message: 'user successfully registered' };
   }
 }
