@@ -1,9 +1,13 @@
-import { Module, Global } from '@nestjs/common';
-import { PrismaService } from './prisma.module';
+import { Injectable, OnModuleInit } from '@nestjs/common';
+import { PrismaClient } from '@prisma/client';
 
-@Global()
-@Module({
-  providers: [PrismaService],
-  exports: [PrismaService],
-})
-export class PrismaModule {}
+@Injectable()
+export class PrismaService extends PrismaClient implements OnModuleInit {
+  async onModuleInit() {
+    await this.$connect();
+  }
+
+  async seeder(seeds: object[], modelName: string) {
+    await this[modelName].createMany({ data: seeds });
+  }
+}

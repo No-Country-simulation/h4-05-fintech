@@ -1,17 +1,17 @@
 name: iupi
 
 services:
-  database:
+  database-dev:
     image: postgres:15-alpine3.20
     hostname: postgres
     container_name: iupi-database
     restart: always
     environment:
-      POSTGRES_USER: 'iupi-fintech'
-      POSTGRES_PASSWORD: f8a3a36efe0d522a
-      POSTGRES_DB: 'iupi-fintech-db'
+      POSTGRES_USER: iupi-fintech-dev
+      POSTGRES_PASSWORD: 1cf4eb8f04a84637
+      POSTGRES_DB: iupi-fintech-dev-db
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U lawcase -d lawcase-db']
+      test: ['CMD-SHELL', 'pg_isready -U iupi-fintech-dev -d iupi-fintech-dev-db']
       interval: 5s
       timeout: 5s
       retries: 5
@@ -21,6 +21,23 @@ services:
       - postgres-data:/var/lib/postgresql/data
     networks:
       - iupi-server
+
+  database-test:
+    image: postgres:15-alpine3.20
+    hostname: postgres
+    container_name: iupi-database
+    restart: always
+    environment:
+      POSTGRES_USER: iupi-fintech-test
+      POSTGRES_PASSWORD: 1cf4eb8f04a84637
+      POSTGRES_DB: iupi-fintech-test-db
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U iupi-fintech-test -d iupi-fintech-test-db']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - '5432:5432'
 
   cache:
     image: redis:7-alpine3.20
@@ -37,7 +54,7 @@ services:
     volumes:
       - redis-data:/data
     networks:
-      - lawcase-server
+      - iupi-server
 
 volumes:
   postgres-data:
@@ -46,5 +63,4 @@ volumes:
 networks:
   iupi-server:
     driver: bridge
-    external: true
     name: iupi_default
