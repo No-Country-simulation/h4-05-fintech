@@ -27,6 +27,28 @@ describe('Auth', () => {
       }
     });
 
+    it(`Should not registry because the user already exists`, async () => {
+      const data = {
+        email: 'unverified@email.com',
+        password: 'unverifiedUser0',
+        confirmPassword: 'unverifiedUser0',
+      };
+      try {
+        const result = await validationPipe.transform(data, {
+          type: 'body',
+          metatype: RegistryDto,
+        });
+
+        const { statusCode, error } = await request(app.getHttpServer())
+          .post('/auth/registry')
+          .send(result);
+        expect(statusCode).toEqual(409);
+        expect(JSON.parse(error['text']).message).toContain('user already registered');
+      } catch (error) {
+        fail(`Validation should not throw an error for valid data: ${error}`);
+      }
+    });
+
     it(`Should not registry because the password don't match`, async () => {
       const data = {
         email: 'normal@email.com',
@@ -45,7 +67,6 @@ describe('Auth', () => {
         expect(statusCode).toEqual(400);
         expect(JSON.parse(error['text']).message).toContain(`the passwords don't match`);
       } catch (error) {
-        console.log(error);
         fail(`Validation should not throw an error for valid data: ${error}`);
       }
     });
@@ -68,7 +89,6 @@ describe('Auth', () => {
         expect(statusCode).toEqual(201);
         expect(body.message).toContain('user successfully registered');
       } catch (error) {
-        console.log(error);
         fail(`Validation should not throw an error for valid data: ${error}`);
       }
     });

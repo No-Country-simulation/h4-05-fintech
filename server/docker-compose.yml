@@ -7,9 +7,9 @@ services:
     container_name: iupi-database
     restart: always
     environment:
-      POSTGRES_USER: 'iupi-fintech-dev'
+      POSTGRES_USER: iupi-fintech-dev
       POSTGRES_PASSWORD: 1cf4eb8f04a84637
-      POSTGRES_DB: 'iupi-fintech-dev-db'
+      POSTGRES_DB: iupi-fintech-dev-db
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U iupi-fintech-dev -d iupi-fintech-dev-db']
       interval: 5s
@@ -28,9 +28,9 @@ services:
     container_name: iupi-database
     restart: always
     environment:
-      POSTGRES_USER: 'iupi-fintech-test'
-      POSTGRES_PASSWORD: '1cf4eb8f04a84637'
-      POSTGRES_DB: 'iupi-fintech-test-db'
+      POSTGRES_USER: iupi-fintech-test
+      POSTGRES_PASSWORD: 1cf4eb8f04a84637
+      POSTGRES_DB: iupi-fintech-test-db
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U iupi-fintech-test -d iupi-fintech-test-db']
       interval: 5s

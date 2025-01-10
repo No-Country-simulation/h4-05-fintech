@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 
 import { AppModule } from '../src/app.module';
+import { seeder } from '../seeder/seeder';
 
 export let app: INestApplication;
 export let validationPipe: ValidationPipe;
@@ -18,6 +19,7 @@ beforeAll(async () => {
   });
 
   await app.init();
+  await seeder(app);
 });
 
 afterAll(async () => {
