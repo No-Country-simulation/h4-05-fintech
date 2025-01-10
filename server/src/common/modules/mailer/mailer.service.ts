@@ -1,7 +1,13 @@
+import { join } from 'node:path';
+import { readFileSync } from 'node:fs';
+
 import { Inject, Injectable } from '@nestjs/common';
 import { MailDataRequired, MailService } from '@sendgrid/mail';
 import { Transporter } from 'nodemailer';
+import hbs from 'handlebars';
+
 import { MAILER } from './mailer.provider';
+import { EmailData } from './mailer.interface';
 
 @Injectable()
 export class MailerService {
@@ -10,24 +16,34 @@ export class MailerService {
     @Inject(MAILER) private readonly mailTrap: Transporter,
   ) {}
 
-  async sendMail() {
+  private compileTemplate(filename: string, variables: { [key: string]: unknown }) {
+    const logoPath = join(process.cwd(), 'assets', 'svg', 'logo.svg');
+    const templatePath = join(process.cwd(), 'assets', 'templates', filename);
+    const logo = readFileSync(logoPath, 'utf-8');
+    const templateSource = readFileSync(templatePath, 'utf-8');
+    const template = hbs.compile(templateSource);
+    return template({ logo, ...variables });
+  }
+
+  async sendMail(data: EmailData) {
+    const { email, subject, template, variables } = data;
     const mail: MailDataRequired = {
-      to: '',
+      to: email,
       from: '',
-      subject: '',
-      text: '',
-      html: '',
+      subject,
+      html: this.compileTemplate(template, variables),
     };
 
     await this.sendGrid.send(mail);
   }
 
-  async sendMailDev() {
+  async sendMailDev(data: EmailData) {
+    const { email, subject, template, variables } = data;
     await this.mailTrap.sendMail({
       from: '',
-      to: '',
-      subject: '',
-      html: '',
+      to: email,
+      subject,
+      html: this.compileTemplate(template, variables),
     });
   }
 }
