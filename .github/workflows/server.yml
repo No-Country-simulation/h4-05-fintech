@@ -17,14 +17,18 @@ jobs:
 
     services:
       postgres:
-        image: postgis/postgis:16-3.4
+        image: postgres:15-alpine3.20
         env:
           POSTGRES_USER: 'iupi-fintech-test'
           POSTGRES_PASSWORD: '1cf4eb8f04a84637'
           POSTGRES_DB: 'iupi-fintech-test-db'
         ports:
           - 5432:5432
-        options: --health-cmd pg_isready -U iupi-fintech-test -d iupi-fintech-test-db --health-interval 10s --health-timeout 5s --health-retries 5
+        options: >- 
+          --health-cmd pg_isready 
+          --health-interval 10s 
+          --health-timeout 5s 
+          --health-retries 5
 
     steps:
       - name: Checkout
