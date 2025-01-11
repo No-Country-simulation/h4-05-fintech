@@ -4,6 +4,7 @@ import {
   ApiBody,
   ApiParam,
   ApiBadRequestResponse,
+  ApiNotFoundResponse,
   ApiNotAcceptableResponse,
   ApiConflictResponse,
   ApiOkResponse,
@@ -33,6 +34,7 @@ export class AuthController {
 
   @Get('/verify/:code')
   @ApiParam({ name: 'code', description: 'must be a valid 32-digit hex code', required: true })
+  @ApiNotFoundResponse({ description: 'User not found' })
   @ApiNotAcceptableResponse({ description: 'Invalid 32-digit hex code' })
   @ApiOkResponse(VerifySuccess)
   @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })

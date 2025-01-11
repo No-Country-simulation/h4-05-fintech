@@ -7,7 +7,7 @@ export const unverifiedUser: User = {
   verified: false,
   attempts: 0,
   blocked: false,
-  code: null,
+  code: '6c1f78b489714f4789816dfa97238b009cf0946ffdfeba6231b1f964f3c682d8',
   expiration: null,
   profileCreated: false,
   createdAt: new Date(),

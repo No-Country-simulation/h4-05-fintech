@@ -19,10 +19,12 @@ export class MailerService {
   private compileTemplate(filename: string, variables: { [key: string]: unknown }) {
     const logoPath = join(process.cwd(), 'assets', 'svg', 'logo.svg');
     const templatePath = join(process.cwd(), 'assets', 'templates', filename);
+    const stylePath = join(process.cwd(), 'assets', 'styles', 'styles.css');
     const logo = readFileSync(logoPath, 'utf-8');
     const templateSource = readFileSync(templatePath, 'utf-8');
+    const style = readFileSync(stylePath, 'utf-8');
     const template = hbs.compile(templateSource);
-    return template({ logo, ...variables });
+    return template({ style, logo, ...variables });
   }
 
   async sendMail(data: EmailData) {

@@ -93,4 +93,28 @@ describe('Auth', () => {
       }
     });
   });
+
+  describe('GET /auth/verify/:code', () => {
+    it('Should not verify because the code format is not valid', async () => {
+      const { statusCode, error } = await request(app.getHttpServer()).get('/auth/verify/code');
+      expect(statusCode).toEqual(406);
+      expect(JSON.parse(error['text']).message).toContain('invalid 32-digit code');
+    });
+
+    it('Should not verify because user not found', async () => {
+      const { statusCode, error } = await request(app.getHttpServer()).get(
+        '/auth/verify/cc9a156c065df8dcc4440e46489f544c02bb6464ff5a2fd9b67baba44ed528fe',
+      );
+      expect(statusCode).toEqual(404);
+      expect(JSON.parse(error['text']).message).toContain('user not found');
+    });
+
+    it('Should successfully verify an user', async () => {
+      const { statusCode, body } = await request(app.getHttpServer()).get(
+        '/auth/verify/6c1f78b489714f4789816dfa97238b009cf0946ffdfeba6231b1f964f3c682d8',
+      );
+      expect(statusCode).toEqual(200);
+      expect(body.message).toContain('user successfully verified');
+    });
+  });
 });

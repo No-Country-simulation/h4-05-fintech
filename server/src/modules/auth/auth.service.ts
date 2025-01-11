@@ -42,7 +42,7 @@ export class AuthService {
     const emailData: EmailData = {
       email: data.email,
       subject: 'Bienvenido a iUPI',
-      template: 'welcome.hbs',
+      template: 'verify.hbs',
       variables: {
         link: `${this.configService.frontendUrl}/verify/${code}`,
       },
