@@ -1,15 +1,20 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import {
-  ApiBadRequestResponse,
+  ApiTags,
   ApiBody,
+  ApiParam,
+  ApiBadRequestResponse,
+  ApiNotAcceptableResponse,
   ApiConflictResponse,
+  ApiOkResponse,
   ApiCreatedResponse,
   ApiInternalServerErrorResponse,
-  ApiTags,
 } from '@nestjs/swagger';
 
 import { AuthService } from './auth.service';
 import { RegistryDto } from './dto';
+import { Digit32HexCodePipe } from '../../common/pipes';
+import { RegistrySuccess, VerifySuccess } from './auth-success.response';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -20,9 +25,18 @@ export class AuthController {
   @ApiBody({ type: RegistryDto, required: true })
   @ApiBadRequestResponse({ description: `incoming data is invalid, or the passwords don't match` })
   @ApiConflictResponse({ description: 'User already registered' })
-  @ApiCreatedResponse({ description: 'User successfully registered!' })
+  @ApiCreatedResponse(RegistrySuccess)
   @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
   async registry(@Body() data: RegistryDto) {
     return await this.authService.registry(data);
+  }
+
+  @Get('/verify/:code')
+  @ApiParam({ name: 'code', description: 'must be a valid 32-digit hex code', required: true })
+  @ApiNotAcceptableResponse({ description: 'Invalid 32-digit hex code' })
+  @ApiOkResponse(VerifySuccess)
+  @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
+  async verify(@Param('code', new Digit32HexCodePipe()) code: string) {
+    return await this.authService.verify(code);
   }
 }
