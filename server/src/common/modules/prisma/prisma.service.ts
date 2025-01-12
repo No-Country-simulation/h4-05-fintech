@@ -7,7 +7,11 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     await this.$connect();
   }
 
-  async seeder(seeds: object[], modelName: string) {
+  async seed(seeds: object[], modelName: string) {
     await this[modelName].createMany({ data: seeds });
+  }
+
+  async trucate(modelName: string) {
+    await this[modelName].deleteMany();
   }
 }

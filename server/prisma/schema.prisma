@@ -42,22 +42,21 @@ model Auth {
 
 model FinancialProfile {
   id                    String                @id @default(uuid())
-  user                  User                  @relation(fields: [userId], references: [id])
-  userId                String                @unique @map("user_id")
+  user                  User?                 @relation(fields: [userId], references: [id])
+  userId                String?               @unique @map("user_id")
   financialGoal         FinancialGoals        @map("financial_goal")
   financialKnowledge    FinancialKnowledge    @map("financial_knowledge")
-  riskToleranz          RiskTolerance         @map("risk_tolerance")
+  financialOptions      FinancialOptions      @map("financial_options")  
+  targetPeriod          DateTime              @map("target_period")
   age                   Int?
   occupation            String?
   preference            FinancialPreference?
-  financialOptions      FinancialOptions      @map("financial_options")  
   incomeSource          String?               @map("income_source")
   incomeAverage         Int?                  @map("income_average")
   expensesAverage       Int?                  @map("expenses_average")
   savingPlan            Boolean?              @map("saving_plan")
   planDescription       String?               @map("plan_description")
   contribution          Int?
-  targetPeriod          DateTime?             @map("target_period")
 }
 
 model FinancialData {

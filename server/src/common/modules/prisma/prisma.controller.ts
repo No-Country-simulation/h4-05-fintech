@@ -6,9 +6,15 @@ import { PrismaService } from './prisma.service';
 export class SeederController {
   constructor(private readonly prismaService: PrismaService) {}
 
-  @Post('seeder')
+  @Post('seed')
   @ApiExcludeEndpoint()
-  async seeder(@Body() body: { seeds: object[]; modelName: string }) {
-    await this.prismaService.seeder(body.seeds, body.modelName);
+  async seed(@Body() body: { seeds: object[]; modelName: string }) {
+    await this.prismaService.seed(body.seeds, body.modelName);
+  }
+
+  @Post('truncate')
+  @ApiExcludeEndpoint()
+  async truncate(@Body() modelName: string) {
+    await this.prismaService.trucate(modelName);
   }
 }
