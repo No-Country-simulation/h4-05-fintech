@@ -1,3 +1,5 @@
+import crypto from 'node:crypto';
+
 import {
   Injectable,
   Inject,
@@ -15,7 +17,7 @@ import { UserService } from '../user/user.service';
 import { PrismaService } from '../../common/modules/prisma/prisma.service';
 import { LoginDto, RegistryDto } from './dto';
 
-import { Environment } from '../../common/enums/environments';
+import { Environment, ErrorMessage } from '../../common/enums';
 import { JwtPayload, UserRequest } from '../../common/interfaces/user-request.interface';
 import config from '../../config';
 
@@ -33,10 +35,20 @@ export class AuthService {
       ? this.configService.jwt.accessSecret
       : 'access-secret';
 
+  private accessExpiration =
+    this.configService.nodeEnv === Environment.PRODUCTION
+      ? this.configService.jwt.accessExpiration
+      : '15m';
+
   private refreshSecret =
     this.configService.nodeEnv === Environment.PRODUCTION
       ? this.configService.jwt.refreshSecret
       : 'refresh-secret';
+
+  private refreshExpiration =
+    this.configService.nodeEnv === Environment.PRODUCTION
+      ? this.configService.jwt.refreshExpiration
+      : '2h';
 
   private cookieName =
     this.configService.nodeEnv === Environment.PRODUCTION
@@ -46,13 +58,13 @@ export class AuthService {
   private accessToken = async (payload: JwtPayload): Promise<string> =>
     await this.jwtService.signAsync(payload, {
       secret: this.accessSecret,
-      expiresIn: '15m',
+      expiresIn: this.accessExpiration,
     });
 
   private refreshToken = async (payload: JwtPayload): Promise<string> =>
     await this.jwtService.signAsync(payload, {
       secret: this.refreshSecret,
-      expiresIn: '2h',
+      expiresIn: this.refreshExpiration,
     });
 
   private refreshCookie = async (res: Response, refreshToken: string) => {
@@ -66,31 +78,34 @@ export class AuthService {
   };
 
   async registry(data: RegistryDto) {
-    const userFound = await this.userService.getUser(data.email);
+    const { email, password, confirmPassword } = data;
+    const userFound = await this.userService.getUser({ email });
 
-    if (userFound) throw new ConflictException('user already registered');
+    if (userFound) throw new ConflictException(ErrorMessage.REGISTERED_USER);
 
-    const isMatch = data.password === data.confirmPassword;
+    const isMatch = password === confirmPassword;
 
-    if (!isMatch) throw new BadRequestException(`the passwords don't match`);
+    if (!isMatch) throw new BadRequestException(ErrorMessage.PASSWORD_UNMATCH);
 
-    const hashed = await bcrypt.hash(data.password, 10);
+    const hashed = await bcrypt.hash(password, 10);
+    const code = crypto.randomBytes(32).toString('hex');
 
     // Implementar un proveedor de correos electrónicos
 
-    await this.userService.createUser({ email: data.email, password: hashed });
+    await this.userService.createUser({ email, password: hashed, code });
 
     return { message: 'user successfully registered' };
   }
 
   async login(req: UserRequest, res: Response, data: LoginDto): Promise<{ accessToken: string }> {
-    const userFound = await this.userService.getUser(data.email);
+    const { email, password } = data;
+    const userFound = await this.userService.getUser({ email });
 
-    if (!userFound) throw new NotFoundException('user not found');
+    if (!userFound) throw new NotFoundException(ErrorMessage.USER_NOT_FOUND);
 
-    const isMatch = await bcrypt.compare(data.password, userFound.password);
+    const isMatch = await bcrypt.compare(password, userFound.password);
 
-    if (!isMatch) throw new UnauthorizedException('invalid credentials');
+    if (!isMatch) throw new UnauthorizedException(ErrorMessage.INVALID_CREDENTIALS);
 
     const accessToken = await this.accessToken({ id: userFound.id });
     const refreshToken = await this.refreshToken({ id: userFound.id });
