@@ -6,11 +6,16 @@ import {
   FinancialProfile,
 } from '@prisma/client';
 
+enum TargetPeriod {
+  THREE = '3',
+  SIX = '6',
+  TWELVE = '12',
+  TWELVE_PLUS = '12+',
+}
+
 export const financialProfileRandomData = (): FinancialProfile[] => {
   const randomData: FinancialProfile[] = [];
   for (let i = 0; i < 100; i++) {
-    const randomDays = Math.floor(Math.random() * 500);
-    const targetPeriod = new Date(new Date().getTime() + randomDays * 24 * 60 * 60 * 1000);
     const index = (multiplier: number): number => {
       return Math.floor(Math.random() * multiplier);
     };
@@ -93,13 +98,34 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
       return option;
     };
 
+    const targetPeriod = (): TargetPeriod => {
+      let months: TargetPeriod;
+      switch (index(4)) {
+        case 0:
+          months = TargetPeriod.THREE;
+          break;
+        case 1:
+          months = TargetPeriod.SIX;
+          break;
+        case 2:
+          months = TargetPeriod.TWELVE;
+          break;
+        case 3:
+          months = TargetPeriod.TWELVE_PLUS;
+          break;
+        default:
+          break;
+      }
+      return months;
+    };
+
     const financialProfile: FinancialProfile = {
       id: crypto.randomUUID(),
       userId: undefined,
       financialGoal: financialGoal(),
       financialKnowledge: financialKnowledge(),
       financialOptions: financialOptions(),
-      targetPeriod,
+      targetPeriod: targetPeriod(),
       age: undefined,
       occupation: undefined,
       preference: undefined,
