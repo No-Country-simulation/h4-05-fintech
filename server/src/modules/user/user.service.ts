@@ -1,17 +1,28 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma, User } from '@prisma/client';
+
 import { PrismaService } from '../../common/modules/prisma/prisma.service';
-import { IUser } from './user.interface';
+import { IFindUserBy, IUser } from './user.interface';
 
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getUser(email: string) {
-    const user = await this.prisma.user.findUnique({ where: { email } });
+  async getUser(findUserBy: IFindUserBy) {
+    const { id, email, code } = findUserBy;
+    const where: Prisma.UserWhereInput =
+      (id && { id }) || (email && { email }) || (code && { code });
+    const user = await this.prisma.user.findFirst({ where });
     return user;
   }
 
   async createUser(data: IUser): Promise<void> {
     await this.prisma.user.create({ data: { email: data.email, password: data.password } });
+  }
+
+  async updateUser(user: User) {
+    const where: Prisma.UserWhereUniqueInput = { id: user.id };
+    const data: Prisma.UserUpdateInput = { ...user };
+    await this.prisma.user.update({ where, data });
   }
 }
