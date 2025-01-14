@@ -7,22 +7,24 @@ import {
   ConflictException,
   NotFoundException,
   UnauthorizedException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { Prisma } from '@prisma/client';
 import { CookieOptions, Response } from 'express';
 import bcrypt from 'bcrypt';
-
-import { UserService } from '../user/user.service';
-import { PrismaService } from '../../common/modules/prisma/prisma.service';
-import { LoginDto, RegistryDto } from './dto';
 
 import { Environment, ErrorMessage } from '../../common/enums';
 import { JwtPayload, UserRequest } from '../../common/interfaces/user-request.interface';
 import { EmailData } from '../../common/modules/mailer/mailer.interface';
+import { PrismaService } from '../../common/modules/prisma/prisma.service';
+import { MailerService } from '../../common/modules/mailer/mailer.service';
+
+import { UserService } from '../user/user.service';
+import { LoginDto, RegistryDto } from './dto';
 
 import config from '../../config';
-import { MailerService } from 'src/common/modules/mailer/mailer.service';
 
 @Injectable()
 export class AuthService {
@@ -71,7 +73,7 @@ export class AuthService {
       expiresIn: this.refreshExpiration,
     });
 
-  private refreshCookie = async (res: Response, refreshToken: string) => {
+  private setCookie = async (res: Response, refreshToken: string) => {
     const options: CookieOptions = {
       httpOnly: true,
       secure: this.configService.nodeEnv === Environment.PRODUCTION ? true : false,
@@ -80,6 +82,15 @@ export class AuthService {
     };
     res.cookie(this.cookieName, refreshToken, options);
   };
+
+  private async removeCookie(res: Response) {
+    const options: CookieOptions = {
+      httpOnly: true,
+      secure: this.configService.nodeEnv === Environment.PRODUCTION ? true : false,
+      sameSite: 'none',
+    };
+    res.clearCookie(this.cookieName, options);
+  }
 
   async registry(data: RegistryDto) {
     const { email, password, confirmPassword } = data;
@@ -103,13 +114,12 @@ export class AuthService {
       },
     };
 
-    await this.userService.createUser({ email, password: hashed, code });
     if (this.configService.nodeEnv === Environment.PRODUCTION)
       await this.mailerService.sendMail(emailData);
     else if (this.configService.nodeEnv === Environment.DEVELOPMENT)
       await this.mailerService.sendMailDev(emailData);
 
-    await this.userService.createUser({ email: data.email, password: hashed, code });
+    await this.userService.createUser({ email, password: hashed, code });
 
     return { message: 'user successfully registered' };
   }
@@ -137,6 +147,8 @@ export class AuthService {
 
     if (!isMatch) throw new UnauthorizedException(ErrorMessage.INVALID_CREDENTIALS);
 
+    if (!userFound.verified) throw new ForbiddenException(ErrorMessage.USER_NOT_VERIFIED);
+
     const accessToken = await this.accessToken({ id: userFound.id });
     const refreshToken = await this.refreshToken({ id: userFound.id });
 
@@ -144,8 +156,18 @@ export class AuthService {
 
     await this.prisma.auth.create({ data: { userId: userFound.id, refreshToken, userAgent } });
 
-    await this.refreshCookie(res, refreshToken);
+    await this.setCookie(res, refreshToken);
 
     return { accessToken };
+  }
+
+  async logout(req: UserRequest, res: Response) {
+    const refreshToken = req.headers.cookie?.split('=')[1];
+
+    await this.removeCookie(res);
+    const where: Prisma.AuthWhereInput = refreshToken && { refreshToken };
+    await this.prisma.auth.deleteMany({ where });
+
+    return { message: 'successfully logged out' };
   }
 }

@@ -36,3 +36,8 @@ export const LoginSucess: ApiResponseNoStatusOptions = {
     },
   },
 };
+
+export const LogoutSuccess: ApiResponseNoStatusOptions = {
+  description: 'Successfully logged out',
+  schema: successMessage('successfully logged out'),
+};

@@ -6,14 +6,8 @@ import {
   FinancialOptions,
   FinancialProfile,
   IncomeSource,
+  Period,
 } from '@prisma/client';
-
-enum TargetPeriod {
-  THREE = '3',
-  SIX = '6',
-  TWELVE = '12',
-  TWELVE_PLUS = '12+',
-}
 
 const occupation = [
   'Controlador de tráfico aéreo',
@@ -159,9 +153,13 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
     const financial = (): {
       financialPreference: FinancialPreference;
       financialOptions: FinancialOptions;
+      investmentPeriod: Period;
+      savingPeriod: Period;
     } => {
       let financialPreference: FinancialPreference;
       let financialOptions: FinancialOptions;
+      let investmentPeriod: Period;
+      let savingPeriod: Period;
       switch (index(2)) {
         case 0:
           financialPreference = FinancialPreference.AHORRO;
@@ -195,29 +193,36 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
           default:
             break;
         }
-      }
-      return { financialPreference, financialOptions };
-    };
 
-    const targetPeriod = (): TargetPeriod => {
-      let months: TargetPeriod;
-      switch (index(4)) {
-        case 0:
-          months = TargetPeriod.THREE;
-          break;
-        case 1:
-          months = TargetPeriod.SIX;
-          break;
-        case 2:
-          months = TargetPeriod.TWELVE;
-          break;
-        case 3:
-          months = TargetPeriod.TWELVE_PLUS;
-          break;
-        default:
-          break;
+        switch (index(3)) {
+          case 0:
+            investmentPeriod = Period.CORTO;
+            break;
+          case 1:
+            investmentPeriod = Period.MEDIANO;
+            break;
+          case 2:
+            investmentPeriod = Period.LARGO;
+            break;
+          default:
+            break;
+        }
+      } else if (financialPreference === FinancialPreference.AHORRO) {
+        switch (index(3)) {
+          case 0:
+            savingPeriod = Period.CORTO;
+            break;
+          case 1:
+            savingPeriod = Period.MEDIANO;
+            break;
+          case 2:
+            savingPeriod = Period.LARGO;
+            break;
+          default:
+            break;
+        }
       }
-      return months;
+      return { financialPreference, financialOptions, investmentPeriod, savingPeriod };
     };
 
     const incomeSource = (): IncomeSource => {
@@ -256,21 +261,23 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
       return plan;
     };
 
-    const { financialPreference, financialOptions } = financial();
+    const { financialPreference, financialOptions, investmentPeriod, savingPeriod } = financial();
 
     const financialProfile: FinancialProfile = {
       id: crypto.randomUUID(),
       userId: undefined,
       financialGoal: financialGoal(),
-      financialPreference,
       financialKnowledge: financialKnowledge(),
-      investmentPeriod: targetPeriod(),
-      age,
-      occupation: occupation[index(occupation.length)],
+      finalcialKnowledgeDescription: undefined,
+      financialPreference,
       financialOptions,
+      investmentPeriod,
+      savingPeriod,
       incomeSource: incomeSource(),
       incomeAverage,
       expensesAverage,
+      age,
+      occupation: occupation[index(occupation.length)],
       savingPlan: savingPlan(),
       planDescription: undefined,
       monthlycontribution,
