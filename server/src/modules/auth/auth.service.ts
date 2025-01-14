@@ -19,15 +19,19 @@ import { LoginDto, RegistryDto } from './dto';
 
 import { Environment, ErrorMessage } from '../../common/enums';
 import { JwtPayload, UserRequest } from '../../common/interfaces/user-request.interface';
+import { EmailData } from '../../common/modules/mailer/mailer.interface';
+
 import config from '../../config';
+import { MailerService } from 'src/common/modules/mailer/mailer.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     @Inject(config.KEY) private readonly configService: ConfigType<typeof config>,
+    private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
     private readonly userService: UserService,
-    private readonly prisma: PrismaService,
+    private readonly mailerService: MailerService,
   ) {}
 
   private accessSecret =
@@ -90,11 +94,37 @@ export class AuthService {
     const hashed = await bcrypt.hash(password, 10);
     const code = crypto.randomBytes(32).toString('hex');
 
-    // Implementar un proveedor de correos electrónicos
+    const emailData: EmailData = {
+      email: data.email,
+      subject: 'Bienvenido a iUPI',
+      template: 'verify.hbs',
+      variables: {
+        link: `${this.configService.frontendUrl}/verify/${code}`,
+      },
+    };
 
     await this.userService.createUser({ email, password: hashed, code });
+    if (this.configService.nodeEnv === Environment.PRODUCTION)
+      await this.mailerService.sendMail(emailData);
+    else if (this.configService.nodeEnv === Environment.DEVELOPMENT)
+      await this.mailerService.sendMailDev(emailData);
+
+    await this.userService.createUser({ email: data.email, password: hashed, code });
 
     return { message: 'user successfully registered' };
+  }
+
+  async verify(code: string) {
+    const userFound = await this.userService.getUser({ code });
+    if (!userFound) throw new NotFoundException('user not found');
+
+    userFound.verified = true;
+    userFound.code = null;
+    userFound.expiration = null;
+
+    await this.userService.updateUser(userFound);
+
+    return { message: 'user successfully verified' };
   }
 
   async login(req: UserRequest, res: Response, data: LoginDto): Promise<{ accessToken: string }> {

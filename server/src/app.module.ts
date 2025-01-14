@@ -7,10 +7,12 @@ import { UserModule } from './modules/user/user.module';
 
 import config from './config';
 import { AuthModule } from './modules/auth/auth.module';
+import { MailerModule } from './common/modules/mailer/mailer.module';
 
 @Module({
   imports: [
     PrismaModule,
+    MailerModule,
     UserModule,
     AuthModule,
     ConfigModule.forRoot({
