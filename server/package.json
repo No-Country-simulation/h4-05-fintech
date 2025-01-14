@@ -12,17 +12,19 @@
     "start:dev": "cross-env NODE_ENV=development nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "cross-env NODE_ENV=production node dist/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" && prettier --check \"{src,apps,libs,test}/**/*.ts\"",
+    "lint": "sh ./scripts/lint.sh",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "cross-env NODE_ENV=testing jest --config ./test/jest-e2e.json"
+    "test:e2e": "sh ./scripts/e2e-testing.sh",
+    "prisma:migrate": "sh ./scripts/migrate.sh"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.3.0",
     "@nestjs/core": "^10.0.0",
+    "@nestjs/jwt": "^10.2.0",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^8.1.0",
     "@prisma/client": "^6.2.1",

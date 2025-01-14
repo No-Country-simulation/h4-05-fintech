@@ -23,7 +23,7 @@ model User {
   profileCreated        Boolean             @default(false) @map("profile_created")
   code                  String?
   expiration            DateTime?
-  auth                  Auth?
+  auth                  Auth[]
   financialProfile      FinancialProfile?
   financialData         FinancialData?
   createdAt             DateTime            @default(now()) @map("created_at")
@@ -33,7 +33,7 @@ model User {
 model Auth {
   id            String    @id @default(uuid())
   user          User      @relation(fields: [userId], references: [id])    
-  userId        String    @unique @map("user_id")
+  userId        String    @map("user_id")
   refreshToken  String    @map("refresh_token")
   userAgent     String    @map("user_agent")
   createdAt     DateTime  @default(now()) @map("created_at")
@@ -41,27 +41,34 @@ model Auth {
 }
 
 model FinancialProfile {
-  id                    String                @id @default(uuid())
-  user                  User                  @relation(fields: [userId], references: [id])
-  userId                String                @unique @map("user_id")
-  financialGoal         FinancialGoals        @map("financial_goal")
-  financialKnowledge    FinancialKnowledge    @map("financial_knowledge")
-  financialOptions      FinancialOptions      @map("financial_options")
-  targetPeriod          DateTime              @map("target_period")  
-  age                   Int?
-  occupation            String?
-  preference            FinancialPreference?
-  incomeSource          String?               @map("income_source")
-  incomeAverage         Int?                  @map("income_average")
-  expensesAverage       Int?                  @map("expenses_average")
-  savingPlan            Boolean?              @map("saving_plan")
-  planDescription       String?               @map("plan_description")
-  contribution          Int?
+  id                              String                @id @default(uuid())
+  user                            User?                 @relation(fields: [userId], references: [id])
+  userId                          String?               @unique @map("user_id")
+  // PREGUNTAS PRIORITARIAS
+  financialGoal                   FinancialGoals        @map("financial_goal")
+  financialKnowledge              FinancialKnowledge    @map("financial_knowledge")
+  finalcialKnowledgeDescription   String?               @map("financial_knowledge_description")
+  financialPreference             FinancialPreference   @map("financial_preference")
+  // Sólo para 'INVERSIÓN' como preferencia
+  financialOptions                FinancialOptions?     @map("financial_options")
+  investmentPeriod                Period?               @map("investment_period")
+  // Sólo para 'AHORRO' como preferencia
+  savingPeriod                    Period?               @map("saving_period")
+  // Ingresos y gastos
+  incomeSource                    IncomeSource          @map("income_source")
+  incomeAverage                   Int                   @map("income_average")
+  expensesAverage                 Int                   @map("expenses_average")
+  // PREGUNTAS SECUNDARIAS
+  age                             Int?
+  occupation                      String?
+  savingPlan                      Boolean?              @map("saving_plan")
+  planDescription                 String?               @map("plan_description")
+  monthlycontribution             Int?                  @map("monthly_contribution")
 }
 
 model FinancialData {
   id        String    @id @default(uuid())
-  user      User      @relation(fields: [userId], references: [id])
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String    @unique @map("user_id")
   income    Int       @default(0)
   expenses  Int       @default(0)
@@ -74,6 +81,8 @@ enum FinancialGoals {
   VIVIENDA
   EDUCACION
   LIBERTAD_FINANCIERA
+  PROYECTOS_LARGO_PLAZO
+  INGRESOS_ADICIONALES
   OTROS
 }
 
@@ -102,4 +111,17 @@ enum FinancialOptions {
   CFD
   ETFS
   OTROS
+}
+
+enum IncomeSource {
+  INDEPENDIENTE
+  DEPENDIENTE
+  AMBOS
+  JUBILACION
+}
+
+enum Period {
+  CORTO
+  MEDIANO
+  LARGO
 }

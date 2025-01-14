@@ -6,37 +6,103 @@ import {
   BadRequestException,
   ConflictException,
   NotFoundException,
+  UnauthorizedException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
+import { Prisma } from '@prisma/client';
+import { CookieOptions, Response } from 'express';
 import bcrypt from 'bcrypt';
 
-import { UserService } from '../user/user.service';
+import { Environment, ErrorMessage } from '../../common/enums';
+import { JwtPayload, UserRequest } from '../../common/interfaces/user-request.interface';
+import { EmailData } from '../../common/modules/mailer/mailer.interface';
+import { PrismaService } from '../../common/modules/prisma/prisma.service';
 import { MailerService } from '../../common/modules/mailer/mailer.service';
 
-import { EmailData } from '../../common/modules/mailer/mailer.interface';
-import { RegistryDto } from './dto';
+import { UserService } from '../user/user.service';
+import { LoginDto, RegistryDto } from './dto';
 
 import config from '../../config';
-import { Environment } from '../../common/enums';
 
 @Injectable()
 export class AuthService {
   constructor(
     @Inject(config.KEY) private readonly configService: ConfigType<typeof config>,
-    private readonly mailerService: MailerService,
+    private readonly prisma: PrismaService,
+    private readonly jwtService: JwtService,
     private readonly userService: UserService,
+    private readonly mailerService: MailerService,
   ) {}
 
+  private accessSecret =
+    this.configService.nodeEnv === Environment.PRODUCTION
+      ? this.configService.jwt.accessSecret
+      : 'access-secret';
+
+  private accessExpiration =
+    this.configService.nodeEnv === Environment.PRODUCTION
+      ? this.configService.jwt.accessExpiration
+      : '15m';
+
+  private refreshSecret =
+    this.configService.nodeEnv === Environment.PRODUCTION
+      ? this.configService.jwt.refreshSecret
+      : 'refresh-secret';
+
+  private refreshExpiration =
+    this.configService.nodeEnv === Environment.PRODUCTION
+      ? this.configService.jwt.refreshExpiration
+      : '2h';
+
+  private cookieName =
+    this.configService.nodeEnv === Environment.PRODUCTION
+      ? this.configService.cookieName
+      : 'refresh-cookie';
+
+  private accessToken = async (payload: JwtPayload): Promise<string> =>
+    await this.jwtService.signAsync(payload, {
+      secret: this.accessSecret,
+      expiresIn: this.accessExpiration,
+    });
+
+  private refreshToken = async (payload: JwtPayload): Promise<string> =>
+    await this.jwtService.signAsync(payload, {
+      secret: this.refreshSecret,
+      expiresIn: this.refreshExpiration,
+    });
+
+  private setCookie = async (res: Response, refreshToken: string) => {
+    const options: CookieOptions = {
+      httpOnly: true,
+      secure: this.configService.nodeEnv === Environment.PRODUCTION ? true : false,
+      sameSite: 'none',
+      expires: new Date(new Date().getTime() + 2 * 60 * 60 * 1000),
+    };
+    res.cookie(this.cookieName, refreshToken, options);
+  };
+
+  private async removeCookie(res: Response) {
+    const options: CookieOptions = {
+      httpOnly: true,
+      secure: this.configService.nodeEnv === Environment.PRODUCTION ? true : false,
+      sameSite: 'none',
+    };
+    res.clearCookie(this.cookieName, options);
+  }
+
   async registry(data: RegistryDto) {
-    const userFound = await this.userService.getUser({ email: data.email });
+    const { email, password, confirmPassword } = data;
+    const userFound = await this.userService.getUser({ email });
 
-    if (userFound) throw new ConflictException('user already registered');
+    if (userFound) throw new ConflictException(ErrorMessage.REGISTERED_USER);
 
-    const isMatch = data.password === data.confirmPassword;
+    const isMatch = password === confirmPassword;
 
-    if (!isMatch) throw new BadRequestException(`the passwords don't match`);
+    if (!isMatch) throw new BadRequestException(ErrorMessage.PASSWORD_UNMATCH);
 
-    const hashed = await bcrypt.hash(data.password, 10);
+    const hashed = await bcrypt.hash(password, 10);
     const code = crypto.randomBytes(32).toString('hex');
 
     const emailData: EmailData = {
@@ -53,7 +119,7 @@ export class AuthService {
     else if (this.configService.nodeEnv === Environment.DEVELOPMENT)
       await this.mailerService.sendMailDev(emailData);
 
-    await this.userService.createUser({ email: data.email, password: hashed, code });
+    await this.userService.createUser({ email, password: hashed, code });
 
     return { message: 'user successfully registered' };
   }
@@ -69,5 +135,39 @@ export class AuthService {
     await this.userService.updateUser(userFound);
 
     return { message: 'user successfully verified' };
+  }
+
+  async login(req: UserRequest, res: Response, data: LoginDto): Promise<{ accessToken: string }> {
+    const { email, password } = data;
+    const userFound = await this.userService.getUser({ email });
+
+    if (!userFound) throw new NotFoundException(ErrorMessage.USER_NOT_FOUND);
+
+    const isMatch = await bcrypt.compare(password, userFound.password);
+
+    if (!isMatch) throw new UnauthorizedException(ErrorMessage.INVALID_CREDENTIALS);
+
+    if (!userFound.verified) throw new ForbiddenException(ErrorMessage.USER_NOT_VERIFIED);
+
+    const accessToken = await this.accessToken({ id: userFound.id });
+    const refreshToken = await this.refreshToken({ id: userFound.id });
+
+    const userAgent = req.headers['user-agent'] ?? 'testing';
+
+    await this.prisma.auth.create({ data: { userId: userFound.id, refreshToken, userAgent } });
+
+    await this.setCookie(res, refreshToken);
+
+    return { accessToken };
+  }
+
+  async logout(req: UserRequest, res: Response) {
+    const refreshToken = req.headers.cookie?.split('=')[1];
+
+    await this.removeCookie(res);
+    const where: Prisma.AuthWhereInput = refreshToken && { refreshToken };
+    await this.prisma.auth.deleteMany({ where });
+
+    return { message: 'successfully logged out' };
   }
 }

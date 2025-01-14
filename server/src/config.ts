@@ -3,8 +3,15 @@ import { registerAs } from '@nestjs/config';
 export default registerAs('config', () => {
   return {
     nodeEnv: process.env.NODE_ENV,
+    cookieName: process.env.COOKIE_NAME,
     frontendUrl: process.env.FRONTEND_URL,
     backendUrl: process.env.BACKEND_URL,
+    jwt: {
+      accessSecret: process.env.JWT_ACCESS_SECRET,
+      accessExpiration: process.env.JWT_ACCESS_EXPIRATION,
+      refreshSecret: process.env.JWT_REFRESH_SECRET,
+      refreshExpiration: process.env.JWT_REFRESH_EXPIRATION,
+    },
     sendGridApiKey: process.env.SENDRID_API_KEY,
     mailTrap: {
       host: process.env.MAILTRAP_HOST,

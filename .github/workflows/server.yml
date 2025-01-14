@@ -49,14 +49,19 @@ jobs:
         run: npm run lint
         working-directory: ./server
 
-      - name: Run migrations
-        env:
-          DATABASE_URL: 'postgres://iupi-fintech-test:1cf4eb8f04a84637@localhost:5432/iupi-fintech-test-db'
-        run: npx prisma migrate dev
-        working-directory: ./server
-
       - name: Tests end-to-end
         run: npm run test:e2e
         env:
           DATABASE_URL: 'postgres://iupi-fintech-test:1cf4eb8f04a84637@localhost:5432/iupi-fintech-test-db'
         working-directory: ./server
+
+      # - name: Coverage Tests
+      #   run: npm run test:cov
+      #   env:
+      #     DATABASE_URL: 'postgres://iupi-fintech-test:1cf4eb8f04a84637@localhost:5432/iupi-fintech-test-db'
+      #   working-directory: ./server
+
+      # - name: Coveralls
+      #   uses: coverallsapp/github-action@master
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
