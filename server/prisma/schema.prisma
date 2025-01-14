@@ -46,22 +46,22 @@ model FinancialProfile {
   userId                String?               @unique @map("user_id")
   financialGoal         FinancialGoals        @map("financial_goal")
   financialKnowledge    FinancialKnowledge    @map("financial_knowledge")
-  financialOptions      FinancialOptions      @map("financial_options")  
-  targetPeriod          String                @map("target_period")
+  financialPreference   FinancialPreference   @map("financial_preference")
+  investmentPeriod      String                @map("investment_period")
   age                   Int?
   occupation            String?
-  preference            FinancialPreference?
-  incomeSource          String?               @map("income_source")
+  financialOptions      FinancialOptions?     @map("financial_options")
+  incomeSource          IncomeSource?               @map("income_source")
   incomeAverage         Int?                  @map("income_average")
   expensesAverage       Int?                  @map("expenses_average")
   savingPlan            Boolean?              @map("saving_plan")
   planDescription       String?               @map("plan_description")
-  contribution          Int?
+  monthlycontribution   Int?                  @map("monthly_contribution")
 }
 
 model FinancialData {
   id        String    @id @default(uuid())
-  user      User      @relation(fields: [userId], references: [id])
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String    @unique @map("user_id")
   income    Int       @default(0)
   expenses  Int       @default(0)
@@ -102,4 +102,11 @@ enum FinancialOptions {
   CFD
   ETFS
   OTROS
+}
+
+enum IncomeSource {
+  INDEPENDIENTE
+  DEPENDIENTE
+  AMBOS
+  JUBILACION
 }
