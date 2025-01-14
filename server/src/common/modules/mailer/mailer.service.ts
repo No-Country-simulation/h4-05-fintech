@@ -2,16 +2,19 @@ import { join } from 'node:path';
 import { readFileSync } from 'node:fs';
 
 import { Inject, Injectable } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
 import { MailDataRequired, MailService } from '@sendgrid/mail';
 import { Transporter } from 'nodemailer';
 import hbs from 'handlebars';
 
 import { MAILER } from './mailer.provider';
 import { EmailData } from './mailer.interface';
+import config from '../../../config';
 
 @Injectable()
 export class MailerService {
   constructor(
+    @Inject(config.KEY) private readonly configService: ConfigType<typeof config>,
     @Inject(MAILER) private readonly sendGrid: MailService,
     @Inject(MAILER) private readonly mailTrap: Transporter,
   ) {}
@@ -31,7 +34,7 @@ export class MailerService {
     const { email, subject, template, variables } = data;
     const mail: MailDataRequired = {
       to: email,
-      from: '',
+      from: email,
       subject,
       html: this.compileTemplate(template, variables),
     };
@@ -42,7 +45,7 @@ export class MailerService {
   async sendMailDev(data: EmailData) {
     const { email, subject, template, variables } = data;
     await this.mailTrap.sendMail({
-      from: '',
+      from: `iUPi <${this.configService.mailTrap.username}>`,
       to: email,
       subject,
       html: this.compileTemplate(template, variables),
