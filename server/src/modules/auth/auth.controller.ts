@@ -12,6 +12,7 @@ import {
   ApiInternalServerErrorResponse,
   ApiOkResponse,
   ApiUnauthorizedResponse,
+  ApiForbiddenResponse,
 } from '@nestjs/swagger';
 import { Response } from 'express';
 
@@ -62,8 +63,10 @@ export class AuthController {
   @HttpCode(200)
   @ApiOperation({ summary: 'Login and get credentials' })
   @ApiBody({ type: LoginDto, required: true })
-  @ApiBadRequestResponse({ description: 'incoming data is invalid, or already logged in' })
+  @ApiBadRequestResponse({ description: 'Incoming data is invalid, or already logged in' })
   @ApiUnauthorizedResponse({ description: 'Invalid credentials' })
+  @ApiForbiddenResponse({ description: 'User not verified' })
+  @ApiNotFoundResponse({ description: 'User not found' })
   @ApiOkResponse(LoginSucess)
   @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
   async login(
