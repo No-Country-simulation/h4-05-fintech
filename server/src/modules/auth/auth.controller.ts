@@ -67,6 +67,8 @@ export class AuthController {
   @ApiForbiddenResponse({ description: 'user not verified' })
   @ApiNotFoundResponse({ description: 'user not found' })
   @ApiUnauthorizedResponse({ description: 'Invalid credentials' })
+  @ApiForbiddenResponse({ description: 'User not verified' })
+  @ApiNotFoundResponse({ description: 'User not found' })
   @ApiOkResponse(LoginSucess)
   @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
   async login(
