@@ -8,6 +8,7 @@ import {
   TargetPeriod,
   RiskTolerance,
 } from '@prisma/client';
+import { normalUser } from './user.seeds';
 
 const occupation = [
   'Controlador de tráfico aéreo',
@@ -86,6 +87,10 @@ const occupation = [
   'Diseñador de interiores',
   'Secretaria',
 ];
+
+const incomeArray: string[] = ['-200000', '200000-500000', '+500000'];
+const expensesArray: string[] = ['-30%', '30%-60%', '+60%'];
+const contributionArray: string[] = ['-10%', '10%-20%', '+20%'];
 
 export const financialProfileRandomData = (): FinancialProfile[] => {
   const randomData: FinancialProfile[] = [];
@@ -233,7 +238,6 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
 
     const incomeAverage = (): string => {
       let income: string;
-      const incomeArray: string[] = ['-200000', '200000-500000', '+500000'];
       switch (index(incomeArray.length)) {
         case 0:
           income = incomeArray[0];
@@ -252,7 +256,6 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
 
     const expensesAverage = (): string => {
       let expenses: string;
-      const expensesArray: string[] = ['-30%', '30%-60%', '+60%'];
       switch (index(expensesArray.length)) {
         case 0:
           expenses = expensesArray[0];
@@ -271,7 +274,6 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
 
     const monthlyContribution = (): string => {
       let contribution: string;
-      const contributionArray: string[] = ['-10%', '10%-20%', '+20%'];
       switch (index(contributionArray.length)) {
         case 0:
           contribution = contributionArray[0];
@@ -325,4 +327,22 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
   return randomData;
 };
 
-export const financialProfileSeeds = [...financialProfileRandomData()];
+const financialProfile1: FinancialProfile = {
+  id: crypto.randomUUID(),
+  userId: normalUser.id,
+  financialGoal: FinancialGoals.EDUCACION,
+  financialKnowledge: FinancialKnowledge.BASICO,
+  riskTolerance: RiskTolerance.MODERADO,
+  financialOptions: FinancialOptions.ACCIONES,
+  targetPeriod: TargetPeriod.LARGO,
+  incomeSource: IncomeSource.INDEPENDIENTE,
+  incomeAverage: incomeArray[1],
+  expensesAverage: expensesArray[0],
+  age: 25,
+  occupation: occupation[2],
+  savingPlan: false,
+  planDescription: undefined,
+  monthlycontribution: contributionArray[0],
+};
+
+export const financialProfileSeeds = [...financialProfileRandomData(), financialProfile1];

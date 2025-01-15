@@ -42,6 +42,15 @@ export const normalUser: User = {
   updatedAt: new Date(),
 };
 
+const invalidToken =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA5ZjY2ODllLTYxYmYtNDYwYS1iN2M0LWI2MmUxYjkwNjZkNSIsInJvbGUiOiJub3JtYWwiLCJpYXQiOjE3MzMyODA3NzIsImV4cCI6MTczMzI4MDc4Mn0.R4lt06wXYoC5osMOLq1v5UV7PszOswhBLalTnHStNH5';
+
+const expiredToken =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA5ZjY2ODllLTYxYmYtNDYwYS1iN2M0LWI2MmUxYjkwNjZkNSIsInJvbGUiOiJub3JtYWwiLCJpYXQiOjE3MzMyODA3NzIsImV4cCI6MTczMzI4MDc4Mn0.R4lt06wXYoC5osMOLq1v5UV7PszOswhBLalTnHStNH4';
+
+const normalUserToken =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk0MTViYTFkLTRlZDgtNGIxMy1hZjUxLTIzNDVlYWU4NDMxMyIsInJvbGUiOiJOT1JNQUwiLCJpYXQiOjE3MzM4NjczMTd9.BmyVkOFQmQnzPtzYSJDiCDtHbbJ5ecunHdD7AOGteJA';
+
 const invalidRefreshToken =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk0MTViYTFkLTRlZDgtNGIxMy1hZjUxLTIzNDVlYWU4NDMxMyIsInJvbGUiOiJOT1JNQUwiLCJpYXQiOjE3MzM4NjczMTd9.BwQtOJ7kxbXXWZm8cISWXzlGwou4J0gCbKJ8hZa04FH';
 
@@ -51,6 +60,13 @@ const expiredRefreshToken =
 const normalUserRefreshToken =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk0MTViYTFkLTRlZDgtNGIxMy1hZjUxLTIzNDVlYWU4NDMxMyIsInJvbGUiOiJOT1JNQUwiLCJpYXQiOjE3MzM4NjczMTd9.BwQtOJ7kxbXXWZm8cISWXzlGwou4J0gCbKJ8hZa04FQ';
 
-export { invalidRefreshToken, expiredRefreshToken, normalUserRefreshToken };
+export {
+  invalidToken,
+  expiredToken,
+  normalUserToken,
+  invalidRefreshToken,
+  expiredRefreshToken,
+  normalUserRefreshToken,
+};
 
 export const userSeeds: User[] = [unverifiedUser, unverifiedUser2, normalUser];

@@ -10,11 +10,12 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 
-import { ProfileService } from './profile.service';
 import { JwtGuard } from '../../common/guards';
+import { UserRequest } from '../../common/interfaces/user-request.interface';
+
+import { ProfileService } from './profile.service';
 import { FinancialProfileDto } from './dto';
 import { FinancialProfileSuccess } from './profile-success.response';
-import { UserRequest } from '../../common/interfaces/user-request.interface';
 
 @UseGuards(JwtGuard)
 @ApiTags('Profile')

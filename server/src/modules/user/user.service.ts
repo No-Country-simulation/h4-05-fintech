@@ -23,7 +23,7 @@ export class UserService {
 
   async updateUser(user: User) {
     const where: Prisma.UserWhereUniqueInput = { id: user.id };
-    const data: Prisma.UserUpdateInput = { ...user };
+    const data: Prisma.UserUpdateInput = { ...user, updatedAt: new Date() };
     await this.prisma.user.update({ where, data });
   }
 }
