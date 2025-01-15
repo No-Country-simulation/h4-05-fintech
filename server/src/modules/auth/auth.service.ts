@@ -161,6 +161,38 @@ export class AuthService {
     return { accessToken };
   }
 
+  async refresh(req: UserRequest, res: Response) {
+    const refreshToken = req.headers.cookie?.split('=')[1];
+    const userAgent = req.headers['user-agent'] ?? 'testing';
+
+    const { id } = this.jwtService.decode<JwtPayload>(refreshToken);
+
+    const accessToken = await this.accessToken({ id });
+    const newRefreshToken = await this.refreshToken({ id });
+
+    const authList = await this.prisma.auth.findMany({ where: { userId: id } });
+    const authMatch = authList.find((auth) => auth.refreshToken === refreshToken);
+
+    if (authMatch && authMatch.userAgent === userAgent)
+      await this.prisma.auth.update({
+        where: { id: authMatch.id },
+        data: Object.assign(authMatch, { refreshToken: newRefreshToken }),
+      });
+    else
+      await this.prisma.auth.create({
+        data: {
+          userId: id,
+          refreshToken: newRefreshToken,
+          userAgent,
+        },
+      });
+
+    await this.removeCookie(res);
+    await this.setCookie(res, newRefreshToken);
+
+    return { accessToken };
+  }
+
   async logout(req: UserRequest, res: Response) {
     const refreshToken = req.headers.cookie?.split('=')[1];
 

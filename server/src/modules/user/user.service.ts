@@ -18,7 +18,8 @@ export class UserService {
 
   async createUser(user: IUser): Promise<void> {
     const { email, password, code } = user;
-    await this.prisma.user.create({ data: { email, password, code } });
+    const data: Prisma.UserCreateInput = { email, password, code };
+    await this.prisma.user.create({ data });
   }
 
   async updateUser(user: User) {

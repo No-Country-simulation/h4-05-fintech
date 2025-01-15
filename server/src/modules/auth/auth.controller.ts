@@ -17,7 +17,7 @@ import { Response } from 'express';
 
 import { UserRequest } from '../../common/interfaces/user-request.interface';
 import { IsLogin } from '../../common/decorators/is-login.decorator';
-import { JwtRefreshGuard } from '../../common/guards/jwt-refresh.guard';
+import { JwtRefreshGuard } from '../../common/guards';
 import { Digit32HexCodePipe } from '../../common/pipes';
 
 import { AuthService } from './auth.service';
