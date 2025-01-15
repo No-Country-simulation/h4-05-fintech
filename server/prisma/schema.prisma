@@ -47,23 +47,19 @@ model FinancialProfile {
   // PREGUNTAS PRIORITARIAS
   financialGoal                   FinancialGoals        @map("financial_goal")
   financialKnowledge              FinancialKnowledge    @map("financial_knowledge")
-  finalcialKnowledgeDescription   String?               @map("financial_knowledge_description")
-  financialPreference             FinancialPreference   @map("financial_preference")
-  // Sólo para 'INVERSIÓN' como preferencia
-  financialOptions                FinancialOptions?     @map("financial_options")
-  investmentPeriod                Period?               @map("investment_period")
-  // Sólo para 'AHORRO' como preferencia
-  savingPeriod                    Period?               @map("saving_period")
+  riskTolerance                   RiskTolerance         @map("risk_tolerance")
+  financialOptions                FinancialOptions      @map("financial_options")
+  targetPeriod                    TargetPeriod                @map("target_period")
   // Ingresos y gastos
   incomeSource                    IncomeSource          @map("income_source")
-  incomeAverage                   Int                   @map("income_average")
-  expensesAverage                 Int                   @map("expenses_average")
+  incomeAverage                   String                @map("income_average")
+  expensesAverage                 String                @map("expenses_average")
   // PREGUNTAS SECUNDARIAS
   age                             Int?
   occupation                      String?
   savingPlan                      Boolean?              @map("saving_plan")
   planDescription                 String?               @map("plan_description")
-  monthlycontribution             Int?                  @map("monthly_contribution")
+  monthlycontribution             String?               @map("monthly_contribution")
 }
 
 model FinancialData {
@@ -120,7 +116,7 @@ enum IncomeSource {
   JUBILACION
 }
 
-enum Period {
+enum TargetPeriod {
   CORTO
   MEDIANO
   LARGO
