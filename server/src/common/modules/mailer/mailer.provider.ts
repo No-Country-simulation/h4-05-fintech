@@ -13,7 +13,7 @@ export const MailerProvider: FactoryProvider = {
   inject: [config.KEY],
   useFactory: (configService: ConfigType<typeof config>) => {
     return configService.nodeEnv === Environment.PRODUCTION
-      ? sendgrid.setApiKey(configService.sendGridApiKey)
+      ? sendgrid.setApiKey(configService.sendGrid.apiKey)
       : createTransport({
           host: configService.mailTrap.host,
           auth: {

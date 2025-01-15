@@ -33,8 +33,8 @@ export class MailerService {
   async sendMail(data: EmailData) {
     const { email, subject, template, variables } = data;
     const mail: MailDataRequired = {
+      from: this.configService.sendGrid.sender,
       to: email,
-      from: email,
       subject,
       html: this.compileTemplate(template, variables),
     };

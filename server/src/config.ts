@@ -12,7 +12,10 @@ export default registerAs('config', () => {
       refreshSecret: process.env.JWT_REFRESH_SECRET,
       refreshExpiration: process.env.JWT_REFRESH_EXPIRATION,
     },
-    sendGridApiKey: process.env.SENDRID_API_KEY,
+    sendGrid: {
+      apiKey: process.env.SENDRID_API_KEY,
+      sender: process.env.SENDRID_SENDER,
+    },
     mailTrap: {
       host: process.env.MAILTRAP_HOST,
       username: process.env.MAILTRAP_USERNAME,
