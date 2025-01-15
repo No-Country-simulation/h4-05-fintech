@@ -49,8 +49,7 @@ model FinancialProfile {
   financialKnowledge              FinancialKnowledge    @map("financial_knowledge")
   riskTolerance                   RiskTolerance         @map("risk_tolerance")
   financialOptions                FinancialOptions      @map("financial_options")
-  targetPeriod                    TargetPeriod                @map("target_period")
-  // Ingresos y gastos
+  targetPeriod                    TargetPeriod          @map("target_period")
   incomeSource                    IncomeSource          @map("income_source")
   incomeAverage                   String                @map("income_average")
   expensesAverage                 String                @map("expenses_average")

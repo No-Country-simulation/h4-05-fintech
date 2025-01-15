@@ -42,8 +42,8 @@ export class AuthController {
   @ApiConflictResponse({ description: 'User already registered' })
   @ApiCreatedResponse(RegistrySuccess)
   @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
-  async registry(@Body() data: RegistryDto) {
-    return await this.authService.registry(data);
+  async registry(@Body() dto: RegistryDto) {
+    return await this.authService.registry(dto);
   }
 
   @Get('verify/:code')
@@ -74,9 +74,9 @@ export class AuthController {
   async login(
     @Req() req: UserRequest,
     @Res({ passthrough: true }) res: Response,
-    @Body() data: LoginDto,
+    @Body() dto: LoginDto,
   ) {
-    return await this.authService.login(req, res, data);
+    return await this.authService.login(req, res, dto);
   }
 
   @Get('logout')

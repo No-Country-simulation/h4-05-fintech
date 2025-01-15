@@ -92,8 +92,8 @@ export class AuthService {
     res.clearCookie(this.cookieName, options);
   }
 
-  async registry(data: RegistryDto) {
-    const { email, password, confirmPassword } = data;
+  async registry(dto: RegistryDto) {
+    const { email, password, confirmPassword } = dto;
     const userFound = await this.userService.getUser({ email });
 
     if (userFound) throw new ConflictException(ErrorMessage.REGISTERED_USER);
@@ -106,7 +106,7 @@ export class AuthService {
     const code = crypto.randomBytes(32).toString('hex');
 
     const emailData: EmailData = {
-      email: data.email,
+      email,
       subject: 'Bienvenido a iUPI',
       template: 'verify.hbs',
       variables: {
@@ -137,8 +137,8 @@ export class AuthService {
     return { message: 'user successfully verified' };
   }
 
-  async login(req: UserRequest, res: Response, data: LoginDto): Promise<{ accessToken: string }> {
-    const { email, password } = data;
+  async login(req: UserRequest, res: Response, dto: LoginDto): Promise<{ accessToken: string }> {
+    const { email, password } = dto;
     const userFound = await this.userService.getUser({ email });
 
     if (!userFound) throw new NotFoundException(ErrorMessage.USER_NOT_FOUND);

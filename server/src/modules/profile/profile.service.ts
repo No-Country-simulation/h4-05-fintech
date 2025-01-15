@@ -2,10 +2,11 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
-// import { Prisma } from '@prisma/client';
 
 import { PrismaService } from '../../common/modules/prisma/prisma.service';
 import config from '../../config';
+import { UserRequest } from 'src/common/interfaces/user-request.interface';
+import { FinancialProfileDto } from './dto';
 
 @Injectable()
 export class ProfileService {
@@ -15,11 +16,11 @@ export class ProfileService {
     private readonly httpService: HttpService,
   ) {}
 
-  async createFinancialProfile(data: any) {
-    // const data: Prisma.FinancialProfileCreateInput = {};
-    // await this.prisma.financialProfile.create({ data });
+  async createFinancialProfile(req: UserRequest, dto: FinancialProfileDto) {
+    const { id: userId } = req.user;
+    await this.prisma.financialProfile.create({ data: { userId, ...dto } });
     const result = await firstValueFrom(
-      this.httpService.post(`${this.configService.dataModelUrl}`, data, {
+      this.httpService.post(`${this.configService.dataModelUrl}`, dto, {
         headers: {},
       }),
     );
