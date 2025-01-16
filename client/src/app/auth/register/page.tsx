@@ -9,14 +9,21 @@ import {useState} from "react";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+interface formValues{
+  email: string;
+  password: string;
+  confirmPassword: string;  
+}
+
+const initilValues: formValues = {
+  email: "",
+  password: "",
+  confirmPassword: ""
+}
 
 const Register = () => {
 
-  const [formData, setFormData] = useState({ 
-    email: "",
-    password: "",
-    confirmPassword: ""
-});
+const [formData, setFormData] = useState<formValues>(initilValues);
 const [message, setMessage] = useState("");
 const [error, setError] = useState("");
 
@@ -32,17 +39,12 @@ const handleChange = (e: any) => {
 
     try {
       const { data } = await axios.post("https://iupi-fintech-api-dev.onrender.com/auth/registry", formData);
+      const accessToken = data.accessToken;
+      console.log(accessToken);
       setMessage(data.message);
     } catch (error: any) {
       console.error(error);
-      setError(error.response?.data?.message ||  toast.success("¡La operación se realizó con éxito!", {
-    duration: 4000,
-    progress: true,
-    position: "top-right",
-    transition: "bounceIn",
-    icon: '',
-    sonido: true,
-  }));
+      setError(error.data?.message ||  "¡La operación se realizó con éxito!");
     }
   };
 
@@ -116,7 +118,7 @@ return (
               </p>
             </div>
 
-            <Button className="w-full h-[52px] bg-[#8D4E2A33] text-[#BDE9FF] text-base font-normal tracking-wide">
+            <Button type="submit" className="w-full h-[52px] bg-[#8D4E2A33] text-[#BDE9FF] text-base font-normal tracking-wide">
               Registrarse
             </Button>
           </form>
