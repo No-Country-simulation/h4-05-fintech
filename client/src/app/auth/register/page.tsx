@@ -1,14 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { toast} from "nextjs-toast-notify";
 import "nextjs-toast-notify/dist/nextjs-toast-notify.css";
-import {useState} from "react";
+import { useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+
 interface formValues{
   email: string;
   password: string;
@@ -23,14 +23,18 @@ const initilValues: formValues = {
 
 const Register = () => {
 
-const [formData, setFormData] = useState<formValues>(initilValues);
-const [message, setMessage] = useState("");
-const [error, setError] = useState("");
+  const [formData, setFormData] = useState<formValues>(initilValues);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [message, setMessage] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [error, setError] = useState("");
 
-const handleChange = (e: any) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleChange = (e: any) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     console.log("Submitted");
@@ -42,6 +46,7 @@ const handleChange = (e: any) => {
       const accessToken = data.accessToken;
       console.log(accessToken);
       setMessage(data.message);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error(error);
       setError(error.data?.message ||  "¡La operación se realizó con éxito!");
