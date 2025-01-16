@@ -58,7 +58,7 @@ model FinancialProfile {
   occupation                      String?
   savingPlan                      Boolean?              @map("saving_plan")
   planDescription                 String?               @map("plan_description")
-  monthlycontribution             String?               @map("monthly_contribution")
+  monthlyContribution             String?               @map("monthly_contribution")
 }
 
 model FinancialData {

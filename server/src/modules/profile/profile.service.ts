@@ -1,14 +1,15 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
-import { Prisma } from '@prisma/client';
 import { firstValueFrom } from 'rxjs';
 
 import { PrismaService } from '../../common/modules/prisma/prisma.service';
 import { UserRequest } from '../../common/interfaces/user-request.interface';
+import { ErrorMessage } from '../../common/enums';
 
 import config from '../../config';
 import { FinancialProfileDto } from './dto';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class ProfileService {
@@ -16,22 +17,40 @@ export class ProfileService {
     @Inject(config.KEY) private readonly configService: ConfigType<typeof config>,
     private readonly prisma: PrismaService,
     private readonly httpService: HttpService,
+    private readonly userService: UserService,
   ) {}
 
   async createFinancialProfile(req: UserRequest, dto: FinancialProfileDto) {
     const { id, id: userId } = req.user;
 
-    const where: Prisma.UserWhereUniqueInput = { id };
-    const data: Prisma.UserUpdateInput = { profileCreated: true, updatedAt: new Date() };
+    const userFound = await this.userService.getUser({ id });
+
+    if (!userFound) throw new NotFoundException(ErrorMessage.USER_NOT_FOUND);
+
+    if (userFound.profileCreated) throw new ConflictException(ErrorMessage.PROFILE_CREATED);
+
+    const userUpdated = Object.assign(userFound, { profileCreated: true, updatedAt: new Date() });
 
     await this.prisma.financialProfile.create({ data: { userId, ...dto } });
-    await this.prisma.user.update({ where, data });
+    await this.userService.updateUser(userUpdated);
 
-    const result = await firstValueFrom(
-      this.httpService.post(`${this.configService.dataModelUrl}`, dto, {
+    // Cuando data ya tenga su modelo funcionando, implementará esta lógica
+
+    // if (this.configService.nodeEnv === Environment.PRODUCTION)
+    //   return await this.getFinancialProfileFromData(this.configService.dataModelUrl, dto);
+    // else if (this.configService.nodeEnv === Environment.DEVELOPMENT)
+    //   return await this.getFinancialProfileFromData(this.configService.dataModelUrl, dto);
+    // else return { message: 'financial profile successfully created' };
+
+    // En el mientras tanto...
+    return { message: 'financial profile successfully created' };
+  }
+
+  async getFinancialProfileFromData(url: string, dto: FinancialProfileDto) {
+    return await firstValueFrom(
+      this.httpService.post(`${url}`, dto, {
         headers: {},
       }),
     );
-    return result;
   }
 }

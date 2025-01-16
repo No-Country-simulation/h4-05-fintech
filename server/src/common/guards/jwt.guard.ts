@@ -10,7 +10,7 @@ import { ConfigType } from '@nestjs/config';
 import { JwtService, TokenExpiredError, JsonWebTokenError } from '@nestjs/jwt';
 
 import config from '../../config';
-import { Environment } from '../enums';
+import { Environment, ErrorMessage } from '../enums';
 import { JwtPayload, UserRequest } from '../interfaces/user-request.interface';
 import { PrismaService } from '../modules/prisma/prisma.service';
 
@@ -48,10 +48,8 @@ export class JwtGuard implements CanActivate {
       request.user = payload;
       return true;
     } catch (error) {
-      if (error instanceof JsonWebTokenError) {
-        throw new UnauthorizedException(error.message);
-      } else if (error instanceof TokenExpiredError) {
-        throw new UnauthorizedException(error.message);
+      if (error instanceof JsonWebTokenError || error instanceof TokenExpiredError) {
+        throw new UnauthorizedException(ErrorMessage.NO_ACCESS);
       }
     }
   }

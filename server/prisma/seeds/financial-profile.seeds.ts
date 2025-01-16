@@ -8,7 +8,7 @@ import {
   TargetPeriod,
   RiskTolerance,
 } from '@prisma/client';
-import { normalUser } from './user.seeds';
+import { adminUser } from './user.seeds';
 
 const occupation = [
   'Controlador de tráfico aéreo',
@@ -320,7 +320,7 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
       occupation: occupation[index(occupation.length)],
       savingPlan: savingPlan(),
       planDescription: undefined,
-      monthlycontribution: monthlyContribution(),
+      monthlyContribution: monthlyContribution(),
     };
     randomData.push(financialProfile);
   }
@@ -329,7 +329,7 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
 
 const financialProfile1: FinancialProfile = {
   id: crypto.randomUUID(),
-  userId: normalUser.id,
+  userId: adminUser.id,
   financialGoal: FinancialGoals.EDUCACION,
   financialKnowledge: FinancialKnowledge.BASICO,
   riskTolerance: RiskTolerance.MODERADO,
@@ -342,7 +342,7 @@ const financialProfile1: FinancialProfile = {
   occupation: occupation[2],
   savingPlan: false,
   planDescription: undefined,
-  monthlycontribution: contributionArray[0],
+  monthlyContribution: contributionArray[0],
 };
 
 export const financialProfileSeeds = [...financialProfileRandomData(), financialProfile1];

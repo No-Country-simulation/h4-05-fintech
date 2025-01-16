@@ -95,11 +95,10 @@ describe('Auth', () => {
           metatype: RegistryDto,
         });
 
-        const { statusCode, header, body, error } = await request(app.getHttpServer())
+        const { statusCode, header, body } = await request(app.getHttpServer())
           .post('/auth/registry')
           .send(result);
 
-        console.log(error);
         expect(statusCode).toEqual(201);
         expect(header['content-type']).toContain('application/json');
         expect(body.message).toContain('user successfully registered');

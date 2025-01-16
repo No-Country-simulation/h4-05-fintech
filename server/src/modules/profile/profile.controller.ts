@@ -8,6 +8,8 @@ import {
   ApiInternalServerErrorResponse,
   ApiCreatedResponse,
   ApiBearerAuth,
+  ApiConflictResponse,
+  ApiNotFoundResponse,
 } from '@nestjs/swagger';
 
 import { JwtGuard } from '../../common/guards';
@@ -23,12 +25,14 @@ import { FinancialProfileSuccess } from './profile-success.response';
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
-  @Post()
+  @Post('financial')
   @ApiOperation({ summary: 'Questions for financial profile' })
   @ApiBearerAuth()
   @ApiBody({ type: FinancialProfileDto, required: true })
   @ApiBadRequestResponse({ description: 'Incoming data is invalid' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized to access' })
+  @ApiNotFoundResponse({ description: 'User not found' })
+  @ApiConflictResponse({ description: 'Profile created' })
   @ApiCreatedResponse(FinancialProfileSuccess)
   @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
   async createFinancialProfile(@Req() req: UserRequest, @Body() dto: FinancialProfileDto) {

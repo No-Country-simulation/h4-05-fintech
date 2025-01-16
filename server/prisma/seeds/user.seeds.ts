@@ -42,14 +42,34 @@ export const normalUser: User = {
   updatedAt: new Date(),
 };
 
+export const adminUser: User = {
+  id: 'd8edbef7-8946-4f8c-9cd8-7736db79eaf3',
+  email: 'admin@email.com',
+  password: '$2b$10$ynePFjl3s41y4lZw7tzQaORcJCwfDTzF7s/IF/owHPkMK9vUKbkPW', // password: adminUser2
+  verified: true,
+  attempts: 0,
+  blocked: false,
+  code: null,
+  expiration: null,
+  profileCreated: true,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
+
 const invalidToken =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA5ZjY2ODllLTYxYmYtNDYwYS1iN2M0LWI2MmUxYjkwNjZkNSIsInJvbGUiOiJub3JtYWwiLCJpYXQiOjE3MzMyODA3NzIsImV4cCI6MTczMzI4MDc4Mn0.R4lt06wXYoC5osMOLq1v5UV7PszOswhBLalTnHStNH5';
 
 const expiredToken =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA5ZjY2ODllLTYxYmYtNDYwYS1iN2M0LWI2MmUxYjkwNjZkNSIsInJvbGUiOiJub3JtYWwiLCJpYXQiOjE3MzMyODA3NzIsImV4cCI6MTczMzI4MDc4Mn0.R4lt06wXYoC5osMOLq1v5UV7PszOswhBLalTnHStNH4';
 
+const unknownUserToken =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjFjMzVkNTY1LTM4ODItNDhiMS05ZGY2LWNkOGQ5NTNiOTMwYSIsInJvbGUiOiJOT1JNQUwiLCJpYXQiOjE3MzM4NTUwNTh9.Il0tycgAJ-VLmQvaQIlczrDV0Sv0hNuPU7vz4GKQNHM';
+
 const normalUserToken =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk0MTViYTFkLTRlZDgtNGIxMy1hZjUxLTIzNDVlYWU4NDMxMyIsInJvbGUiOiJOT1JNQUwiLCJpYXQiOjE3MzM4NjczMTd9.BmyVkOFQmQnzPtzYSJDiCDtHbbJ5ecunHdD7AOGteJA';
+
+const adminUserToken =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQ4ZWRiZWY3LTg5NDYtNGY4Yy05Y2Q4LTc3MzZkYjc5ZWFmMyIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTczMzg2NzAxMX0._A89YKPqtR3fA7Z1q2dXQm3J_9oYixhOoTLm3MikzC4';
 
 const invalidRefreshToken =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk0MTViYTFkLTRlZDgtNGIxMy1hZjUxLTIzNDVlYWU4NDMxMyIsInJvbGUiOiJOT1JNQUwiLCJpYXQiOjE3MzM4NjczMTd9.BwQtOJ7kxbXXWZm8cISWXzlGwou4J0gCbKJ8hZa04FH';
@@ -63,10 +83,12 @@ const normalUserRefreshToken =
 export {
   invalidToken,
   expiredToken,
+  unknownUserToken,
   normalUserToken,
+  adminUserToken,
   invalidRefreshToken,
   expiredRefreshToken,
   normalUserRefreshToken,
 };
 
-export const userSeeds: User[] = [unverifiedUser, unverifiedUser2, normalUser];
+export const userSeeds: User[] = [unverifiedUser, unverifiedUser2, normalUser, adminUser];
