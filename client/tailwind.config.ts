@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 export default {
+  darkMode: ["class"],
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -11,12 +12,21 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        slate: "#E5E7EB",        // Para elementos grises claros
-        copper: "#F97316",       // Para el botón marrón/cobrizo de registro
-        teal: "#239BC3",         // Para el azul verdoso del logo/fondo
-        shadow: "#0F1417",       // Para sombras y textos oscuros
+        slate: "#E5E7EB",
+        copper: "#F97316",
+        teal: "#239BC3",
+        shadow: "#0F1417",
+        lightBlue: "#8BD0EF",
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
+      fontFamily: {
+        roboto: ["var(--font-roboto)"],
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 } satisfies Config;
