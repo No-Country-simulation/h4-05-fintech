@@ -110,7 +110,7 @@ export class AuthService {
       subject: 'Bienvenido a iUPI',
       template: 'verify.hbs',
       variables: {
-        link: `${this.configService.frontendUrl}/verify?code=${code}`,
+        link: `${this.configService.frontendUrl}/auth/verify?code=${code}`,
       },
     };
 
