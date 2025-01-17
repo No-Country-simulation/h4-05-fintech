@@ -130,7 +130,6 @@ export class AuthService {
 
     userFound.verified = true;
     userFound.code = null;
-    userFound.expiration = null;
 
     await this.userService.updateUser(userFound);
 

@@ -22,7 +22,6 @@ model User {
   blocked               Boolean             @default(false)
   profileCreated        Boolean             @default(false) @map("profile_created")
   code                  String?
-  expiration            DateTime?
   auth                  Auth[]
   financialProfile      FinancialProfile?
   financialData         FinancialData?
@@ -47,23 +46,19 @@ model FinancialProfile {
   // PREGUNTAS PRIORITARIAS
   financialGoal                   FinancialGoals        @map("financial_goal")
   financialKnowledge              FinancialKnowledge    @map("financial_knowledge")
-  finalcialKnowledgeDescription   String?               @map("financial_knowledge_description")
-  financialPreference             FinancialPreference   @map("financial_preference")
-  // Sólo para 'INVERSIÓN' como preferencia
-  financialOptions                FinancialOptions?     @map("financial_options")
-  investmentPeriod                Period?               @map("investment_period")
-  // Sólo para 'AHORRO' como preferencia
-  savingPeriod                    Period?               @map("saving_period")
-  // Ingresos y gastos
+  investmentEducation             InvestmentEducation   @map("investment_education")
+  investmentExperience            InvestmentExperience  @map("investment_experience")
+  riskCase                        RiskCase              @map("risk_case")
+  targetPeriod                    String                @map("target_period")
   incomeSource                    IncomeSource          @map("income_source")
-  incomeAverage                   Int                   @map("income_average")
-  expensesAverage                 Int                   @map("expenses_average")
+  incomeAverage                   String                @map("income_average")
+  expensesAverage                 String                @map("expenses_average")
   // PREGUNTAS SECUNDARIAS
+  investmentPurpose               InvestmentPurpose?    @map("investment_purpose")
   age                             Int?
   occupation                      String?
   savingPlan                      Boolean?              @map("saving_plan")
-  planDescription                 String?               @map("plan_description")
-  monthlycontribution             Int?                  @map("monthly_contribution")
+  // monthlyContribution          String?               @map("monthly_contribution")
 }
 
 model FinancialData {
@@ -87,41 +82,43 @@ enum FinancialGoals {
 }
 
 enum FinancialKnowledge {
-  BASICO
-  INTERMEDIO
-  AVANZADO
-  NINGUNO
+  NO_TENGO_IDEA
+  ME_SUENA_PERO_NO_ESTOY_SEGURO
+  SE_COMO_FUNCIONA
+  INVIERTO_REGULARMENTE
 }
 
-enum RiskTolerance {
-  CONSERVADOR
-  MODERADO
-  ARRIESGADO
+enum InvestmentEducation {
+  CERTIFICADO_PROFESIONAL
+  TECNICO_O_TECNOLOGICO
+  CARRERA_PROFESIONAL
+  NO_TENGO_FORMACION
 }
 
-enum FinancialPreference {
+enum RiskCase {
+  VENDERIA_TODO
+  MANTENDRIA_INVERSION
+  COMPRARIA_MAS
+}
+
+enum InvestmentPurpose {
   AHORRO
   INVERSION
+  AMBOS
 }
 
-enum FinancialOptions {
+enum InvestmentExperience {
   ACCIONES
   CDEARS
   BONOS
-  CFD
   ETFS
-  OTROS
 }
 
 enum IncomeSource {
+  SALARIO
   INDEPENDIENTE
-  DEPENDIENTE
-  AMBOS
+  INVERSIONES
+  AHORROS
   JUBILACION
-}
-
-enum Period {
-  CORTO
-  MEDIANO
-  LARGO
+  HERENCIA
 }
