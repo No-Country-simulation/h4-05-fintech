@@ -22,5 +22,9 @@ export default registerAs('config', () => {
       username: process.env.MAILTRAP_USERNAME,
       password: process.env.MAILTRAP_PASSWORD,
     },
+    redis: {
+      url: process.env.REDIS_URL,
+      ttl: +process.env.REDIS_TTL,
+    },
   };
 });
