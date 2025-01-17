@@ -102,6 +102,27 @@ export class AuthService {
 
   private baseUrl = new URL('/auth/', this.configService.frontendUrl);
 
+  async decodeToken(token: {
+    accessToken?: string;
+    refreshToken?: string;
+  }): Promise<JwtPayload | undefined> {
+    const { accessToken, refreshToken } = token;
+    let payload: JwtPayload;
+    try {
+      if (accessToken)
+        payload = await this.jwtService.verifyAsync<JwtPayload>(accessToken, {
+          secret: this.accessSecret,
+        });
+      else if (refreshToken)
+        payload = await this.jwtService.verifyAsync<JwtPayload>(refreshToken, {
+          secret: this.refreshSecret,
+        });
+      return payload;
+    } catch (error) {
+      throw new UnauthorizedException(error.message);
+    }
+  }
+
   async registry(body: RegistryDto) {
     const { email, password, confirmPassword } = body;
     const userFound = await this.userService.getUser({ email });
@@ -192,7 +213,7 @@ export class AuthService {
     const refreshToken = req.headers.cookie?.split('=')[1];
     const userAgent = req.headers['user-agent'] ?? 'testing';
 
-    const { id } = this.jwtService.decode<JwtPayload>(refreshToken);
+    const { id } = await this.decodeToken({ refreshToken });
 
     const accessToken = await this.accessToken({ id });
     const newRefreshToken = await this.refreshToken({ id });

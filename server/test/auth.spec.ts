@@ -12,11 +12,19 @@ import { ErrorMessage } from '../src/common/enums';
 import {
   expiredRefreshToken,
   invalidRefreshToken,
+  normalUser,
   normalUserRefreshToken,
   normalUserToken,
 } from '../prisma/seeds/user.seeds';
+import { AuthService } from 'src/modules/auth/auth.service';
 
 describe('Auth', () => {
+  let authService: AuthService;
+
+  beforeAll(async () => {
+    authService = app.get<AuthService>(AuthService);
+  });
+
   describe('POST /auth/registry', () => {
     it('Should not registry because no data', async () => {
       try {
@@ -297,9 +305,12 @@ describe('Auth', () => {
           .post('/auth/login')
           .send(result);
 
+        const { accessToken } = body;
+        const { id } = await authService.decodeToken({ accessToken });
+
         expect(statusCode).toEqual(200);
         expect(header['content-type']).toContain('application/json');
-        expect(body.accessToken).toBeDefined();
+        expect(id).toEqual(normalUser.id);
       } catch (error) {
         fail(`Validation should not throw an error for valid data: ${error}`);
       }
@@ -319,9 +330,12 @@ describe('Auth', () => {
           .set('Cookie', `refresh-cookie=${invalidRefreshToken}`)
           .send(result);
 
-        expect(statusCode).toBe(200);
+        const { accessToken } = body;
+        const { id } = await authService.decodeToken({ accessToken });
+
+        expect(statusCode).toEqual(200);
         expect(header['content-type']).toContain('application/json');
-        expect(body.accessToken).toBeDefined();
+        expect(id).toEqual(normalUser.id);
       } catch (error) {
         fail(`Validation should not throw an error for valid data: ${error}`);
       }
@@ -341,12 +355,55 @@ describe('Auth', () => {
           .set('Cookie', `refresh-cookie=${expiredRefreshToken}`)
           .send(result);
 
-        expect(statusCode).toBe(200);
+        const { accessToken } = body;
+        const { id } = await authService.decodeToken({ accessToken });
+
+        expect(statusCode).toEqual(200);
         expect(header['content-type']).toContain('application/json');
-        expect(body.accessToken).toBeDefined();
+        expect(id).toEqual(normalUser.id);
       } catch (error) {
         fail(`Validation should not throw an error for valid data: ${error}`);
       }
+    });
+  });
+
+  describe('GET /auth/refresh', () => {
+    it('Should not refresh because not logged in', async () => {
+      const { statusCode, error } = await request(app.getHttpServer()).get('/auth/refresh');
+
+      expect(statusCode).toEqual(400);
+      expect(JSON.parse(error['text']).message).toContain(ErrorMessage.NOT_LOGGED_IN);
+    });
+
+    it('Should not refresh because invalid token', async () => {
+      const { statusCode, error } = await request(app.getHttpServer())
+        .get('/auth/refresh')
+        .set('Cookie', `refresh-cookie=${invalidRefreshToken}`);
+
+      expect(statusCode).toEqual(400);
+      expect(JSON.parse(error['text']).message).toContain(ErrorMessage.NOT_LOGGED_IN);
+    });
+
+    it('Should not refresh because expired token', async () => {
+      const { statusCode, error } = await request(app.getHttpServer())
+        .get('/auth/refresh')
+        .set('Cookie', `refresh-cookie=${expiredRefreshToken}`);
+
+      expect(statusCode).toEqual(400);
+      expect(JSON.parse(error['text']).message).toContain(ErrorMessage.NOT_LOGGED_IN);
+    });
+
+    it('Should successfully refresh', async () => {
+      const { statusCode, header, body } = await request(app.getHttpServer())
+        .get('/auth/refresh')
+        .set('Cookie', `refresh-cookie=${normalUserRefreshToken}`);
+
+      const { accessToken } = body;
+      const { id } = await authService.decodeToken({ accessToken });
+
+      expect(statusCode).toEqual(200);
+      expect(header['content-type']).toContain('application/json');
+      expect(id).toEqual(normalUser.id);
     });
   });
 
@@ -491,7 +548,7 @@ describe('Auth', () => {
     });
   });
 
-  describe('PUT /password-reset', () => {
+  describe('PUT /password-reset?code=code&exp=2025', () => {
     it('Should not reset password because no data', async () => {
       try {
         await validationPipe.transform({}, { type: 'body', metatype: ResetPasswordDto });

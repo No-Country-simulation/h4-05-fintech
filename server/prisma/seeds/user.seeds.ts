@@ -115,6 +115,9 @@ const expiredRefreshToken =
 const normalUserRefreshToken =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk0MTViYTFkLTRlZDgtNGIxMy1hZjUxLTIzNDVlYWU4NDMxMyIsInJvbGUiOiJOT1JNQUwiLCJpYXQiOjE3MzM4NjczMTd9.BwQtOJ7kxbXXWZm8cISWXzlGwou4J0gCbKJ8hZa04FQ';
 
+const adminUserRefreshToken =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQ4ZWRiZWY3LTg5NDYtNGY4Yy05Y2Q4LTc3MzZkYjc5ZWFmMyIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTczMzg2NzAxMX0.NLLVsFLHkXZmKKpTTWiYS4LRUh2d1BIwkKvxw7jaBz4';
+
 export {
   invalidToken,
   expiredToken,
@@ -124,6 +127,7 @@ export {
   invalidRefreshToken,
   expiredRefreshToken,
   normalUserRefreshToken,
+  adminUserRefreshToken,
 };
 
 export const userSeeds: User[] = [
