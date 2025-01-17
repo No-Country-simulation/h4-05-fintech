@@ -5,7 +5,8 @@ import { FinancialProfileDto } from '../src/modules/profile/dto';
 import {
   ExpensesAverage,
   IncomeAverage,
-  MonthlyContribution,
+  // MonthlyContribution,
+  TargetPeriod,
 } from '../src/modules/profile/profile.enum';
 import { adminUserToken, normalUserToken, unknownUserToken } from '../prisma/seeds/user.seeds';
 
@@ -31,17 +32,18 @@ describe('Profile', () => {
       const data = {
         financialGoal: 'EDUCACIO',
         financialKnowledg: 'BASICO',
-        riskTolerance: 'MODERADO',
-        financialOptions: 'OTROS',
+        investmentEducatio: 'NADA',
+        investmentExperience: 'NADA',
+        riskCase: 'MODERADO',
         targetPeriod: 'MEDIANO',
         incomesource: 'INDEPENDIENTE',
         incomeAverage: IncomeAverage.OPTION_ONE,
         expensesAverage: ExpensesAverage.OPTION_ONE,
+        investmentPurpos: 'NINGUNO',
         age: undefined,
         occupation: 'Programador',
         savingPlan: false,
-        planDescription: undefined,
-        monthlyContribution: MonthlyContribution.OPTION_TWO,
+        // monthlyContribution: MonthlyContribution.OPTION_TWO,
       };
 
       try {
@@ -59,10 +61,12 @@ describe('Profile', () => {
     it('Should not create financial profile because user not found', async () => {
       const data: FinancialProfileDto = {
         financialGoal: 'EDUCACION',
-        financialKnowledge: 'BASICO',
-        riskTolerance: 'MODERADO',
-        financialOptions: 'OTROS',
-        targetPeriod: 'CORTO',
+        financialKnowledge: 'NO_TENGO_IDEA',
+        riskCase: 'MANTENDRIA_INVERSION',
+        investmentEducation: 'NO_TENGO_FORMACION',
+        investmentExperience: 'BONOS',
+        investmentPurpose: 'AHORRO',
+        targetPeriod: TargetPeriod.CORTO,
         incomeSource: 'INDEPENDIENTE',
         incomeAverage: IncomeAverage.OPTION_ONE,
         expensesAverage: ExpensesAverage.OPTION_ONE,
@@ -70,7 +74,7 @@ describe('Profile', () => {
         occupation: 'Programador',
         savingPlan: false,
         planDescription: undefined,
-        monthlyContribution: MonthlyContribution.OPTION_TWO,
+        // monthlyContribution: MonthlyContribution.OPTION_TWO,
       };
 
       try {
@@ -94,10 +98,12 @@ describe('Profile', () => {
     it('Should not create financial profile because already did it', async () => {
       const data: FinancialProfileDto = {
         financialGoal: 'EDUCACION',
-        financialKnowledge: 'BASICO',
-        riskTolerance: 'MODERADO',
-        financialOptions: 'OTROS',
-        targetPeriod: 'CORTO',
+        financialKnowledge: 'NO_TENGO_IDEA',
+        riskCase: 'MANTENDRIA_INVERSION',
+        investmentEducation: 'NO_TENGO_FORMACION',
+        investmentExperience: 'BONOS',
+        investmentPurpose: 'AHORRO',
+        targetPeriod: TargetPeriod.CORTO,
         incomeSource: 'INDEPENDIENTE',
         incomeAverage: IncomeAverage.OPTION_ONE,
         expensesAverage: ExpensesAverage.OPTION_ONE,
@@ -105,7 +111,7 @@ describe('Profile', () => {
         occupation: 'Programador',
         savingPlan: false,
         planDescription: undefined,
-        monthlyContribution: MonthlyContribution.OPTION_TWO,
+        // monthlyContribution: MonthlyContribution.OPTION_TWO,
       };
 
       try {
@@ -129,10 +135,12 @@ describe('Profile', () => {
     it('Should successfully create financial profile', async () => {
       const data: FinancialProfileDto = {
         financialGoal: 'EDUCACION',
-        financialKnowledge: 'BASICO',
-        riskTolerance: 'MODERADO',
-        financialOptions: 'OTROS',
-        targetPeriod: 'CORTO',
+        financialKnowledge: 'NO_TENGO_IDEA',
+        riskCase: 'MANTENDRIA_INVERSION',
+        investmentEducation: 'NO_TENGO_FORMACION',
+        investmentExperience: 'BONOS',
+        investmentPurpose: 'AHORRO',
+        targetPeriod: TargetPeriod.CORTO,
         incomeSource: 'INDEPENDIENTE',
         incomeAverage: IncomeAverage.OPTION_ONE,
         expensesAverage: ExpensesAverage.OPTION_ONE,
@@ -140,7 +148,7 @@ describe('Profile', () => {
         occupation: 'Programador',
         savingPlan: false,
         planDescription: undefined,
-        monthlyContribution: MonthlyContribution.OPTION_TWO,
+        // monthlyContribution: MonthlyContribution.OPTION_TWO,
       };
 
       try {
