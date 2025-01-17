@@ -29,7 +29,7 @@ import { Response } from 'express';
 
 import { UserRequest } from '../../common/interfaces/user-request.interface';
 import { IsLogin } from '../../common/decorators/is-login.decorator';
-import { JwtRefreshGuard } from '../../common/guards';
+import { JwtGuard, JwtRefreshGuard } from '../../common/guards';
 
 import { AuthService } from './auth.service';
 import {
@@ -38,6 +38,7 @@ import {
   ResetPasswordQueryDto,
   ResetPasswordDto,
   ForgotPasswordDto,
+  ChangePasswordDto,
 } from './dto';
 import {
   RegistrySuccess,
@@ -46,6 +47,7 @@ import {
   LogoutSuccess,
   PasswordRecoveryInitialized,
   RefreshSucess,
+  PasswordChangeSuccess,
 } from './auth-success.response';
 
 @ApiTags('Auth')
@@ -104,28 +106,38 @@ export class AuthController {
     return await this.authService.refresh(req, res);
   }
 
-  @Post('password-recovery')
+  @Put('password-change')
+  @UseGuards(JwtGuard)
+  @ApiOperation({ summary: 'Change Password' })
+  @ApiBody({ type: ChangePasswordDto, required: true })
+  @ApiBadRequestResponse({ description: 'Incoming data is invalid' })
+  @ApiConflictResponse({ description: 'The passwords are equal' })
+  @ApiCreatedResponse(PasswordChangeSuccess)
+  @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
+  async changePassword(@Req() req: UserRequest, @Body() body: ChangePasswordDto) {
+    return await this.authService.changePassword(req.user.id, body);
+  }
+
+  @Post('forgot-password')
   @HttpCode(200)
   @ApiOperation({ summary: 'Password recovery process' })
-  @ApiQuery({ type: ResetPasswordQueryDto, required: true })
   @ApiBody({ type: ResetPasswordDto, required: true })
   @ApiBadRequestResponse({ description: 'Incoming data is invalid' })
   @ApiNotFoundResponse({ description: 'User not found' })
   @ApiOkResponse(PasswordRecoveryInitialized)
   @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
-  async recoverPassword(@Body() body: ForgotPasswordDto) {
+  async forgotPassword(@Body() body: ForgotPasswordDto) {
     return await this.authService.forgotPassword(body);
   }
 
   @Put('password-reset')
-  @HttpCode(200)
   @ApiOperation({ summary: 'Reset Password' })
   @ApiQuery({ type: ResetPasswordQueryDto, required: true })
   @ApiBody({ type: ResetPasswordDto, required: true })
   @ApiBadRequestResponse({ description: `Incoming data is invalid, or the passwords don't match` })
   @ApiUnauthorizedResponse({ description: 'Time to reset password expired' })
   @ApiNotFoundResponse({ description: 'User not found' })
-  @ApiOkResponse(LoginSucess)
+  @ApiCreatedResponse(LoginSucess)
   @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
   async resetPassword(@Query() query: ResetPasswordQueryDto, @Body() body: ResetPasswordDto) {
     return await this.authService.resetPassword(query, body);

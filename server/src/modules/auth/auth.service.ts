@@ -29,6 +29,7 @@ import {
   ForgotPasswordDto,
   ResetPasswordDto,
   ResetPasswordQueryDto,
+  ChangePasswordDto,
 } from './dto';
 
 import config from '../../config';
@@ -160,18 +161,20 @@ export class AuthService {
 
     if (!isMatch) {
       let userUpdated: User;
-      if (userFound.attempts < 5) {
+      if (userFound.attempts === 4) {
+        userUpdated = Object.assign(userFound, { attempts: userFound.attempts + 1, blocked: true });
+        await this.userService.updateUser(userUpdated);
+        throw new ForbiddenException(ErrorMessage.USER_BLOCKED);
+      } else {
         userUpdated = Object.assign(userFound, { attempts: userFound.attempts + 1 });
         await this.userService.updateUser(userUpdated);
         throw new UnauthorizedException(ErrorMessage.INVALID_CREDENTIALS);
-      } else if (userFound.attempts + 1 === 5) {
-        userUpdated = Object.assign(userFound, { attempts: userFound.attempts + 1 });
-        await this.userService.updateUser(userUpdated);
-        throw new ForbiddenException(ErrorMessage.USER_BLOCKED);
       }
     }
 
     if (!userFound.verified) throw new ForbiddenException(ErrorMessage.USER_NOT_VERIFIED);
+
+    if (isMatch && userFound.blocked) throw new ForbiddenException(ErrorMessage.USER_BLOCKED);
 
     const accessToken = await this.accessToken({ id: userFound.id });
     const refreshToken = await this.refreshToken({ id: userFound.id });
@@ -217,6 +220,28 @@ export class AuthService {
     return { accessToken };
   }
 
+  async changePassword(id: string, body: ChangePasswordDto) {
+    const userFound = await this.userService.getUser({ id });
+
+    const { currentPassword, newPassword } = body;
+
+    if (!userFound) throw new NotFoundException(ErrorMessage.USER_NOT_FOUND);
+
+    const isMatch = await bcrypt.compare(currentPassword, userFound.password);
+
+    if (!isMatch) throw new UnauthorizedException(ErrorMessage.INVALID_CREDENTIALS);
+
+    if (currentPassword === newPassword) throw new ConflictException(ErrorMessage.EQUAL_PASSWORDS);
+
+    const hashed = await bcrypt.hash(newPassword, 10);
+
+    const updatedUser = Object.assign(userFound, { password: hashed });
+
+    await this.userService.updateUser(updatedUser);
+
+    return { message: 'password successfully changed' };
+  }
+
   async forgotPassword(body: ForgotPasswordDto) {
     const { email } = body;
     const userFound = await this.userService.getUser({ email });
@@ -248,7 +273,7 @@ export class AuthService {
     else if (this.configService.nodeEnv === Environment.DEVELOPMENT)
       await this.mailerService.sendMailDev(emailData);
 
-    const userUpdated = Object.assign(userFound, { code, expiration });
+    const userUpdated = Object.assign(userFound, { code });
 
     await this.userService.updateUser(userUpdated);
 

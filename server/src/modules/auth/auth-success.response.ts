@@ -56,6 +56,11 @@ export const LogoutSuccess: ApiResponseNoStatusOptions = {
   schema: successMessage('successfully logged out'),
 };
 
+export const PasswordChangeSuccess = {
+  description: 'Password change success',
+  schema: successMessage('password successfully changed'),
+};
+
 export const PasswordRecoveryInitialized = {
   description: 'Password recovery initialized',
   schema: successMessage('password recovery process initialized'),

@@ -39,6 +39,45 @@ export const normalUser: User = {
   updatedAt: new Date(),
 };
 
+export const userToBlock: User = {
+  id: '1589e36b-dfe9-44c4-8932-11ef1ce1b1a7',
+  email: 'usertoblock@email.com',
+  password: '$2b$10$d/CtDc73X0pM8JoEuA9A4u7MNEAAE45/fcQTQxG1BLSeV8ZAaC/h2', // password: normalUser1
+  verified: true,
+  attempts: 4,
+  blocked: false,
+  code: null,
+  profileCreated: false,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
+
+export const blockedUser: User = {
+  id: '057e0418-18c7-4bed-964f-911446f8ea6f',
+  email: 'blockeduser@email.com',
+  password: '$2b$10$d/CtDc73X0pM8JoEuA9A4u7MNEAAE45/fcQTQxG1BLSeV8ZAaC/h2', // password: normalUser1
+  verified: true,
+  attempts: 5,
+  blocked: true,
+  code: null,
+  profileCreated: false,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
+
+export const forgotPasswordUser: User = {
+  id: '055e587d-532f-411b-a98e-c00b09f9ce02',
+  email: 'forgotpassword@email.com',
+  password: '$2b$10$d/CtDc73X0pM8JoEuA9A4u7MNEAAE45/fcQTQxG1BLSeV8ZAaC/h2', // password: normalUser1
+  verified: true,
+  attempts: 0,
+  blocked: false,
+  code: 'aefa05b6cfaa09a10ea6100d1a4bf8123b0a06b877139a77a684a6c9e176a911',
+  profileCreated: false,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
+
 export const adminUser: User = {
   id: 'd8edbef7-8946-4f8c-9cd8-7736db79eaf3',
   email: 'admin@email.com',
@@ -87,4 +126,12 @@ export {
   normalUserRefreshToken,
 };
 
-export const userSeeds: User[] = [unverifiedUser, unverifiedUser2, normalUser, adminUser];
+export const userSeeds: User[] = [
+  unverifiedUser,
+  unverifiedUser2,
+  userToBlock,
+  blockedUser,
+  forgotPasswordUser,
+  normalUser,
+  adminUser,
+];

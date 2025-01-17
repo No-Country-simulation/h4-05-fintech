@@ -11,4 +11,5 @@ export enum ErrorMessage {
   EXPIRED_TIME = 'expired time',
   USER_BLOCKED = 'user blocked',
   INVALID_CODE = 'invalid 32-digit code',
+  EQUAL_PASSWORDS = 'passwords are equal',
 }
