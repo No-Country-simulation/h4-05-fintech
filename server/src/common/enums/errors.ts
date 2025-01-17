@@ -8,4 +8,7 @@ export enum ErrorMessage {
   USER_NOT_VERIFIED = 'user not verified',
   NO_ACCESS = 'no allowed to access',
   PROFILE_CREATED = 'profile created',
+  EXPIRED_TIME = 'expired time',
+  USER_BLOCKED = 'user blocked',
+  INVALID_CODE = 'invalid 32-digit code',
 }

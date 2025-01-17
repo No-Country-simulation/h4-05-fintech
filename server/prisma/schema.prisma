@@ -22,7 +22,6 @@ model User {
   blocked               Boolean             @default(false)
   profileCreated        Boolean             @default(false) @map("profile_created")
   code                  String?
-  expiration            DateTime?
   auth                  Auth[]
   financialProfile      FinancialProfile?
   financialData         FinancialData?

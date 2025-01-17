@@ -8,10 +8,11 @@ import {
   NotFoundException,
   UnauthorizedException,
   ForbiddenException,
+  NotAcceptableException,
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { Prisma } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import { CookieOptions, Response } from 'express';
 import bcrypt from 'bcrypt';
 
@@ -22,7 +23,13 @@ import { PrismaService } from '../../common/modules/prisma/prisma.service';
 import { MailerService } from '../../common/modules/mailer/mailer.service';
 
 import { UserService } from '../user/user.service';
-import { LoginDto, RegistryDto } from './dto';
+import {
+  LoginDto,
+  RegistryDto,
+  ForgotPasswordDto,
+  ResetPasswordDto,
+  ResetPasswordQueryDto,
+} from './dto';
 
 import config from '../../config';
 
@@ -92,8 +99,10 @@ export class AuthService {
     res.clearCookie(this.cookieName, options);
   }
 
-  async registry(dto: RegistryDto) {
-    const { email, password, confirmPassword } = dto;
+  private baseUrl = new URL('/auth/', this.configService.frontendUrl);
+
+  async registry(body: RegistryDto) {
+    const { email, password, confirmPassword } = body;
     const userFound = await this.userService.getUser({ email });
 
     if (userFound) throw new ConflictException(ErrorMessage.REGISTERED_USER);
@@ -105,13 +114,14 @@ export class AuthService {
     const hashed = await bcrypt.hash(password, 10);
     const code = crypto.randomBytes(32).toString('hex');
 
+    const link = new URL('verify', this.baseUrl);
+    link.searchParams.set('code', code);
+
     const emailData: EmailData = {
       email,
       subject: 'Bienvenido a iUPI',
       template: 'verify.hbs',
-      variables: {
-        link: `${this.configService.frontendUrl}/auth/verify?code=${code}`,
-      },
+      variables: { link },
     };
 
     if (this.configService.nodeEnv === Environment.PRODUCTION)
@@ -125,27 +135,41 @@ export class AuthService {
   }
 
   async verify(code: string) {
+    const valid32HexCode = /^[a-f0-9]{64}$/i;
+
+    if (!valid32HexCode.test(code)) throw new NotAcceptableException('invalid 32-digit code');
+
     const userFound = await this.userService.getUser({ code });
+
     if (!userFound) throw new NotFoundException('user not found');
 
-    userFound.verified = true;
-    userFound.code = null;
-    userFound.expiration = null;
+    const userUpdated = Object.assign(userFound, { verified: true, code: null });
 
-    await this.userService.updateUser(userFound);
+    await this.userService.updateUser(userUpdated);
 
     return { message: 'user successfully verified' };
   }
 
-  async login(req: UserRequest, res: Response, dto: LoginDto): Promise<{ accessToken: string }> {
-    const { email, password } = dto;
+  async login(req: UserRequest, res: Response, body: LoginDto): Promise<{ accessToken: string }> {
+    const { email, password } = body;
     const userFound = await this.userService.getUser({ email });
 
     if (!userFound) throw new NotFoundException(ErrorMessage.USER_NOT_FOUND);
 
     const isMatch = await bcrypt.compare(password, userFound.password);
 
-    if (!isMatch) throw new UnauthorizedException(ErrorMessage.INVALID_CREDENTIALS);
+    if (!isMatch) {
+      let userUpdated: User;
+      if (userFound.attempts < 5) {
+        userUpdated = Object.assign(userFound, { attempts: userFound.attempts + 1 });
+        await this.userService.updateUser(userUpdated);
+        throw new UnauthorizedException(ErrorMessage.INVALID_CREDENTIALS);
+      } else if (userFound.attempts + 1 === 5) {
+        userUpdated = Object.assign(userFound, { attempts: userFound.attempts + 1 });
+        await this.userService.updateUser(userUpdated);
+        throw new ForbiddenException(ErrorMessage.USER_BLOCKED);
+      }
+    }
 
     if (!userFound.verified) throw new ForbiddenException(ErrorMessage.USER_NOT_VERIFIED);
 
@@ -191,6 +215,67 @@ export class AuthService {
     await this.setCookie(res, newRefreshToken);
 
     return { accessToken };
+  }
+
+  async forgotPassword(body: ForgotPasswordDto) {
+    const { email } = body;
+    const userFound = await this.userService.getUser({ email });
+
+    if (!userFound) throw new NotFoundException(ErrorMessage.USER_NOT_FOUND);
+
+    const expiration = new Date();
+    expiration.setMinutes(expiration.getMinutes() + 15);
+
+    const code = crypto.randomBytes(32).toString('hex');
+
+    const query = { code, exp: new Date(expiration).getTime() };
+
+    const link = new URL('reset-password', this.configService.frontendUrl);
+
+    Object.entries(query).forEach(([key, value]) => {
+      link.searchParams.set(key, value.toString());
+    });
+
+    const emailData: EmailData = {
+      email,
+      subject: 'Recuperación de contraseña',
+      template: 'password-recovery.hbs',
+      variables: { link },
+    };
+
+    if (this.configService.nodeEnv === Environment.PRODUCTION)
+      await this.mailerService.sendMail(emailData);
+    else if (this.configService.nodeEnv === Environment.DEVELOPMENT)
+      await this.mailerService.sendMailDev(emailData);
+
+    const userUpdated = Object.assign(userFound, { code, expiration });
+
+    await this.userService.updateUser(userUpdated);
+
+    return { message: 'password recovery process initialized' };
+  }
+
+  async resetPassword(query: ResetPasswordQueryDto, body: ResetPasswordDto) {
+    const { code, exp } = query;
+    const { newPassword, confirmPassword } = body;
+
+    const userFound = await this.userService.getUser({ code });
+
+    if (!userFound) throw new NotFoundException(ErrorMessage.USER_NOT_FOUND);
+
+    if (parseInt(exp) <= new Date().getTime())
+      throw new UnauthorizedException(ErrorMessage.EXPIRED_TIME);
+
+    if (newPassword != confirmPassword)
+      throw new BadRequestException(ErrorMessage.PASSWORD_UNMATCH);
+
+    const hashed = await bcrypt.hash(newPassword, 10);
+
+    const updatedUser = Object.assign(userFound, { code: null, password: hashed });
+
+    await this.userService.updateUser(updatedUser);
+
+    return { message: 'password successfully reset' };
   }
 
   async logout(req: UserRequest, res: Response) {
