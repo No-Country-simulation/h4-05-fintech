@@ -14,7 +14,7 @@ import {
   IncomeAverage,
   // MonthlyContribution,
   TargetPeriod,
-} from '../profile.enum';
+} from '../enums';
 
 export class FinancialProfileDto {
   @ApiProperty({ enum: FinancialGoals })

@@ -23,6 +23,8 @@ import { PrismaService } from '../../common/modules/prisma/prisma.service';
 import { MailerService } from '../../common/modules/mailer/mailer.service';
 
 import { UserService } from '../user/user.service';
+import { ProfileService } from '../profile/profile.service';
+
 import {
   LoginDto,
   RegistryDto,
@@ -40,8 +42,9 @@ export class AuthService {
     @Inject(config.KEY) private readonly configService: ConfigType<typeof config>,
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
-    private readonly userService: UserService,
     private readonly mailerService: MailerService,
+    private readonly userService: UserService,
+    private readonly profileService: ProfileService,
   ) {}
 
   private accessSecret =
@@ -151,7 +154,8 @@ export class AuthService {
     else if (this.configService.nodeEnv === Environment.DEVELOPMENT)
       await this.mailerService.sendMailDev(emailData);
 
-    await this.userService.createUser({ email, password: hashed, code });
+    const { id: userId } = await this.userService.createUser({ email, password: hashed, code });
+    await this.profileService.createUserProfile(userId);
 
     return { message: 'user successfully registered' };
   }

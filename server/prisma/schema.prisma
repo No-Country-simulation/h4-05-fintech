@@ -23,6 +23,7 @@ model User {
   profileCreated        Boolean             @default(false) @map("profile_created")
   code                  String?
   auth                  Auth[]
+  userProfile           UserProfile?
   financialProfile      FinancialProfile?
   financialData         FinancialData?
   createdAt             DateTime            @default(now()) @map("created_at")
@@ -59,6 +60,18 @@ model FinancialProfile {
   occupation                      String?
   savingPlan                      Boolean?              @map("saving_plan")
   // monthlyContribution          String?               @map("monthly_contribution")
+}
+
+model UserProfile {
+  id                  String        @id @default(uuid())
+  user                User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId              String        @unique @map("user_id")
+  name                String?
+  lastname            String?
+  image               String?
+  financialProfile    String?       @map("financial_profile")
+  itemsSaved          String[]      @map("items_saved")
+  updatedAt           DateTime      @default(now()) @map("updated_at")
 }
 
 model FinancialData {

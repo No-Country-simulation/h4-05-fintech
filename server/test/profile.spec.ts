@@ -7,7 +7,7 @@ import {
   IncomeAverage,
   // MonthlyContribution,
   TargetPeriod,
-} from '../src/modules/profile/profile.enum';
+} from '../src/modules/profile/enums/profile.enum';
 import { adminUserToken, normalUserToken, unknownUserToken } from '../prisma/seeds/user.seeds';
 
 describe('Profile', () => {

@@ -1,6 +1,7 @@
 import { ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
+import { Prisma } from '@prisma/client';
 import { firstValueFrom } from 'rxjs';
 
 import { PrismaService } from '../../common/modules/prisma/prisma.service';
@@ -8,7 +9,7 @@ import { UserRequest } from '../../common/interfaces/user-request.interface';
 import { ErrorMessage } from '../../common/enums';
 
 import config from '../../config';
-import { FinancialProfileDto } from './dto';
+import { FinancialProfileDto, UserProfileDto } from './dto';
 import { UserService } from '../user/user.service';
 
 @Injectable()
@@ -46,6 +47,10 @@ export class ProfileService {
     return { message: 'financial profile successfully created' };
   }
 
+  async createUserProfile(userId: string) {
+    await this.prisma.userProfile.create({ data: { userId } });
+  }
+
   async getFinancialProfile(req: UserRequest) {
     const { id: userId } = req.user;
     const financialProfileFound = await this.prisma.financialProfile.findFirst({
@@ -62,5 +67,12 @@ export class ProfileService {
         headers: {},
       }),
     );
+  }
+
+  async updateUserProfile(req: UserRequest, body: UserProfileDto) {
+    const { id: userId } = req.user;
+    const where: Prisma.UserProfileWhereUniqueInput = { userId };
+    const data: Prisma.UserProfileUpdateInput = { ...body, updatedAt: new Date() };
+    await this.prisma.userProfile.update({ where, data });
   }
 }

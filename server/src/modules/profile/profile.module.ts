@@ -10,5 +10,6 @@ import { UserModule } from '../user/user.module';
   imports: [HttpModule, UserModule],
   providers: [ProfileService, JwtService],
   controllers: [ProfileController],
+  exports: [ProfileService],
 })
 export class ProfileModule {}
