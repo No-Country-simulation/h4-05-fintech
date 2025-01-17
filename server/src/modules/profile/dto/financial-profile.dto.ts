@@ -3,12 +3,18 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   FinancialGoals,
   FinancialKnowledge,
-  FinancialOptions,
+  InvestmentEducation,
+  InvestmentExperience,
+  InvestmentPurpose,
   IncomeSource,
-  RiskTolerance,
-  TargetPeriod,
+  RiskCase,
 } from '@prisma/client';
-import { ExpensesAverage, IncomeAverage, MonthlyContribution } from '../profile.enum';
+import {
+  ExpensesAverage,
+  IncomeAverage,
+  // MonthlyContribution,
+  TargetPeriod,
+} from '../profile.enum';
 
 export class FinancialProfileDto {
   @ApiProperty({ enum: FinancialGoals })
@@ -21,15 +27,25 @@ export class FinancialProfileDto {
   @IsEnum(FinancialKnowledge)
   financialKnowledge: FinancialKnowledge;
 
-  @ApiProperty({ enum: RiskTolerance })
+  @ApiProperty({ enum: RiskCase })
   @IsNotEmpty()
-  @IsEnum(RiskTolerance)
-  riskTolerance: RiskTolerance;
+  @IsEnum(RiskCase)
+  riskCase: RiskCase;
 
-  @ApiProperty({ enum: FinancialOptions })
+  @ApiProperty({ enum: InvestmentEducation })
   @IsNotEmpty()
-  @IsEnum(FinancialOptions)
-  financialOptions: FinancialOptions;
+  @IsEnum(InvestmentEducation)
+  investmentEducation: InvestmentEducation;
+
+  @ApiProperty({ enum: InvestmentExperience })
+  @IsNotEmpty()
+  @IsEnum(InvestmentExperience)
+  investmentExperience: InvestmentExperience;
+
+  @ApiProperty({ enum: InvestmentPurpose })
+  @IsNotEmpty()
+  @IsEnum(InvestmentPurpose)
+  investmentPurpose: InvestmentPurpose;
 
   @ApiProperty({ enum: TargetPeriod })
   @IsNotEmpty()
@@ -71,8 +87,8 @@ export class FinancialProfileDto {
   @IsString()
   planDescription: string;
 
-  @ApiProperty({ enum: MonthlyContribution })
-  @IsOptional()
-  @IsEnum(MonthlyContribution)
-  monthlyContribution: MonthlyContribution;
+  // @ApiProperty({ enum: MonthlyContribution })
+  // @IsOptional()
+  // @IsEnum(MonthlyContribution)
+  // monthlyContribution: MonthlyContribution;
 }

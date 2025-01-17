@@ -46,6 +46,16 @@ export class ProfileService {
     return { message: 'financial profile successfully created' };
   }
 
+  async getFinancialProfile(req: UserRequest) {
+    const { id: userId } = req.user;
+    const financialProfileFound = await this.prisma.financialProfile.findFirst({
+      where: { userId },
+    });
+
+    if (!financialProfileFound)
+      throw new NotFoundException(ErrorMessage.FINANCIAL_PROFILE_NOT_FOUND);
+  }
+
   async getFinancialProfileFromData(url: string, dto: FinancialProfileDto) {
     return await firstValueFrom(
       this.httpService.post(`${url}`, dto, {

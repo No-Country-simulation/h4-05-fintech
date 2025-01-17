@@ -24,7 +24,7 @@ export default registerAs('config', () => {
     },
     redis: {
       url: process.env.REDIS_URL,
-      ttl: +process.env.REDIS_TTL,
+      ttl: +process.env.REDIS_TTL || 5,
     },
   };
 });

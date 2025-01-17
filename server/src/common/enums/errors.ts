@@ -12,4 +12,5 @@ export enum ErrorMessage {
   USER_BLOCKED = 'user blocked',
   INVALID_CODE = 'invalid 32-digit code',
   EQUAL_PASSWORDS = 'passwords are equal',
+  FINANCIAL_PROFILE_NOT_FOUND = 'financial profile not found',
 }

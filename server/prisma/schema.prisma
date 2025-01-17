@@ -46,18 +46,19 @@ model FinancialProfile {
   // PREGUNTAS PRIORITARIAS
   financialGoal                   FinancialGoals        @map("financial_goal")
   financialKnowledge              FinancialKnowledge    @map("financial_knowledge")
-  riskTolerance                   RiskTolerance         @map("risk_tolerance")
-  financialOptions                FinancialOptions      @map("financial_options")
-  targetPeriod                    TargetPeriod          @map("target_period")
+  investmentEducation             InvestmentEducation   @map("investment_education")
+  investmentExperience            InvestmentExperience  @map("investment_experience")
+  riskCase                        RiskCase              @map("risk_case")
+  targetPeriod                    String                @map("target_period")
   incomeSource                    IncomeSource          @map("income_source")
   incomeAverage                   String                @map("income_average")
   expensesAverage                 String                @map("expenses_average")
   // PREGUNTAS SECUNDARIAS
+  investmentPurpose               InvestmentPurpose?    @map("investment_purpose")
   age                             Int?
   occupation                      String?
   savingPlan                      Boolean?              @map("saving_plan")
-  planDescription                 String?               @map("plan_description")
-  monthlyContribution             String?               @map("monthly_contribution")
+  // monthlyContribution          String?               @map("monthly_contribution")
 }
 
 model FinancialData {
@@ -81,41 +82,43 @@ enum FinancialGoals {
 }
 
 enum FinancialKnowledge {
-  BASICO
-  INTERMEDIO
-  AVANZADO
-  NINGUNO
+  NO_TENGO_IDEA
+  ME_SUENA_PERO_NO_ESTOY_SEGURO
+  SE_COMO_FUNCIONA
+  INVIERTO_REGULARMENTE
 }
 
-enum RiskTolerance {
-  CONSERVADOR
-  MODERADO
-  ARRIESGADO
+enum InvestmentEducation {
+  CERTIFICADO_PROFESIONAL
+  TECNICO_O_TECNOLOGICO
+  CARRERA_PROFESIONAL
+  NO_TENGO_FORMACION
 }
 
-enum FinancialPreference {
+enum RiskCase {
+  VENDERIA_TODO
+  MANTENDRIA_INVERSION
+  COMPRARIA_MAS
+}
+
+enum InvestmentPurpose {
   AHORRO
   INVERSION
+  AMBOS
 }
 
-enum FinancialOptions {
+enum InvestmentExperience {
   ACCIONES
   CDEARS
   BONOS
-  CFD
   ETFS
-  OTROS
 }
 
 enum IncomeSource {
+  SALARIO
   INDEPENDIENTE
-  DEPENDIENTE
-  AMBOS
+  INVERSIONES
+  AHORROS
   JUBILACION
-}
-
-enum TargetPeriod {
-  CORTO
-  MEDIANO
-  LARGO
+  HERENCIA
 }
