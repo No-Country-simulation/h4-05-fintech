@@ -1,35 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import MainLayout from "./components/layout/MainLayout";
+import Auth from "./components/auth/Auth";
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
+
+
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Router>
+      <MainLayout>
+        <Routes>
+          {/* Redirige la raíz ("/") a "/auth" */}
+          <Route path="/" element={<Navigate to="/auth" replace />} />
+          
+          {/* Ruta principal de autenticación */}
+          <Route path="/auth" element={<Auth />} />
+          
+          {/* Subrutas de autenticación */}
+          <Route path="/auth/register" element={<Register />} />
+          <Route path="/auth/login" element={<Login/>} />
+          
+          {/* Ruta 404 para manejar rutas no encontradas */}
+          <Route path="*" element={<Navigate to="/auth" replace />} />
+        </Routes>
+      </MainLayout>
+    </Router>
+  );
 }
 
-export default App
+export default App;
