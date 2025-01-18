@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import axios from "axios";
+const registry: string = process.env.REGISTRY as string;
 
 interface formValues {
   email: string;
@@ -17,6 +18,8 @@ const initilValues: formValues = {
   password: "",
   confirmPassword: "",
 };
+
+
 
 const Register = () => {
   const [formData, setFormData] = useState<formValues>(initilValues);
@@ -39,7 +42,7 @@ const Register = () => {
 
     try {
       const { data } = await axios.post(
-        "https://iupi-fintech-api-dev.onrender.com/auth/registry",
+        registry,
         formData
       );
       const accessToken = data.accessToken;

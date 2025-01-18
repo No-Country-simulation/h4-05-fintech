@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import axios from "axios";
+const login: string = process.env.LOGIN as string;
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -27,7 +28,7 @@ const LoginPage = () => {
 
     try {
       const { data } = await axios.post(
-        "https://iupi-fintech-api-dev.onrender.com/auth/login",
+        login,
         formData
       );
       setMessage(data.message);
