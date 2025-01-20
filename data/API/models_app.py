@@ -55,7 +55,8 @@ mapeo_fuente_ingresos = {
     "Independiente": 1,
     "Inversiones": 2,
     "Ahorros": 3,
-    "Jubilacion/Herencia": 4
+    "Jubilacion":4,
+    "Herencia": 5
 }
 
 mapeo_ingresos_mensuales = {
@@ -69,13 +70,13 @@ mapeo_gastos_mensuales = {
     "Entre 30% y 60% de tus ingresos": 1,
     "Mas del 60% de tus ingresos": 2
 }
-
+"""
 mapeo_rango_ahorros = {
     "Entre 0% y 30%": 0,
     "Entre 30% y 60%": 1,
     "Mas del 60%": 2
 }
-
+"""
 # Definir la estructura de los datos de entrada
 class UserData(BaseModel):
     objetivo_financiero: str
@@ -87,7 +88,6 @@ class UserData(BaseModel):
     fuente_ingresos: str
     ingresos_mensuales: str
     gastos_mensuales: str
-    rango_ahorros: str
 
 # Crear la aplicación FastAPI
 app = FastAPI()
@@ -110,7 +110,7 @@ def predict(data: UserData):
         fuente_ingresos = mapeo_fuente_ingresos[data.fuente_ingresos]
         ingresos_mensuales = mapeo_ingresos_mensuales[data.ingresos_mensuales]
         gastos_mensuales = mapeo_gastos_mensuales[data.gastos_mensuales]
-        rango_ahorros = mapeo_rango_ahorros[data.rango_ahorros]
+        #rango_ahorros = mapeo_rango_ahorros[data.rango_ahorros]
         
         # Convertir la lista de instrumentos invertidos
         instrumentos_invertidos = [mapeo_instrumentos[inst] for inst in data.instrumentos_invertidos]
@@ -126,7 +126,7 @@ def predict(data: UserData):
             fuente_ingresos,
             ingresos_mensuales,
             gastos_mensuales,
-            rango_ahorros
+            #rango_ahorros
         ]
         
         # Hacer la predicción
