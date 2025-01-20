@@ -11,11 +11,13 @@ import { ProfileModule } from './modules/profile/profile.module';
 import config from './config';
 import { CacheModule } from '@nestjs/cache-manager';
 import { CacheConfigProvider } from './cache-config.provider';
+import { FileUploaderModule } from './common/modules/file-uploader/file-uploader.module';
 
 @Module({
   imports: [
     PrismaModule,
     MailerModule,
+    FileUploaderModule,
     UserModule,
     AuthModule,
     ProfileModule,

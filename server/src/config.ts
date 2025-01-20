@@ -26,5 +26,11 @@ export default registerAs('config', () => {
       url: process.env.REDIS_URL,
       ttl: +process.env.REDIS_TTL || 5,
     },
+    cloudinary: {
+      cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+      apiKey: process.env.CLOUDINARY_API_KEY,
+      apiSecret: process.env.CLOUDINARY_API_SECRET,
+      mainFolder: process.env.CLOUDINARY_MAIN_FOLDER,
+    },
   };
 });
