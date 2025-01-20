@@ -1,71 +1,72 @@
-import { IsNotEmpty, IsOptional, IsEnum, IsInt, IsString, IsBoolean } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsEnum, IsInt, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+
 import {
+  ExpensesRatios,
+  FinancialEducation,
   FinancialGoals,
-  FinancialKnowledge,
-  InvestmentEducation,
-  InvestmentExperience,
-  InvestmentPurpose,
-  IncomeSource,
-  RiskCase,
-} from '@prisma/client';
-import {
-  ExpensesAverage,
   IncomeAverage,
+  IncomeSource,
+  InvestmentExperience,
+  InvestmentKnowledge,
+  InvestmentPurpose,
+  InvestmentTimesframes,
+  RiskReactions,
+  SavingPlans,
+  SavingsRanges,
   // MonthlyContribution,
-  TargetPeriod,
 } from '../enums';
 
 export class FinancialProfileDto {
   @ApiProperty({ enum: FinancialGoals })
   @IsNotEmpty()
   @IsEnum(FinancialGoals)
-  financialGoal: FinancialGoals;
+  financialGoals: FinancialGoals;
 
-  @ApiProperty({ enum: FinancialKnowledge })
+  @ApiProperty({ enum: InvestmentKnowledge })
   @IsNotEmpty()
-  @IsEnum(FinancialKnowledge)
-  financialKnowledge: FinancialKnowledge;
+  @IsEnum(InvestmentKnowledge)
+  investmentKnowledge: InvestmentKnowledge;
 
-  @ApiProperty({ enum: RiskCase })
+  @ApiProperty({ enum: FinancialEducation })
   @IsNotEmpty()
-  @IsEnum(RiskCase)
-  riskCase: RiskCase;
-
-  @ApiProperty({ enum: InvestmentEducation })
-  @IsNotEmpty()
-  @IsEnum(InvestmentEducation)
-  investmentEducation: InvestmentEducation;
+  @IsEnum(FinancialEducation)
+  financialEducation: FinancialEducation;
 
   @ApiProperty({ enum: InvestmentExperience })
   @IsNotEmpty()
   @IsEnum(InvestmentExperience)
-  investmentExperience: InvestmentExperience;
+  investmentExperience: InvestmentExperience[];
 
-  @ApiProperty({ enum: InvestmentPurpose })
+  @ApiProperty({ enum: RiskReactions })
   @IsNotEmpty()
-  @IsEnum(InvestmentPurpose)
-  investmentPurpose: InvestmentPurpose;
+  @IsEnum(RiskReactions)
+  riskReactions: RiskReactions;
 
-  @ApiProperty({ enum: TargetPeriod })
+  @ApiProperty({ enum: InvestmentTimesframes })
   @IsNotEmpty()
-  @IsEnum(TargetPeriod)
-  targetPeriod: TargetPeriod;
+  @IsEnum(InvestmentTimesframes)
+  investmentTimeframes: InvestmentTimesframes;
 
   @ApiProperty({ enum: IncomeSource })
   @IsNotEmpty()
   @IsEnum(IncomeSource)
-  incomeSource: IncomeSource;
+  incomeSources: IncomeSource;
 
   @ApiProperty({ enum: IncomeAverage })
   @IsNotEmpty()
   @IsEnum(IncomeAverage)
-  incomeAverage: IncomeAverage;
+  incomeRanges: IncomeAverage;
 
-  @ApiProperty({ enum: ExpensesAverage })
+  @ApiProperty({ enum: ExpensesRatios })
   @IsNotEmpty()
-  @IsEnum(ExpensesAverage)
-  expensesAverage: ExpensesAverage;
+  @IsEnum(ExpensesRatios)
+  expensesRatios: ExpensesRatios;
+
+  @ApiProperty({ enum: InvestmentPurpose })
+  @IsOptional()
+  @IsEnum(InvestmentPurpose)
+  investmentPurpose: InvestmentPurpose;
 
   @ApiProperty({ type: Number, example: 20 })
   @IsOptional()
@@ -77,15 +78,15 @@ export class FinancialProfileDto {
   @IsString()
   occupation: string;
 
-  @ApiProperty({ type: Boolean, example: false })
+  @ApiProperty({ enum: SavingPlans })
   @IsOptional()
-  @IsBoolean()
-  savingPlan: boolean;
+  @IsEnum(SavingPlans)
+  savingsPlans: SavingPlans;
 
-  @ApiProperty({ type: String, example: 'Sin plan de ahorro' })
+  @ApiProperty({ enum: SavingsRanges })
   @IsOptional()
-  @IsString()
-  planDescription: string;
+  @IsEnum(SavingPlans)
+  savingsRanges: SavingsRanges;
 
   // @ApiProperty({ enum: MonthlyContribution })
   // @IsOptional()
