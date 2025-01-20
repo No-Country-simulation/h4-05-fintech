@@ -8,7 +8,7 @@ export class RegistryDto {
   email: string;
 
   @ApiProperty({
-    type: RegExp,
+    type: String,
     pattern: '/^[a-f0-9]{64}$/i',
     description:
       'password must have at least one uppercase letter, one lowercase letter, one number. Special character are not allowed',

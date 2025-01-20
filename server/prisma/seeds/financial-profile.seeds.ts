@@ -1,22 +1,20 @@
 import crypto from 'node:crypto';
-
-import {
-  FinancialGoals,
-  FinancialKnowledge,
-  InvestmentPurpose,
-  InvestmentEducation,
-  InvestmentExperience,
-  FinancialProfile,
-  IncomeSource,
-  RiskCase,
-} from '@prisma/client';
 import { adminUser } from './user.seeds';
-
-enum TargetPeriod {
-  CORTO = 'Menos de 1 año',
-  MEDIANO = 'De 1 a 3 años',
-  LARGO = 'Más 3 de años',
-}
+import { FinancialProfile } from '@prisma/client';
+import {
+  ExpensesRatios,
+  FinancialEducation,
+  FinancialGoals,
+  IncomeRanges,
+  IncomeSources,
+  InvestmentExperience,
+  InvestmentKnowledge,
+  InvestmentPurpose,
+  InvestmentTimesframes,
+  RiskReactions,
+  SavingPlans,
+  SavingsRanges,
+} from 'src/modules/profile/enums';
 
 const occupation = [
   'Controlador de tráfico aéreo',
@@ -96,10 +94,6 @@ const occupation = [
   'Secretaria',
 ];
 
-const incomeArray: string[] = ['-279718', '280000-1400000', '+14000000'];
-const expensesArray: string[] = ['-30%', '30%-60%', '+60%'];
-// const contributionArray: string[] = ['-10%', '10%-20%', '+20%'];
-
 export const financialProfileRandomData = (): FinancialProfile[] => {
   const randomData: FinancialProfile[] = [];
   for (let i = 0; i < 100; i++) {
@@ -109,28 +103,31 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
 
     const age = Math.floor(Math.random() * 80) + 18;
 
-    const financialGoal = (): FinancialGoals => {
+    const financialGoals = (): FinancialGoals => {
       let goal: FinancialGoals;
       switch (index(7)) {
         case 0:
-          goal = FinancialGoals.JUBILACION;
-          break;
-        case 1:
-          goal = FinancialGoals.VACACIONES;
-          break;
-        case 2:
           goal = FinancialGoals.IMPREVISTOS;
           break;
+        case 1:
+          goal = FinancialGoals.INGRESOS_ADICIONALES;
+          break;
+        case 2:
+          goal = FinancialGoals.JUBILACION;
+          break;
         case 3:
-          goal = FinancialGoals.VIVIENDA;
-          break;
-        case 4:
-          goal = FinancialGoals.EDUCACION;
-          break;
-        case 5:
           goal = FinancialGoals.LIBERTAD_FINANCIERA;
           break;
+        case 4:
+          goal = FinancialGoals.PROYECTOS_LARGO_PLAZO;
+          break;
+        case 5:
+          goal = FinancialGoals.VACACIONES;
+          break;
         case 6:
+          goal = FinancialGoals.VIVIENDA;
+          break;
+        case 7:
           goal = FinancialGoals.OTROS;
           break;
         default:
@@ -139,20 +136,20 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
       return goal;
     };
 
-    const financialKnowledge = (): FinancialKnowledge => {
-      let knowledge: FinancialKnowledge;
+    const investmentKnowledge = (): InvestmentKnowledge => {
+      let knowledge: InvestmentKnowledge;
       switch (index(4)) {
         case 0:
-          knowledge = FinancialKnowledge.NO_TENGO_IDEA;
+          knowledge = InvestmentKnowledge.NO_TENGO_IDEA;
           break;
         case 1:
-          knowledge = FinancialKnowledge.ME_SUENA_PERO_NO_ESTOY_SEGURO;
+          knowledge = InvestmentKnowledge.ME_SUENA_PERO;
           break;
         case 2:
-          knowledge = FinancialKnowledge.SE_COMO_FUNCIONA;
+          knowledge = InvestmentKnowledge.SE_COMO_FUNCIONA;
           break;
         case 3:
-          knowledge = FinancialKnowledge.INVIERTO_REGULARMENTE;
+          knowledge = InvestmentKnowledge.INVIERTO_REGULARMENTE;
           break;
         default:
           break;
@@ -160,20 +157,20 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
       return knowledge;
     };
 
-    const investmentEducation = (): InvestmentEducation => {
-      let education: InvestmentEducation;
+    const financialEducation = (): FinancialEducation => {
+      let education: FinancialEducation;
       switch (index(4)) {
         case 0:
-          education = InvestmentEducation.NO_TENGO_FORMACION;
+          education = FinancialEducation.NO_TENGO_FORMACION;
           break;
         case 1:
-          education = InvestmentEducation.CERTIFICADO_PROFESIONAL;
+          education = FinancialEducation.CERTIFICADO_PROFESIONAL;
           break;
         case 2:
-          education = InvestmentEducation.TECNICO_O_TECNOLOGICO;
+          education = FinancialEducation.TECNICO_O_TECNOLOGICO;
           break;
         case 3:
-          education = InvestmentEducation.CARRERA_PROFESIONAL;
+          education = FinancialEducation.CARRERA_PROFESIONAL;
           break;
         default:
           break;
@@ -202,17 +199,17 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
       return experience;
     };
 
-    const targetPeriod = (): TargetPeriod => {
-      let period: TargetPeriod;
+    const investmentTimeframes = (): InvestmentTimesframes => {
+      let period: InvestmentTimesframes;
       switch (index(3)) {
         case 0:
-          period = TargetPeriod.CORTO;
+          period = InvestmentTimesframes.CORTO;
           break;
         case 1:
-          period = TargetPeriod.MEDIANO;
+          period = InvestmentTimesframes.MEDIANO;
           break;
         case 2:
-          period = TargetPeriod.LARGO;
+          period = InvestmentTimesframes.LARGO;
           break;
         default:
           break;
@@ -220,44 +217,44 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
       return period;
     };
 
-    const riskCase = (): RiskCase => {
-      let riskCase: RiskCase;
+    const riskReaction = (): RiskReactions => {
+      let reaction: RiskReactions;
       switch (index(3)) {
         case 0:
-          riskCase = RiskCase.VENDERIA_TODO;
+          reaction = RiskReactions.VENDERIA_TODO;
           break;
         case 1:
-          riskCase = RiskCase.MANTENDRIA_INVERSION;
+          reaction = RiskReactions.MANTENDRIA_INVERSION;
           break;
         case 2:
-          riskCase = RiskCase.COMPRARIA_MAS;
+          reaction = RiskReactions.COMPRARIA_MAS;
           break;
         default:
           break;
       }
-      return riskCase;
+      return reaction;
     };
 
-    const incomeSource = (): IncomeSource => {
-      let source: IncomeSource;
+    const incomeSource = (): IncomeSources => {
+      let source: IncomeSources;
       switch (index(4)) {
         case 0:
-          source = IncomeSource.INDEPENDIENTE;
+          source = IncomeSources.INDEPENDIENTE;
           break;
         case 1:
-          source = IncomeSource.SALARIO;
+          source = IncomeSources.SALARIO;
           break;
         case 2:
-          source = IncomeSource.AHORROS;
+          source = IncomeSources.AHORROS;
           break;
         case 3:
-          source = IncomeSource.INVERSIONES;
+          source = IncomeSources.INVERSIONES;
           break;
         case 4:
-          source = IncomeSource.JUBILACION;
+          source = IncomeSources.JUBILACION;
           break;
         case 5:
-          source = IncomeSource.HERENCIA;
+          source = IncomeSources.HERENCIA;
           break;
         default:
           break;
@@ -265,17 +262,17 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
       return source;
     };
 
-    const incomeAverage = (): string => {
-      let income: string;
-      switch (index(incomeArray.length)) {
+    const incomeRanges = (): IncomeRanges => {
+      let income: IncomeRanges;
+      switch (index(3)) {
         case 0:
-          income = incomeArray[0];
+          income = IncomeRanges.OPTION_ONE;
           break;
         case 1:
-          income = incomeArray[1];
+          income = IncomeRanges.OPTION_TWO;
           break;
         case 2:
-          income = incomeArray[2];
+          income = IncomeRanges.OPTION_THREE;
           break;
         default:
           break;
@@ -283,22 +280,22 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
       return income;
     };
 
-    const expensesAverage = (): string => {
-      let expenses: string;
-      switch (index(expensesArray.length)) {
+    const expenseRatios = (): ExpensesRatios => {
+      let ratios: ExpensesRatios;
+      switch (index(3)) {
         case 0:
-          expenses = expensesArray[0];
+          ratios = ExpensesRatios.OPTION_ONE;
           break;
         case 1:
-          expenses = expensesArray[1];
+          ratios = ExpensesRatios.OPTION_TWO;
           break;
         case 2:
-          expenses = expensesArray[2];
+          ratios = ExpensesRatios.OPTION_THREE;
           break;
         default:
           break;
       }
-      return expenses;
+      return ratios;
     };
 
     // const monthlyContribution = (): string => {
@@ -319,14 +316,32 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
     //   return contribution;
     // };
 
-    const savingPlan = (): boolean => {
-      let plan: boolean;
+    const savingPlan = (): SavingPlans => {
+      let plan: SavingPlans;
       switch (index(2)) {
         case 0:
-          plan = false;
+          plan = SavingPlans.NO;
           break;
         case 1:
-          plan = true;
+          plan = SavingPlans.YES;
+          break;
+        default:
+          break;
+      }
+      return plan;
+    };
+
+    const savingsRanges = (): SavingsRanges => {
+      let plan: SavingsRanges;
+      switch (index(3)) {
+        case 0:
+          plan = SavingsRanges.OPTION_ONE;
+          break;
+        case 1:
+          plan = SavingsRanges.OPTION_TWO;
+          break;
+        case 2:
+          plan = SavingsRanges.OPTION_THREE;
           break;
         default:
           break;
@@ -355,19 +370,20 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
     const financialProfile: FinancialProfile = {
       id: crypto.randomUUID(),
       userId: undefined,
-      financialGoal: financialGoal(),
-      financialKnowledge: financialKnowledge(),
-      riskCase: riskCase(),
+      financialGoals: financialGoals(),
+      investmentKnowledge: investmentKnowledge(),
+      riskReactions: riskReaction(),
       investmentPurpose: investmentPurpose(),
-      investmentEducation: investmentEducation(),
-      investmentExperience: investmentExperience(),
-      targetPeriod: targetPeriod(),
-      incomeSource: incomeSource(),
-      incomeAverage: incomeAverage(),
-      expensesAverage: expensesAverage(),
+      financialEducation: financialEducation(),
+      investmentExperience: [investmentExperience()],
+      investmentTimeframes: investmentTimeframes(),
+      incomeSources: incomeSource(),
+      incomeRanges: incomeRanges(),
+      expenseRatios: expenseRatios(),
       age,
       occupation: occupation[index(occupation.length)],
-      savingPlan: savingPlan(),
+      savingsPlans: savingPlan(),
+      savingsRanges: savingsRanges(),
       // monthlyContribution: monthlyContribution(),
     };
     randomData.push(financialProfile);
@@ -378,19 +394,20 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
 const financialProfile: FinancialProfile = {
   id: crypto.randomUUID(),
   userId: adminUser.id,
-  financialGoal: FinancialGoals.EDUCACION,
-  financialKnowledge: FinancialKnowledge.NO_TENGO_IDEA,
-  investmentEducation: InvestmentEducation.NO_TENGO_FORMACION,
+  financialGoals: FinancialGoals.IMPREVISTOS,
+  investmentKnowledge: InvestmentKnowledge.NO_TENGO_IDEA,
+  financialEducation: FinancialEducation.NO_TENGO_FORMACION,
   investmentPurpose: InvestmentPurpose.AHORRO,
-  riskCase: RiskCase.MANTENDRIA_INVERSION,
-  investmentExperience: InvestmentExperience.ACCIONES,
-  targetPeriod: TargetPeriod.LARGO,
-  incomeSource: IncomeSource.INDEPENDIENTE,
-  incomeAverage: incomeArray[1],
-  expensesAverage: expensesArray[0],
+  riskReactions: RiskReactions.MANTENDRIA_INVERSION,
+  investmentExperience: [InvestmentExperience.ACCIONES],
+  investmentTimeframes: InvestmentTimesframes.LARGO,
+  incomeSources: IncomeSources.INDEPENDIENTE,
+  incomeRanges: IncomeRanges.OPTION_ONE,
+  expenseRatios: ExpensesRatios.OPTION_ONE,
   age: 25,
   occupation: occupation[2],
-  savingPlan: false,
+  savingsPlans: SavingPlans.NO,
+  savingsRanges: SavingsRanges.OPTION_TWO,
   // monthlyContribution: contributionArray[0],
 };
 

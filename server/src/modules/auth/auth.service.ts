@@ -103,6 +103,7 @@ export class AuthService {
     res.clearCookie(this.cookieName, options);
   }
 
+  // https://iupi-fintech.frontend/auth/verify?code=${code}
   private baseUrl = new URL('/auth/', this.configService.frontendUrl);
 
   async decodeToken(token: {
@@ -137,15 +138,16 @@ export class AuthService {
     if (!isMatch) throw new BadRequestException(ErrorMessage.PASSWORD_UNMATCH);
 
     const hashed = await bcrypt.hash(password, 10);
-    const code = crypto.randomBytes(32).toString('hex');
+    const verificationCode = crypto.randomBytes(32).toString('hex');
 
     const link = new URL('verify', this.baseUrl);
-    link.searchParams.set('code', code);
+    link.searchParams.set('code', verificationCode);
 
     const emailData: EmailData = {
       email,
       subject: 'Bienvenido a iUPI',
       template: 'verify.hbs',
+      // Frontend example: https://iupi-fintech.frontend/auth/verify?code=${code}
       variables: { link },
     };
 
@@ -154,21 +156,22 @@ export class AuthService {
     else if (this.configService.nodeEnv === Environment.DEVELOPMENT)
       await this.mailerService.sendMailDev(emailData);
 
-    await this.userService.createUser({ email, password: hashed, code });
+    await this.userService.createUser({ email, password: hashed, verificationCode });
 
     return { message: 'user successfully registered' };
   }
 
-  async verify(code: string) {
+  async verify(verificationCode: string) {
     const valid32HexCode = /^[a-f0-9]{64}$/i;
 
-    if (!valid32HexCode.test(code)) throw new NotAcceptableException('invalid 32-digit code');
+    if (!valid32HexCode.test(verificationCode))
+      throw new NotAcceptableException('invalid 32-digit code');
 
-    const userFound = await this.userService.getUser({ code });
+    const userFound = await this.userService.getUser({ verificationCode });
 
     if (!userFound) throw new NotFoundException('user not found');
 
-    const userUpdated = Object.assign(userFound, { verified: true, code: null });
+    const userUpdated = Object.assign(userFound, { verified: true, verificationCode: null });
 
     await this.userService.updateUser(userUpdated);
     await this.profileService.createUserProfile(userFound.id);
@@ -209,6 +212,9 @@ export class AuthService {
     const userAgent = req.headers['user-agent'] ?? 'testing';
 
     await this.prisma.auth.create({ data: { userId: userFound.id, refreshToken, userAgent } });
+
+    const userUpdated = Object.assign(userFound, { attempts: 0 });
+    await this.userService.updateUser(userUpdated);
 
     await this.setCookie(res, refreshToken);
 
@@ -280,9 +286,9 @@ export class AuthService {
     const expiration = new Date();
     expiration.setMinutes(expiration.getMinutes() + 15);
 
-    const code = crypto.randomBytes(32).toString('hex');
+    const resetPasswordCode = crypto.randomBytes(32).toString('hex');
 
-    const query = { code, exp: new Date(expiration).getTime() };
+    const query = { resetPasswordCode, exp: new Date(expiration).getTime() };
 
     const link = new URL('reset-password', this.configService.frontendUrl);
 
@@ -294,6 +300,7 @@ export class AuthService {
       email,
       subject: 'Recuperación de contraseña',
       template: 'password-recovery.hbs',
+      // Frontend example: https://iupi-fintech.frontend/auth/reset-password?code=${code}&exp=${exp}
       variables: { link },
     };
 
@@ -302,7 +309,7 @@ export class AuthService {
     else if (this.configService.nodeEnv === Environment.DEVELOPMENT)
       await this.mailerService.sendMailDev(emailData);
 
-    const userUpdated = Object.assign(userFound, { code });
+    const userUpdated = Object.assign(userFound, { resetPasswordCode });
 
     await this.userService.updateUser(userUpdated);
 
@@ -310,10 +317,10 @@ export class AuthService {
   }
 
   async resetPassword(query: ResetPasswordQueryDto, body: ResetPasswordDto) {
-    const { code, exp } = query;
+    const { code: resetPasswordCode, exp } = query;
     const { newPassword, confirmPassword } = body;
 
-    const userFound = await this.userService.getUser({ code });
+    const userFound = await this.userService.getUser({ resetPasswordCode });
 
     if (!userFound) throw new NotFoundException(ErrorMessage.USER_NOT_FOUND);
 
@@ -325,7 +332,7 @@ export class AuthService {
 
     const hashed = await bcrypt.hash(newPassword, 10);
 
-    const updatedUser = Object.assign(userFound, { code: null, password: hashed });
+    const updatedUser = Object.assign(userFound, { resetPasswordCode: null, password: hashed });
 
     await this.userService.updateUser(updatedUser);
 

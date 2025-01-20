@@ -2,21 +2,26 @@ import { Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 
 import { PrismaService } from '../../common/modules/prisma/prisma.service';
-import { IFindUserBy, IUser } from './user.interface';
+import { ICreateUser, IFindUserBy } from './user.interface';
 
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
   async getUser(findUserBy: IFindUserBy) {
-    const { id, email, code } = findUserBy;
+    const { id, email, verificationCode, resetPasswordCode } = findUserBy;
+
     const where: Prisma.UserWhereInput =
-      (id && { id }) || (email && { email }) || (code && { code });
+      (id && { id }) ||
+      (email && { email }) ||
+      (verificationCode && { verificationCode }) ||
+      (resetPasswordCode && { resetPasswordCode });
+
     const user = await this.prisma.user.findFirst({ where });
     return user;
   }
 
-  async createUser(user: IUser): Promise<User> {
+  async createUser(user: ICreateUser): Promise<User> {
     const data: Prisma.UserCreateInput = user;
     return await this.prisma.user.create({ data });
   }

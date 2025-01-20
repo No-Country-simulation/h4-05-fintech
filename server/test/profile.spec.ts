@@ -3,10 +3,19 @@ import { app, validationPipe } from './jest.setup';
 import { ErrorMessage } from '../src/common/enums';
 import { FinancialProfileDto, UpdateProfileDto } from '../src/modules/profile/dto';
 import {
-  ExpensesAverage,
-  IncomeAverage,
+  ExpensesRatios,
+  FinancialEducation,
+  FinancialGoals,
+  IncomeRanges,
+  IncomeSources,
+  InvestmentExperience,
+  InvestmentKnowledge,
+  InvestmentPurpose,
+  InvestmentTimesframes,
+  RiskReactions,
+  SavingPlans,
+  SavingsRanges,
   // MonthlyContribution,
-  TargetPeriod,
 } from '../src/modules/profile/enums/financial-profile.enum';
 import { adminUserToken, normalUserToken, unknownUserToken } from '../prisma/seeds/user.seeds';
 import { normalUserProfile } from '../prisma/seeds/user-profile.seeds';
@@ -38,8 +47,8 @@ describe('Profile', () => {
         riskCase: 'MODERADO',
         targetPeriod: 'MEDIANO',
         incomesource: 'INDEPENDIENTE',
-        incomeAverage: IncomeAverage.OPTION_ONE,
-        expensesAverage: ExpensesAverage.OPTION_ONE,
+        incomeAverage: IncomeRanges.OPTION_ONE,
+        expensesAverage: ExpensesRatios.OPTION_ONE,
         investmentPurpos: 'NINGUNO',
         age: undefined,
         occupation: 'Programador',
@@ -61,20 +70,20 @@ describe('Profile', () => {
 
     it('Should not create financial profile because user not found', async () => {
       const data: FinancialProfileDto = {
-        financialGoal: 'EDUCACION',
-        financialKnowledge: 'NO_TENGO_IDEA',
-        riskCase: 'MANTENDRIA_INVERSION',
-        investmentEducation: 'NO_TENGO_FORMACION',
-        investmentExperience: 'BONOS',
-        investmentPurpose: 'AHORRO',
-        targetPeriod: TargetPeriod.CORTO,
-        incomeSource: 'INDEPENDIENTE',
-        incomeAverage: IncomeAverage.OPTION_ONE,
-        expensesAverage: ExpensesAverage.OPTION_ONE,
+        financialGoals: FinancialGoals.VIVIENDA,
+        investmentKnowledge: InvestmentKnowledge.ME_SUENA_PERO,
+        riskReactions: RiskReactions.MANTENDRIA_INVERSION,
+        financialEducation: FinancialEducation.CARRERA_PROFESIONAL,
+        investmentExperience: [InvestmentExperience.BONOS],
+        investmentPurpose: InvestmentPurpose.AHORRO,
+        investmentTimeframes: InvestmentTimesframes.CORTO,
+        incomeSources: IncomeSources.AHORROS,
+        incomeRanges: IncomeRanges.OPTION_ONE,
+        expenseRatios: ExpensesRatios.OPTION_TWO,
         age: undefined,
         occupation: 'Programador',
-        savingPlan: false,
-        planDescription: undefined,
+        savingsPlans: SavingPlans.NO,
+        savingsRanges: SavingsRanges.OPTION_THREE,
         // monthlyContribution: MonthlyContribution.OPTION_TWO,
       };
 
@@ -98,20 +107,20 @@ describe('Profile', () => {
 
     it('Should not create financial profile because already did it', async () => {
       const data: FinancialProfileDto = {
-        financialGoal: 'EDUCACION',
-        financialKnowledge: 'NO_TENGO_IDEA',
-        riskCase: 'MANTENDRIA_INVERSION',
-        investmentEducation: 'NO_TENGO_FORMACION',
-        investmentExperience: 'BONOS',
-        investmentPurpose: 'AHORRO',
-        targetPeriod: TargetPeriod.CORTO,
-        incomeSource: 'INDEPENDIENTE',
-        incomeAverage: IncomeAverage.OPTION_ONE,
-        expensesAverage: ExpensesAverage.OPTION_ONE,
+        financialGoals: FinancialGoals.VIVIENDA,
+        investmentKnowledge: InvestmentKnowledge.ME_SUENA_PERO,
+        riskReactions: RiskReactions.MANTENDRIA_INVERSION,
+        financialEducation: FinancialEducation.CARRERA_PROFESIONAL,
+        investmentExperience: [InvestmentExperience.BONOS],
+        investmentPurpose: InvestmentPurpose.AHORRO,
+        investmentTimeframes: InvestmentTimesframes.CORTO,
+        incomeSources: IncomeSources.AHORROS,
+        incomeRanges: IncomeRanges.OPTION_ONE,
+        expenseRatios: ExpensesRatios.OPTION_TWO,
         age: undefined,
         occupation: 'Programador',
-        savingPlan: false,
-        planDescription: undefined,
+        savingsPlans: SavingPlans.NO,
+        savingsRanges: SavingsRanges.OPTION_THREE,
         // monthlyContribution: MonthlyContribution.OPTION_TWO,
       };
 
@@ -135,20 +144,20 @@ describe('Profile', () => {
 
     it('Should successfully create financial profile', async () => {
       const data: FinancialProfileDto = {
-        financialGoal: 'EDUCACION',
-        financialKnowledge: 'NO_TENGO_IDEA',
-        riskCase: 'MANTENDRIA_INVERSION',
-        investmentEducation: 'NO_TENGO_FORMACION',
-        investmentExperience: 'BONOS',
-        investmentPurpose: 'AHORRO',
-        targetPeriod: TargetPeriod.CORTO,
-        incomeSource: 'INDEPENDIENTE',
-        incomeAverage: IncomeAverage.OPTION_ONE,
-        expensesAverage: ExpensesAverage.OPTION_ONE,
+        financialGoals: FinancialGoals.VIVIENDA,
+        investmentKnowledge: InvestmentKnowledge.ME_SUENA_PERO,
+        riskReactions: RiskReactions.MANTENDRIA_INVERSION,
+        financialEducation: FinancialEducation.CARRERA_PROFESIONAL,
+        investmentExperience: [InvestmentExperience.BONOS],
+        investmentPurpose: InvestmentPurpose.AHORRO,
+        investmentTimeframes: InvestmentTimesframes.CORTO,
+        incomeSources: IncomeSources.AHORROS,
+        incomeRanges: IncomeRanges.OPTION_ONE,
+        expenseRatios: ExpensesRatios.OPTION_TWO,
         age: undefined,
         occupation: 'Programador',
-        savingPlan: false,
-        planDescription: undefined,
+        savingsPlans: SavingPlans.NO,
+        savingsRanges: SavingsRanges.OPTION_THREE,
         // monthlyContribution: MonthlyContribution.OPTION_TWO,
       };
 

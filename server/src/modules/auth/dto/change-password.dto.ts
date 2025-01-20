@@ -8,13 +8,13 @@ export class ChangePasswordDto {
   currentPassword: string;
 
   @ApiProperty({
-    type: RegExp,
+    type: String,
     pattern: '/^[a-f0-9]{64}$/i',
     description:
       'password must have at least one uppercase letter, one lowercase letter, one number. Special character are not allowed',
     minLength: 8,
     maxLength: 30,
-    example: 'User12345',
+    example: 'User123456',
   })
   @IsNotEmpty()
   @MinLength(8)

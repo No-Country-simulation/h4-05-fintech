@@ -30,10 +30,8 @@ export class CacheConfigProvider implements CacheOptionsFactory {
 
   async createCacheOptions(): Promise<CacheOptions<Record<string, any>>> {
     try {
-      if (this.configService.nodeEnv === Environment.PRODUCTION) {
-        return await this.development();
-      } else if (this.configService.nodeEnv === Environment.DEVELOPMENT) {
-        return await this.development();
+      if (this.configService.nodeEnv === Environment.DEVELOPMENT) {
+        return { ttl: 1 * 60 * 1000 };
       } else if (this.configService.nodeEnv === Environment.TESTING) {
         return { ttl: 1 * 60 * 1000 };
       }

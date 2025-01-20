@@ -1,11 +1,12 @@
 export interface IFindUserBy {
   id?: string;
   email?: string;
-  code?: string;
+  verificationCode?: string;
+  resetPasswordCode?: string;
 }
 
-export interface IUser {
+export interface ICreateUser {
   email: string;
   password: string;
-  code: string;
+  verificationCode: string;
 }

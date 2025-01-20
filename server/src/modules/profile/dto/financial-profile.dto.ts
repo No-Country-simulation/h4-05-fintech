@@ -5,8 +5,8 @@ import {
   ExpensesRatios,
   FinancialEducation,
   FinancialGoals,
-  IncomeAverage,
-  IncomeSource,
+  IncomeRanges,
+  IncomeSources,
   InvestmentExperience,
   InvestmentKnowledge,
   InvestmentPurpose,
@@ -18,72 +18,72 @@ import {
 } from '../enums';
 
 export class FinancialProfileDto {
-  @ApiProperty({ enum: FinancialGoals })
+  @ApiProperty({ enum: FinancialGoals, required: true })
   @IsNotEmpty()
   @IsEnum(FinancialGoals)
   financialGoals: FinancialGoals;
 
-  @ApiProperty({ enum: InvestmentKnowledge })
+  @ApiProperty({ enum: InvestmentKnowledge, required: true })
   @IsNotEmpty()
   @IsEnum(InvestmentKnowledge)
   investmentKnowledge: InvestmentKnowledge;
 
-  @ApiProperty({ enum: FinancialEducation })
+  @ApiProperty({ enum: FinancialEducation, required: true })
   @IsNotEmpty()
   @IsEnum(FinancialEducation)
   financialEducation: FinancialEducation;
 
-  @ApiProperty({ enum: InvestmentExperience })
+  @ApiProperty({ enum: InvestmentExperience, required: true })
   @IsNotEmpty()
   @IsEnum(InvestmentExperience)
   investmentExperience: InvestmentExperience[];
 
-  @ApiProperty({ enum: RiskReactions })
+  @ApiProperty({ enum: RiskReactions, required: true })
   @IsNotEmpty()
   @IsEnum(RiskReactions)
   riskReactions: RiskReactions;
 
-  @ApiProperty({ enum: InvestmentTimesframes })
+  @ApiProperty({ enum: InvestmentTimesframes, required: true })
   @IsNotEmpty()
   @IsEnum(InvestmentTimesframes)
   investmentTimeframes: InvestmentTimesframes;
 
-  @ApiProperty({ enum: IncomeSource })
+  @ApiProperty({ enum: IncomeSources, required: true })
   @IsNotEmpty()
-  @IsEnum(IncomeSource)
-  incomeSources: IncomeSource;
+  @IsEnum(IncomeSources)
+  incomeSources: IncomeSources;
 
-  @ApiProperty({ enum: IncomeAverage })
+  @ApiProperty({ enum: IncomeRanges, required: true })
   @IsNotEmpty()
-  @IsEnum(IncomeAverage)
-  incomeRanges: IncomeAverage;
+  @IsEnum(IncomeRanges)
+  incomeRanges: IncomeRanges;
 
-  @ApiProperty({ enum: ExpensesRatios })
+  @ApiProperty({ enum: ExpensesRatios, required: true })
   @IsNotEmpty()
   @IsEnum(ExpensesRatios)
-  expensesRatios: ExpensesRatios;
+  expenseRatios: ExpensesRatios;
 
-  @ApiProperty({ enum: InvestmentPurpose })
+  @ApiProperty({ enum: InvestmentPurpose, required: false })
   @IsOptional()
   @IsEnum(InvestmentPurpose)
   investmentPurpose: InvestmentPurpose;
 
-  @ApiProperty({ type: Number, example: 20 })
+  @ApiProperty({ type: Number, example: 20, required: false })
   @IsOptional()
   @IsInt()
   age: number;
 
-  @ApiProperty({ type: String, example: 'Estudiante' })
+  @ApiProperty({ type: String, example: 'Estudiante', required: false })
   @IsOptional()
   @IsString()
   occupation: string;
 
-  @ApiProperty({ enum: SavingPlans })
+  @ApiProperty({ enum: SavingPlans, required: false })
   @IsOptional()
   @IsEnum(SavingPlans)
   savingsPlans: SavingPlans;
 
-  @ApiProperty({ enum: SavingsRanges })
+  @ApiProperty({ enum: SavingsRanges, required: false })
   @IsOptional()
   @IsEnum(SavingPlans)
   savingsRanges: SavingsRanges;

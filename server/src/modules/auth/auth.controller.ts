@@ -24,6 +24,7 @@ import {
   ApiUnauthorizedResponse,
   ApiForbiddenResponse,
   ApiQuery,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import { Response } from 'express';
 
@@ -48,6 +49,7 @@ import {
   PasswordRecoveryInitialized,
   RefreshSucess,
   PasswordChangeSuccess,
+  PasswordResetSuccess,
 } from './auth-success.response';
 
 @ApiTags('Auth')
@@ -68,7 +70,7 @@ export class AuthController {
 
   @Get('verify')
   @ApiOperation({ summary: 'Verify registered user' })
-  @ApiQuery({ name: 'code', type: RegExp, pattern: '/^[a-f0-9]{64}$/i', required: true })
+  @ApiQuery({ name: 'code', required: true })
   @ApiNotFoundResponse({ description: 'User not found' })
   @ApiNotAcceptableResponse({ description: 'Invalid 32-digit hex code' })
   @ApiOkResponse(VerifySuccess)
@@ -109,6 +111,7 @@ export class AuthController {
 
   @Put('password-change')
   @UseGuards(JwtGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Change Password' })
   @ApiBody({ type: ChangePasswordDto, required: true })
   @ApiBadRequestResponse({ description: 'Incoming data is invalid' })
@@ -122,7 +125,7 @@ export class AuthController {
   @Post('forgot-password')
   @HttpCode(200)
   @ApiOperation({ summary: 'Password recovery process' })
-  @ApiBody({ type: ResetPasswordDto, required: true })
+  @ApiBody({ type: ForgotPasswordDto, required: true })
   @ApiBadRequestResponse({ description: 'Incoming data is invalid' })
   @ApiNotFoundResponse({ description: 'User not found' })
   @ApiOkResponse(PasswordRecoveryInitialized)
@@ -133,12 +136,11 @@ export class AuthController {
 
   @Put('password-reset')
   @ApiOperation({ summary: 'Reset Password' })
-  @ApiQuery({ type: ResetPasswordQueryDto, required: true })
   @ApiBody({ type: ResetPasswordDto, required: true })
   @ApiBadRequestResponse({ description: `Incoming data is invalid, or the passwords don't match` })
   @ApiUnauthorizedResponse({ description: 'Time to reset password expired' })
   @ApiNotFoundResponse({ description: 'User not found' })
-  @ApiCreatedResponse(LoginSucess)
+  @ApiCreatedResponse(PasswordResetSuccess)
   @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
   async resetPassword(@Query() query: ResetPasswordQueryDto, @Body() body: ResetPasswordDto) {
     return await this.authService.resetPassword(query, body);

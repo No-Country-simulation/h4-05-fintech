@@ -21,7 +21,8 @@ model User {
   attempts              Int                 @default(0)
   blocked               Boolean             @default(false)
   profileCreated        Boolean             @default(false) @map("profile_created")
-  code                  String?
+  verificationCode      String?             @map("verification_code")
+  resetPasswordCode     String?             @map("reset_password_code")
   auth                  Auth[]
   userProfile           UserProfile?
   financialProfile      FinancialProfile?
@@ -53,7 +54,7 @@ model FinancialProfile {
   investmentTimeframes            String                @map("investment_timeframes")
   incomeSources                   String                @map("income_sources")
   incomeRanges                    String                @map("income_ranges")
-  expensesRatios                  String                @map("expense_ratios")
+  expenseRatios                   String                @map("expense_ratios")
   // PREGUNTAS SECUNDARIAS
   investmentPurpose               String?               @map("investment_purpose")
   age                             Int?

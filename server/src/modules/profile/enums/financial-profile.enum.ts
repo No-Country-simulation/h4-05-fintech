@@ -1,4 +1,4 @@
-export enum IncomeAverage {
+export enum IncomeRanges {
   OPTION_ONE = 'Menos de 279718',
   OPTION_TWO = 'Entre 280000 y 1400000',
   OPTION_THREE = 'Mas de 1400000',
@@ -9,12 +9,6 @@ export enum ExpensesRatios {
   OPTION_TWO = 'Entre 30% y 60% de tus ingresos',
   OPTION_THREE = 'Mas del 60% de tus ingresos',
 }
-
-// export enum MonthlyContribution {
-//   OPTION_ONE = '-10%',
-//   OPTION_TWO = '10%-20%',
-//   OPTION_THREE = '+20%',
-// }
 
 export enum InvestmentTimesframes {
   CORTO = 'Corto plazo',
@@ -60,7 +54,7 @@ export enum RiskReactions {
   COMPRARIA_MAS = 'Compraria mas',
 }
 
-export enum IncomeSource {
+export enum IncomeSources {
   SALARIO = 'Salario',
   INDEPENDIENTE = 'Independiente',
   INVERSIONES = 'Inversiones',
@@ -70,7 +64,7 @@ export enum IncomeSource {
 }
 
 export enum SavingPlans {
-  SI = 'Si',
+  YES = 'Si',
   NO = 'No',
 }
 
@@ -85,3 +79,9 @@ export enum InvestmentPurpose {
   INVERSION = 'Inversion',
   AMBOS = 'Ambos',
 }
+
+// export enum MonthlyContribution {
+//   OPTION_ONE = '-10%',
+//   OPTION_TWO = '10%-20%',
+//   OPTION_THREE = '+20%',
+// }
