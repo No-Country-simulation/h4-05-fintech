@@ -7,20 +7,29 @@ import axios from "axios";
 
 const login: string = import.meta.env.VITE_LOGIN as string;
 
+interface formValues {
+  email: string;
+  password: string;
+}
+
+const initilValues: formValues = {
+  email: "",
+  password: "",
+};
+
 const LoginPage = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+
+  const [formData, setFormData] = useState<formValues>(initilValues); 
+
 
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Submitted");
     setMessage("");
@@ -91,10 +100,12 @@ const LoginPage = () => {
               </p>
             </div>
 
-            <Button className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide">
+            <Button type="submit" className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide">
               Iniciar sesión
             </Button>
           </form>
+          {message && <p>{message}</p>}
+          {error && <p>{error}</p>}
           <div className="flex justify-center items-center gap-4 mt-5">
             <a href="#" className="hover:opacity-80 transition-opacity">
               <img

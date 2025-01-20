@@ -3,6 +3,7 @@ import MainLayout from "./components/layout/MainLayout";
 import Auth from "./components/auth/Auth";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
+import  Verify  from "./components/auth/Verify";
 
 
 
@@ -20,6 +21,7 @@ function App() {
           {/* Subrutas de autenticación */}
           <Route path="/auth/register" element={<Register />} />
           <Route path="/auth/login" element={<Login/>} />
+          <Route path="/auth/verify" element={<Verify />} />
           
           {/* Ruta 404 para manejar rutas no encontradas */}
           <Route path="*" element={<Navigate to="/auth" replace />} />
