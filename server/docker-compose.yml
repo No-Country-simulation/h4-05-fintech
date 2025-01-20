@@ -1,0 +1,109 @@
+name: iupi
+
+services:
+  database-dev:
+    image: postgres:15-alpine3.20
+    hostname: postgres
+    container_name: iupi-database
+    restart: always
+    environment:
+      POSTGRES_USER: iupi-fintech-dev
+      POSTGRES_PASSWORD: 1cf4eb8f04a84637
+      POSTGRES_DB: iupi-fintech-dev-db
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U iupi-fintech-dev -d iupi-fintech-dev-db']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - iupi-server
+
+  database-test:
+    image: postgres:15-alpine3.20
+    hostname: postgres
+    container_name: iupi-database
+    restart: always
+    environment:
+      POSTGRES_USER: iupi-fintech-test
+      POSTGRES_PASSWORD: 1cf4eb8f04a84637
+      POSTGRES_DB: iupi-fintech-test-db
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U iupi-fintech-test -d iupi-fintech-test-db']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - '5432:5432'
+
+  cache:
+    image: redis:7-alpine3.20
+    hostname: redis
+    container_name: iupi-cache
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis-data:/data
+    networks:
+      - iupi-server
+
+  # mailserver:
+  #   image: analogic/poste.io
+  #   container_name: iupi-mailserver
+  #   restart: unless-stopped
+  #   network_mode: "host"
+  #   expose:
+  #     - "25"
+  #     - "7080"
+  #     - "7443"
+  #     - "110"
+  #     - "143"
+  #     - "465"
+  #     - "587"
+  #     - "993"
+  #     - "995"
+  #   environment:
+  #     Z: America/Buenos Aires
+  #     h: mail.yourdomain.com # Dirección del servidor de mail hosting
+  #     HTTP_PORT: 7000
+  #     HTTPS_PORT: 7443
+  #     DISABLE_CLAMAV: FALSE
+  #     DISABLE_RSPAMD: FALSE
+  #     DISABLE_ROUNDCUBE: FALSE
+  #   volumes:
+  #     - mail:/data
+
+  # ngnix:
+  #   container_name: iupi-nginx
+  #   image: nginx:1.27-alpine3.20
+  #   restart: always
+  #   depends_on:
+  #     - api
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - ./certs:/etc/nginx/ssl
+  #   ports:
+  #     - '8080:80'
+  #     - '443:443'
+  #   networks:
+  #     - iupi-server
+
+
+volumes:
+  postgres-data:
+  redis-data:
+  # mail: 
+
+networks:
+  iupi-server:
+    driver: bridge
+    name: iupi_default

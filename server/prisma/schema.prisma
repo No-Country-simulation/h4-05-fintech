@@ -1,0 +1,137 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                    String              @id @default(uuid())
+  email                 String              @unique
+  password              String
+  verified              Boolean             @default(false)
+  attempts              Int                 @default(0)
+  blocked               Boolean             @default(false)
+  profileCreated        Boolean             @default(false) @map("profile_created")
+  code                  String?
+  auth                  Auth[]
+  userProfile           UserProfile?
+  financialProfile      FinancialProfile?
+  financialData         FinancialData?
+  createdAt             DateTime            @default(now()) @map("created_at")
+  updatedAt             DateTime            @default(now()) @map("updated_at")
+}
+
+model Auth {
+  id            String    @id @default(uuid())
+  user          User      @relation(fields: [userId], references: [id])    
+  userId        String    @map("user_id")
+  refreshToken  String    @map("refresh_token")
+  userAgent     String    @map("user_agent")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @default(now()) @map("updated_at")
+}
+
+model FinancialProfile {
+  id                              String                @id @default(uuid())
+  user                            User?                 @relation(fields: [userId], references: [id])
+  userId                          String?               @unique @map("user_id")
+  // PREGUNTAS PRIORITARIAS
+  financialGoal                   FinancialGoals        @map("financial_goal")
+  financialKnowledge              FinancialKnowledge    @map("financial_knowledge")
+  investmentEducation             InvestmentEducation   @map("investment_education")
+  investmentExperience            InvestmentExperience  @map("investment_experience")
+  riskCase                        RiskCase              @map("risk_case")
+  targetPeriod                    String                @map("target_period")
+  incomeSource                    IncomeSource          @map("income_source")
+  incomeAverage                   String                @map("income_average")
+  expensesAverage                 String                @map("expenses_average")
+  // PREGUNTAS SECUNDARIAS
+  investmentPurpose               InvestmentPurpose?    @map("investment_purpose")
+  age                             Int?
+  occupation                      String?
+  savingPlan                      Boolean?              @map("saving_plan")
+  // monthlyContribution          String?               @map("monthly_contribution")
+}
+
+model UserProfile {
+  id                  String        @id @default(uuid())
+  user                User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId              String        @unique @map("user_id")
+  name                String?
+  lastname            String?
+  image               String?
+  financialProfile    String?       @map("financial_profile")
+  itemsSaved          String[]      @map("items_saved")
+  updatedAt           DateTime      @default(now()) @map("updated_at")
+}
+
+model FinancialData {
+  id        String    @id @default(uuid())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String    @unique @map("user_id")
+  income    Int       @default(0)
+  expenses  Int       @default(0)
+}
+
+enum FinancialGoals {
+  JUBILACION
+  VACACIONES
+  IMPREVISTOS
+  VIVIENDA
+  EDUCACION
+  LIBERTAD_FINANCIERA
+  PROYECTOS_LARGO_PLAZO
+  INGRESOS_ADICIONALES
+  OTROS
+}
+
+enum FinancialKnowledge {
+  NO_TENGO_IDEA
+  ME_SUENA_PERO_NO_ESTOY_SEGURO
+  SE_COMO_FUNCIONA
+  INVIERTO_REGULARMENTE
+}
+
+enum InvestmentEducation {
+  CERTIFICADO_PROFESIONAL
+  TECNICO_O_TECNOLOGICO
+  CARRERA_PROFESIONAL
+  NO_TENGO_FORMACION
+}
+
+enum RiskCase {
+  VENDERIA_TODO
+  MANTENDRIA_INVERSION
+  COMPRARIA_MAS
+}
+
+enum InvestmentPurpose {
+  AHORRO
+  INVERSION
+  AMBOS
+}
+
+enum InvestmentExperience {
+  ACCIONES
+  CDEARS
+  BONOS
+  ETFS
+}
+
+enum IncomeSource {
+  SALARIO
+  INDEPENDIENTE
+  INVERSIONES
+  AHORROS
+  JUBILACION
+  HERENCIA
+}
