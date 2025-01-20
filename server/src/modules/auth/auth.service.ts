@@ -17,7 +17,7 @@ import { CookieOptions, Response } from 'express';
 import bcrypt from 'bcrypt';
 
 import { Environment, ErrorMessage } from '../../common/enums';
-import { JwtPayload, UserRequest } from '../../common/interfaces/user-request.interface';
+import { JwtPayload, UserRequest } from '../../common/interfaces';
 import { EmailData } from '../../common/modules/mailer/mailer.interface';
 import { PrismaService } from '../../common/modules/prisma/prisma.service';
 import { MailerService } from '../../common/modules/mailer/mailer.service';

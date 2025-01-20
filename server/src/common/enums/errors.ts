@@ -14,4 +14,5 @@ export enum ErrorMessage {
   EQUAL_PASSWORDS = 'passwords are equal',
   FINANCIAL_PROFILE_NOT_FOUND = 'financial profile not found',
   USER_PROFILE_NOT_FOUND = 'user profile not found',
+  UNSUPPORTED_FILE = 'unsupported file',
 }

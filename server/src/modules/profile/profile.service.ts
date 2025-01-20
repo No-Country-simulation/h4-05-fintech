@@ -1,15 +1,24 @@
-import { ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import fs from 'node:fs';
+
+import {
+  ConflictException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
-import { Prisma } from '@prisma/client';
+import { Prisma, UserProfile } from '@prisma/client';
 import { firstValueFrom } from 'rxjs';
 
 import { PrismaService } from '../../common/modules/prisma/prisma.service';
-import { UserRequest } from '../../common/interfaces/user-request.interface';
-import { ErrorMessage } from '../../common/enums';
+import { FileUploaderService } from '../../common/modules/file-uploader/file-uploader.service';
+import { UserRequest } from '../../common/interfaces';
+import { Environment, ErrorMessage } from '../../common/enums';
 
 import config from '../../config';
-import { FinancialProfileDto, UserProfileDto } from './dto';
+import { FinancialProfileDto, UpdateProfileDto } from './dto';
 import { UserService } from '../user/user.service';
 
 @Injectable()
@@ -19,7 +28,39 @@ export class ProfileService {
     private readonly prisma: PrismaService,
     private readonly httpService: HttpService,
     private readonly userService: UserService,
+    private readonly fileUploaderService: FileUploaderService,
   ) {}
+
+  private localStorage = (userProfile: UserProfile, body: UpdateProfileDto) =>
+    fs.unlink(userProfile.image, async (err) => {
+      if (err) {
+        const { path } = body.image;
+        const profileUpdated = Object.assign(userProfile, { ...body, image: path });
+        const where: Prisma.UserProfileWhereUniqueInput = { id: userProfile.id };
+        const data: Prisma.UserProfileUpdateInput = { ...profileUpdated, updatedAt: new Date() };
+        await this.prisma.userProfile.update({ where, data });
+      } else {
+        const { path } = body.image;
+        const profileUpdated = Object.assign(userProfile, { ...body, image: path });
+        const where: Prisma.UserProfileWhereUniqueInput = { id: userProfile.id };
+        const data: Prisma.UserProfileUpdateInput = { ...profileUpdated, updatedAt: new Date() };
+        await this.prisma.userProfile.update({ where, data });
+      }
+    });
+
+  private remoteStorage = async (userProfile: UserProfile, body: UpdateProfileDto) => {
+    try {
+      const { id } = userProfile;
+      const { image } = body;
+      const { secure_url } = await this.fileUploaderService.uploadFile('profile', id, image);
+      const profileUpdated = Object.assign(userProfile, { ...body, avatar: secure_url });
+      const where: Prisma.UserProfileWhereUniqueInput = { id: userProfile.id };
+      const data: Prisma.UserProfileUpdateInput = { ...profileUpdated, updatedAt: new Date() };
+      await this.prisma.userProfile.update({ where, data });
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
+  };
 
   async createFinancialProfile(req: UserRequest, dto: FinancialProfileDto) {
     const { id, id: userId } = req.user;
@@ -82,10 +123,21 @@ export class ProfileService {
     return userProfileFound;
   }
 
-  async updateUserProfile(req: UserRequest, body: UserProfileDto) {
-    const { id: userId } = req.user;
-    const where: Prisma.UserProfileWhereUniqueInput = { userId };
-    const data: Prisma.UserProfileUpdateInput = { ...body, updatedAt: new Date() };
-    await this.prisma.userProfile.update({ where, data });
+  async updateUserProfile(req: UserRequest, body: UpdateProfileDto) {
+    const userProfileFound = await this.getUserProfile(req);
+
+    if (body.image && this.configService.nodeEnv === Environment.PRODUCTION)
+      await this.remoteStorage(userProfileFound, body);
+    else if (body.image && this.configService.nodeEnv === Environment.DEVELOPMENT)
+      await this.remoteStorage(userProfileFound, body);
+    else if (body.image && this.configService.nodeEnv === Environment.TESTING)
+      this.localStorage(userProfileFound, body);
+    else if (!body.image) {
+      const updatedProfile = Object.assign(userProfileFound, body);
+      const where: Prisma.UserProfileWhereUniqueInput = { id: userProfileFound.id };
+      const data: Prisma.UserProfileUpdateInput = { ...updatedProfile, updatedAt: new Date() };
+      await this.prisma.userProfile.update({ where, data });
+    }
+    return { message: 'User profile successfully updated' };
   }
 }

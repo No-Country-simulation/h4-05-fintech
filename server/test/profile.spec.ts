@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { app, validationPipe } from './jest.setup';
 import { ErrorMessage } from '../src/common/enums';
-import { FinancialProfileDto } from '../src/modules/profile/dto';
+import { FinancialProfileDto, UpdateProfileDto } from '../src/modules/profile/dto';
 import {
   ExpensesAverage,
   IncomeAverage,
@@ -202,6 +202,138 @@ describe('Profile', () => {
       expect(body.image).toContain(normalUserProfile.image);
       expect(body.financialProfile).toContain(normalUserProfile.financialProfile);
       expect(body.itemsSaved).toBeInstanceOf(Array);
+    });
+  });
+
+  describe('PUT /profile/data', () => {
+    it('Should not access to the endpoint', async () => {
+      const { statusCode, error } = await request(app.getHttpServer()).put('/profile/data');
+
+      expect(statusCode).toEqual(401);
+      expect(JSON.parse(error['text']).message).toContain(ErrorMessage.NO_ACCESS);
+    });
+
+    it('Should not update profile data because user not found', async () => {
+      const { statusCode, error } = await request(app.getHttpServer())
+        .put('/profile/data')
+        .auth(unknownUserToken, { type: 'bearer' });
+
+      expect(statusCode).toEqual(404);
+      expect(JSON.parse(error['text']).message).toContain(ErrorMessage.USER_PROFILE_NOT_FOUND);
+    });
+
+    it('Should not update profile because unsupported file format ', async () => {
+      try {
+        const fakeFile = {
+          fieldname: 'image',
+          originalname: 'document.pdf',
+          mimetype: 'application/pdf',
+          size: 1204,
+          buffer: Buffer.from('image'),
+        };
+
+        const { statusCode, header } = await request(app.getHttpServer())
+          .put('/profile/data')
+          .auth(normalUserToken, { type: 'bearer' })
+          .set('Content-Type', 'multipart/form-data')
+          .attach(fakeFile.fieldname, fakeFile.buffer, fakeFile.originalname);
+
+        expect(statusCode).toEqual(415);
+        expect(header['content-type']).toContain('application/json');
+      } catch (error) {
+        console.log(error);
+        fail(`Validation should not throw an error for valid data: ${error}`);
+      }
+    });
+
+    it('Should update user profile without any image', async () => {
+      try {
+        const data = {
+          name: 'John',
+          lastname: 'Doe',
+          itemsSaved: ['news', 'postcasts', 'url'],
+        };
+
+        const result = await validationPipe.transform(data, {
+          type: 'body',
+          metatype: UpdateProfileDto,
+        });
+
+        const { statusCode, header, body } = await request(app.getHttpServer())
+          .put('/profile/data')
+          .auth(normalUserToken, { type: 'bearer' })
+          .set('Content-Type', 'multipart/form-data')
+          .field({ ...result });
+
+        expect(statusCode).toEqual(200);
+        expect(header['content-type']).toContain('application/json');
+        expect(body.message).toContain('User profile successfully updated');
+      } catch (error) {
+        console.log(error);
+        fail(`Validation should not throw an error for valid data: ${error}`);
+      }
+    });
+
+    it('Should update only the profile image', async () => {
+      try {
+        const fakeFile = {
+          fieldname: 'image',
+          originalname: 'image.jpeg',
+          mimetype: 'image/jpeg',
+          size: 1204,
+          buffer: Buffer.from('image'),
+        };
+
+        const { statusCode, header, body } = await request(app.getHttpServer())
+          .put('/profile/data')
+          .auth(normalUserToken, { type: 'bearer' })
+          .set('Content-Type', 'multipart/form-data')
+          .attach(fakeFile.fieldname, fakeFile.buffer, fakeFile.originalname);
+
+        expect(statusCode).toEqual(200);
+        expect(header['content-type']).toContain('application/json');
+        expect(body.message).toContain('User profile successfully updated');
+      } catch (error) {
+        console.log(error);
+        fail(`Validation should not throw an error for valid data: ${error}`);
+      }
+    });
+
+    it('Should update user profile with image included', async () => {
+      try {
+        const data = {
+          name: 'John',
+          lastname: 'Doe',
+          itemsSaved: ['news', 'postcasts', 'url'],
+        };
+
+        const fakeFile = {
+          fieldname: 'image',
+          originalname: 'image.jpeg',
+          mimetype: 'image/jpeg',
+          size: 1204,
+          buffer: Buffer.from('image'),
+        };
+
+        const result = await validationPipe.transform(data, {
+          type: 'body',
+          metatype: UpdateProfileDto,
+        });
+
+        const { statusCode, header, body } = await request(app.getHttpServer())
+          .put('/profile/data')
+          .auth(normalUserToken, { type: 'bearer' })
+          .set('Content-Type', 'multipart/form-data')
+          .field({ ...result })
+          .attach(fakeFile.fieldname, fakeFile.buffer, fakeFile.originalname);
+
+        expect(statusCode).toEqual(200);
+        expect(header['content-type']).toContain('application/json');
+        expect(body.message).toContain('User profile successfully updated');
+      } catch (error) {
+        console.log(error);
+        fail(`Validation should not throw an error for valid data: ${error}`);
+      }
     });
   });
 });

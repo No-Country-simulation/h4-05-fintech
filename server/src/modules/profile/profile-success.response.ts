@@ -76,3 +76,8 @@ export const UserProfileDataResponse: ApiResponseNoStatusOptions = {
   description: 'User successfully registered',
   schema: userProfileDataSchema,
 };
+
+export const ProfileUpdateSuccess: ApiResponseNoStatusOptions = {
+  description: 'Profile successfully updated',
+  schema: successMessage('profile successfully updated'),
+};

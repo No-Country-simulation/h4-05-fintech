@@ -27,7 +27,7 @@ import {
 } from '@nestjs/swagger';
 import { Response } from 'express';
 
-import { UserRequest } from '../../common/interfaces/user-request.interface';
+import { UserRequest } from '../../common/interfaces';
 import { IsLogin } from '../../common/decorators/is-login.decorator';
 import { JwtGuard, JwtRefreshGuard } from '../../common/guards';
 
