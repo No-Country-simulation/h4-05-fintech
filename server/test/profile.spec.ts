@@ -7,8 +7,9 @@ import {
   IncomeAverage,
   // MonthlyContribution,
   TargetPeriod,
-} from '../src/modules/profile/enums/profile.enum';
+} from '../src/modules/profile/enums/financial-profile.enum';
 import { adminUserToken, normalUserToken, unknownUserToken } from '../prisma/seeds/user.seeds';
+import { normalUserProfile } from '../prisma/seeds/user-profile.seeds';
 
 describe('Profile', () => {
   describe('POST /profile/financial', () => {
@@ -168,6 +169,39 @@ describe('Profile', () => {
       } catch (error) {
         fail(`Validation should not throw an error for valid data: ${error}`);
       }
+    });
+  });
+
+  describe('GET /profile/data', () => {
+    it('Should not access to the endpoint', async () => {
+      const { statusCode, error } = await request(app.getHttpServer()).get('/profile/data');
+
+      expect(statusCode).toEqual(401);
+      expect(JSON.parse(error['text']).message).toContain(ErrorMessage.NO_ACCESS);
+    });
+
+    it('Should not get profile data because user not found', async () => {
+      const { statusCode, error } = await request(app.getHttpServer())
+        .get('/profile/data')
+        .auth(unknownUserToken, { type: 'bearer' });
+
+      expect(statusCode).toEqual(404);
+      expect(JSON.parse(error['text']).message).toContain(ErrorMessage.USER_PROFILE_NOT_FOUND);
+    });
+
+    it('Should get user profile', async () => {
+      const { statusCode, header, body } = await request(app.getHttpServer())
+        .get('/profile/data')
+        .auth(normalUserToken, { type: 'bearer' });
+
+      expect(statusCode).toEqual(200);
+      expect(header['content-type']).toContain('application/json');
+      expect(body.id).toContain(normalUserProfile.id);
+      expect(body.name).toContain(normalUserProfile.name);
+      expect(body.lastname).toContain(normalUserProfile.lastname);
+      expect(body.image).toContain(normalUserProfile.image);
+      expect(body.financialProfile).toContain(normalUserProfile.financialProfile);
+      expect(body.itemsSaved).toBeInstanceOf(Array);
     });
   });
 });

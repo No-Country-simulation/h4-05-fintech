@@ -1,4 +1,5 @@
 import crypto from 'node:crypto';
+
 import {
   FinancialGoals,
   FinancialKnowledge,
@@ -161,7 +162,7 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
 
     const investmentEducation = (): InvestmentEducation => {
       let education: InvestmentEducation;
-      switch (index(6)) {
+      switch (index(4)) {
         case 0:
           education = InvestmentEducation.NO_TENGO_FORMACION;
           break;
@@ -182,7 +183,7 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
 
     const investmentExperience = (): InvestmentExperience => {
       let experience: InvestmentExperience;
-      switch (index(6)) {
+      switch (index(4)) {
         case 0:
           experience = InvestmentExperience.ACCIONES;
           break;
@@ -374,7 +375,7 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
   return randomData;
 };
 
-const financialProfile1: FinancialProfile = {
+const financialProfile: FinancialProfile = {
   id: crypto.randomUUID(),
   userId: adminUser.id,
   financialGoal: FinancialGoals.EDUCACION,
@@ -393,4 +394,4 @@ const financialProfile1: FinancialProfile = {
   // monthlyContribution: contributionArray[0],
 };
 
-export const financialProfileSeeds = [...financialProfileRandomData(), financialProfile1];
+export const financialProfileSeeds = [...financialProfileRandomData(), financialProfile];

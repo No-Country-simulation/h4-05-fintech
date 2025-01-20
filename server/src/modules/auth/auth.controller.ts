@@ -98,6 +98,7 @@ export class AuthController {
   }
 
   @Get('refresh')
+  @UseGuards(JwtRefreshGuard)
   @ApiOperation({ summary: 'Refresh session' })
   @ApiBadRequestResponse({ description: 'Not logged in' })
   @ApiOkResponse(RefreshSucess)

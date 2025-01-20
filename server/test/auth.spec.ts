@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { app, validationPipe } from './jest.setup';
+import { app, validationPipe, authService } from './jest.setup';
 import {
   ChangePasswordDto,
   ForgotPasswordDto,
@@ -16,15 +16,8 @@ import {
   normalUserRefreshToken,
   normalUserToken,
 } from '../prisma/seeds/user.seeds';
-import { AuthService } from 'src/modules/auth/auth.service';
 
 describe('Auth', () => {
-  let authService: AuthService;
-
-  beforeAll(async () => {
-    authService = app.get<AuthService>(AuthService);
-  });
-
   describe('POST /auth/registry', () => {
     it('Should not registry because no data', async () => {
       try {

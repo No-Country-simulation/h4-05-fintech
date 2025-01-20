@@ -59,6 +59,8 @@ export class ProfileService {
 
     if (!financialProfileFound)
       throw new NotFoundException(ErrorMessage.FINANCIAL_PROFILE_NOT_FOUND);
+
+    return financialProfileFound;
   }
 
   async getFinancialProfileFromData(url: string, dto: FinancialProfileDto) {
@@ -67,6 +69,17 @@ export class ProfileService {
         headers: {},
       }),
     );
+  }
+
+  async getUserProfile(req: UserRequest) {
+    const { id: userId } = req.user;
+    const userProfileFound = await this.prisma.userProfile.findFirst({
+      where: { userId },
+    });
+
+    if (!userProfileFound) throw new NotFoundException(ErrorMessage.USER_PROFILE_NOT_FOUND);
+
+    return userProfileFound;
   }
 
   async updateUserProfile(req: UserRequest, body: UserProfileDto) {

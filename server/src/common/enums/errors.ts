@@ -13,4 +13,5 @@ export enum ErrorMessage {
   INVALID_CODE = 'invalid 32-digit code',
   EQUAL_PASSWORDS = 'passwords are equal',
   FINANCIAL_PROFILE_NOT_FOUND = 'financial profile not found',
+  USER_PROFILE_NOT_FOUND = 'user profile not found',
 }

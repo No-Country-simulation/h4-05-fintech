@@ -154,8 +154,7 @@ export class AuthService {
     else if (this.configService.nodeEnv === Environment.DEVELOPMENT)
       await this.mailerService.sendMailDev(emailData);
 
-    const { id: userId } = await this.userService.createUser({ email, password: hashed, code });
-    await this.profileService.createUserProfile(userId);
+    await this.userService.createUser({ email, password: hashed, code });
 
     return { message: 'user successfully registered' };
   }
@@ -172,6 +171,7 @@ export class AuthService {
     const userUpdated = Object.assign(userFound, { verified: true, code: null });
 
     await this.userService.updateUser(userUpdated);
+    await this.profileService.createUserProfile(userFound.id);
 
     return { message: 'user successfully verified' };
   }
@@ -201,8 +201,10 @@ export class AuthService {
 
     if (isMatch && userFound.blocked) throw new ForbiddenException(ErrorMessage.USER_BLOCKED);
 
-    const accessToken = await this.accessToken({ id: userFound.id });
-    const refreshToken = await this.refreshToken({ id: userFound.id });
+    const [accessToken, refreshToken] = await Promise.all([
+      this.accessToken({ id: userFound.id }),
+      this.refreshToken({ id: userFound.id }),
+    ]);
 
     const userAgent = req.headers['user-agent'] ?? 'testing';
 
@@ -219,8 +221,10 @@ export class AuthService {
 
     const { id } = await this.decodeToken({ refreshToken });
 
-    const accessToken = await this.accessToken({ id });
-    const newRefreshToken = await this.refreshToken({ id });
+    const [accessToken, newRefreshToken] = await Promise.all([
+      this.accessToken({ id }),
+      this.refreshToken({ id }),
+    ]);
 
     const authList = await this.prisma.auth.findMany({ where: { userId: id } });
     const authMatch = authList.find((auth) => auth.refreshToken === refreshToken);
