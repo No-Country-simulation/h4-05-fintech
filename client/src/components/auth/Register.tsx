@@ -29,12 +29,12 @@ const Register = () => {
   const [error, setError] = useState("");
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Submitted");
     setMessage("");
@@ -130,6 +130,8 @@ const Register = () => {
               Registrarse
             </Button>
           </form>
+          {message && <p>{message}</p>}
+          {error && <p>{error}</p>}
           <div className="flex justify-center items-center gap-4 mt-5">
             <a href="#" className="hover:opacity-80 transition-opacity">
               <img
