@@ -45,7 +45,7 @@ model UserProfile {
   name                      String?
   lastname                  String?
   image                     String?
-  surveyAnswered            Boolean             @default(false) @map("profile_created")
+  surveyAnswered            Boolean             @default(false) @map("survey_answered")
   financialProfileData      FinancialProfile?
   financialData             FinancialData?
   financialProfileResults   String?             @map("financial_profile")
