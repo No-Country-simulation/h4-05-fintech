@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { instance } from "@/api/axios";
+import { Navigate, useNavigate } from "react-router";
 
 interface formValues {
   email: string;
@@ -18,6 +19,7 @@ const initilValues: formValues = {
 const LoginPage = () => {
 
   const [formData, setFormData] = useState<formValues>(initilValues); 
+  const navigate = useNavigate();
 
 
   const [message, setMessage] = useState("");
@@ -46,6 +48,7 @@ const LoginPage = () => {
         }
       );
       setMessage(data.message);
+      navigate('/dashboard');
     } catch (error: any) {
       console.error(error);
       setError(
