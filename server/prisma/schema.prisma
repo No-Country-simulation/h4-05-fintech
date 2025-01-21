@@ -20,11 +20,10 @@ model User {
   verified              Boolean             @default(false)
   attempts              Int                 @default(0)
   blocked               Boolean             @default(false)
-  profileCreated        Boolean             @default(false) @map("profile_created")
-  code                  String?
+  verificationCode      String?             @map("verification_code")
+  resetPasswordCode     String?             @map("reset_password_code")
   auth                  Auth[]
-  financialProfile      FinancialProfile?
-  financialData         FinancialData?
+  userProfile           UserProfile?
   createdAt             DateTime            @default(now()) @map("created_at")
   updatedAt             DateTime            @default(now()) @map("updated_at")
 }
@@ -39,86 +38,48 @@ model Auth {
   updatedAt     DateTime  @default(now()) @map("updated_at")
 }
 
+model UserProfile {
+  id                        String              @id @default(uuid())
+  user                      User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                    String              @unique @map("user_id")
+  name                      String?
+  lastname                  String?
+  image                     String?
+  surveyAnswered            Boolean             @default(false) @map("survey_answered")
+  financialProfileData      FinancialProfile?
+  financialData             FinancialData?
+  financialProfileResults   String?             @map("financial_profile")
+  itemsSaved                String[]            @map("items_saved")
+  updatedAt                 DateTime            @default(now()) @map("updated_at")
+}
+
 model FinancialProfile {
   id                              String                @id @default(uuid())
-  user                            User?                 @relation(fields: [userId], references: [id])
-  userId                          String?               @unique @map("user_id")
+  userProfile                     UserProfile?          @relation(fields: [userProfileId], references: [id])
+  userProfileId                   String?               @unique @map("user_profile_id")
   // PREGUNTAS PRIORITARIAS
-  financialGoal                   FinancialGoals        @map("financial_goal")
-  financialKnowledge              FinancialKnowledge    @map("financial_knowledge")
-  investmentEducation             InvestmentEducation   @map("investment_education")
-  investmentExperience            InvestmentExperience  @map("investment_experience")
-  riskCase                        RiskCase              @map("risk_case")
-  targetPeriod                    String                @map("target_period")
-  incomeSource                    IncomeSource          @map("income_source")
-  incomeAverage                   String                @map("income_average")
-  expensesAverage                 String                @map("expenses_average")
+  financialGoals                  String                @map("financial_goals")
+  investmentKnowledge             String                @map("investment_knowledge")
+  financialEducation              String                @map("financial_education")
+  investmentExperience            String[]              @map("investment_experience")
+  riskReactions                   String                @map("risk_reactions")
+  investmentTimeframes            String                @map("investment_timeframes")
+  incomeSources                   String                @map("income_sources")
+  incomeRanges                    String                @map("income_ranges")
+  expenseRatios                   String                @map("expense_ratios")
   // PREGUNTAS SECUNDARIAS
-  investmentPurpose               InvestmentPurpose?    @map("investment_purpose")
+  investmentPurpose               String?               @map("investment_purpose")
   age                             Int?
   occupation                      String?
-  savingPlan                      Boolean?              @map("saving_plan")
+  savingsPlans                    String?               @map("savings_plans")
+  savingsRanges                   String?               @map("savings_ranges")
   // monthlyContribution          String?               @map("monthly_contribution")
 }
 
 model FinancialData {
-  id        String    @id @default(uuid())
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String    @unique @map("user_id")
-  income    Int       @default(0)
-  expenses  Int       @default(0)
-}
-
-enum FinancialGoals {
-  JUBILACION
-  VACACIONES
-  IMPREVISTOS
-  VIVIENDA
-  EDUCACION
-  LIBERTAD_FINANCIERA
-  PROYECTOS_LARGO_PLAZO
-  INGRESOS_ADICIONALES
-  OTROS
-}
-
-enum FinancialKnowledge {
-  NO_TENGO_IDEA
-  ME_SUENA_PERO_NO_ESTOY_SEGURO
-  SE_COMO_FUNCIONA
-  INVIERTO_REGULARMENTE
-}
-
-enum InvestmentEducation {
-  CERTIFICADO_PROFESIONAL
-  TECNICO_O_TECNOLOGICO
-  CARRERA_PROFESIONAL
-  NO_TENGO_FORMACION
-}
-
-enum RiskCase {
-  VENDERIA_TODO
-  MANTENDRIA_INVERSION
-  COMPRARIA_MAS
-}
-
-enum InvestmentPurpose {
-  AHORRO
-  INVERSION
-  AMBOS
-}
-
-enum InvestmentExperience {
-  ACCIONES
-  CDEARS
-  BONOS
-  ETFS
-}
-
-enum IncomeSource {
-  SALARIO
-  INDEPENDIENTE
-  INVERSIONES
-  AHORROS
-  JUBILACION
-  HERENCIA
+  id                  String            @id @default(uuid())
+  profileUser         UserProfile?      @relation(fields: [userProfileId], references: [id], onDelete: Cascade)
+  userProfileId       String?           @unique @map("user_id")
+  income              Int               @default(0)
+  expenses            Int               @default(0)
 }

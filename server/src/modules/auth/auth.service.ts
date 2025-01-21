@@ -8,21 +8,31 @@ import {
   NotFoundException,
   UnauthorizedException,
   ForbiddenException,
+  NotAcceptableException,
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { Prisma } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import { CookieOptions, Response } from 'express';
 import bcrypt from 'bcrypt';
 
 import { Environment, ErrorMessage } from '../../common/enums';
-import { JwtPayload, UserRequest } from '../../common/interfaces/user-request.interface';
+import { JwtPayload, UserRequest } from '../../common/interfaces';
 import { EmailData } from '../../common/modules/mailer/mailer.interface';
 import { PrismaService } from '../../common/modules/prisma/prisma.service';
 import { MailerService } from '../../common/modules/mailer/mailer.service';
 
 import { UserService } from '../user/user.service';
-import { LoginDto, RegistryDto } from './dto';
+import { ProfileService } from '../profile/profile.service';
+
+import {
+  LoginDto,
+  RegistryDto,
+  ForgotPasswordDto,
+  ResetPasswordDto,
+  ResetPasswordQueryDto,
+  ChangePasswordDto,
+} from './dto';
 
 import config from '../../config';
 
@@ -32,8 +42,9 @@ export class AuthService {
     @Inject(config.KEY) private readonly configService: ConfigType<typeof config>,
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
-    private readonly userService: UserService,
     private readonly mailerService: MailerService,
+    private readonly userService: UserService,
+    private readonly profileService: ProfileService,
   ) {}
 
   private accessSecret =
@@ -92,8 +103,32 @@ export class AuthService {
     res.clearCookie(this.cookieName, options);
   }
 
-  async registry(data: RegistryDto) {
-    const { email, password, confirmPassword } = data;
+  // https://iupi-fintech.frontend/auth/verify?code=${code}
+  private baseUrl = new URL('/auth/', this.configService.frontendUrl);
+
+  async decodeToken(token: {
+    accessToken?: string;
+    refreshToken?: string;
+  }): Promise<JwtPayload | undefined> {
+    const { accessToken, refreshToken } = token;
+    let payload: JwtPayload;
+    try {
+      if (accessToken)
+        payload = await this.jwtService.verifyAsync<JwtPayload>(accessToken, {
+          secret: this.accessSecret,
+        });
+      else if (refreshToken)
+        payload = await this.jwtService.verifyAsync<JwtPayload>(refreshToken, {
+          secret: this.refreshSecret,
+        });
+      return payload;
+    } catch (error) {
+      throw new UnauthorizedException(error.message);
+    }
+  }
+
+  async registry(body: RegistryDto) {
+    const { email, password, confirmPassword } = body;
     const userFound = await this.userService.getUser({ email });
 
     if (userFound) throw new ConflictException(ErrorMessage.REGISTERED_USER);
@@ -103,15 +138,17 @@ export class AuthService {
     if (!isMatch) throw new BadRequestException(ErrorMessage.PASSWORD_UNMATCH);
 
     const hashed = await bcrypt.hash(password, 10);
-    const code = crypto.randomBytes(32).toString('hex');
+    const verificationCode = crypto.randomBytes(32).toString('hex');
+
+    const link = new URL('verify', this.baseUrl);
+    link.searchParams.set('code', verificationCode);
 
     const emailData: EmailData = {
-      email: data.email,
+      email,
       subject: 'Bienvenido a iUPI',
       template: 'verify.hbs',
-      variables: {
-        link: `${this.configService.frontendUrl}/auth/verify?code=${code}`,
-      },
+      // Frontend example: https://iupi-fintech.frontend/auth/verify?code=${code}
+      variables: { link },
     };
 
     if (this.configService.nodeEnv === Environment.PRODUCTION)
@@ -119,45 +156,187 @@ export class AuthService {
     else if (this.configService.nodeEnv === Environment.DEVELOPMENT)
       await this.mailerService.sendMailDev(emailData);
 
-    await this.userService.createUser({ email, password: hashed, code });
+    await this.userService.createUser({ email, password: hashed, verificationCode });
 
     return { message: 'user successfully registered' };
   }
 
-  async verify(code: string) {
-    const userFound = await this.userService.getUser({ code });
+  async verify(verificationCode: string) {
+    const valid32HexCode = /^[a-f0-9]{64}$/i;
+
+    if (!valid32HexCode.test(verificationCode))
+      throw new NotAcceptableException('invalid 32-digit code');
+
+    const userFound = await this.userService.getUser({ verificationCode });
+
     if (!userFound) throw new NotFoundException('user not found');
 
-    userFound.verified = true;
-    userFound.code = null;
+    const userUpdated = Object.assign(userFound, { verified: true, verificationCode: null });
 
-    await this.userService.updateUser(userFound);
+    await this.userService.updateUser(userUpdated);
+    await this.profileService.createUserProfile(userFound.id);
 
     return { message: 'user successfully verified' };
   }
 
-  async login(req: UserRequest, res: Response, data: LoginDto): Promise<{ accessToken: string }> {
-    const { email, password } = data;
+  async login(req: UserRequest, res: Response, body: LoginDto): Promise<{ accessToken: string }> {
+    const { email, password } = body;
     const userFound = await this.userService.getUser({ email });
 
     if (!userFound) throw new NotFoundException(ErrorMessage.USER_NOT_FOUND);
 
     const isMatch = await bcrypt.compare(password, userFound.password);
 
-    if (!isMatch) throw new UnauthorizedException(ErrorMessage.INVALID_CREDENTIALS);
+    if (!isMatch) {
+      let userUpdated: User;
+      if (userFound.attempts === 4) {
+        userUpdated = Object.assign(userFound, { attempts: userFound.attempts + 1, blocked: true });
+        await this.userService.updateUser(userUpdated);
+        throw new ForbiddenException(ErrorMessage.USER_BLOCKED);
+      } else {
+        userUpdated = Object.assign(userFound, { attempts: userFound.attempts + 1 });
+        await this.userService.updateUser(userUpdated);
+        throw new UnauthorizedException(ErrorMessage.INVALID_CREDENTIALS);
+      }
+    }
 
     if (!userFound.verified) throw new ForbiddenException(ErrorMessage.USER_NOT_VERIFIED);
 
-    const accessToken = await this.accessToken({ id: userFound.id });
-    const refreshToken = await this.refreshToken({ id: userFound.id });
+    if (isMatch && userFound.blocked) throw new ForbiddenException(ErrorMessage.USER_BLOCKED);
+
+    const [accessToken, refreshToken] = await Promise.all([
+      this.accessToken({ id: userFound.id }),
+      this.refreshToken({ id: userFound.id }),
+    ]);
 
     const userAgent = req.headers['user-agent'] ?? 'testing';
 
     await this.prisma.auth.create({ data: { userId: userFound.id, refreshToken, userAgent } });
 
+    const userUpdated = Object.assign(userFound, { attempts: 0 });
+    await this.userService.updateUser(userUpdated);
+
     await this.setCookie(res, refreshToken);
 
     return { accessToken };
+  }
+
+  async refresh(req: UserRequest, res: Response) {
+    const refreshToken = req.headers.cookie?.split('=')[1];
+    const userAgent = req.headers['user-agent'] ?? 'testing';
+
+    const { id } = await this.decodeToken({ refreshToken });
+
+    const [accessToken, newRefreshToken] = await Promise.all([
+      this.accessToken({ id }),
+      this.refreshToken({ id }),
+    ]);
+
+    const authList = await this.prisma.auth.findMany({ where: { userId: id } });
+    const authMatch = authList.find((auth) => auth.refreshToken === refreshToken);
+
+    if (authMatch && authMatch.userAgent === userAgent)
+      await this.prisma.auth.update({
+        where: { id: authMatch.id },
+        data: Object.assign(authMatch, { refreshToken: newRefreshToken }),
+      });
+    else
+      await this.prisma.auth.create({
+        data: {
+          userId: id,
+          refreshToken: newRefreshToken,
+          userAgent,
+        },
+      });
+
+    await this.removeCookie(res);
+    await this.setCookie(res, newRefreshToken);
+
+    return { accessToken };
+  }
+
+  async changePassword(id: string, body: ChangePasswordDto) {
+    const userFound = await this.userService.getUser({ id });
+
+    const { currentPassword, newPassword } = body;
+
+    if (!userFound) throw new NotFoundException(ErrorMessage.USER_NOT_FOUND);
+
+    const isMatch = await bcrypt.compare(currentPassword, userFound.password);
+
+    if (!isMatch) throw new UnauthorizedException(ErrorMessage.INVALID_CREDENTIALS);
+
+    if (currentPassword === newPassword) throw new ConflictException(ErrorMessage.EQUAL_PASSWORDS);
+
+    const hashed = await bcrypt.hash(newPassword, 10);
+
+    const updatedUser = Object.assign(userFound, { password: hashed });
+
+    await this.userService.updateUser(updatedUser);
+
+    return { message: 'password successfully changed' };
+  }
+
+  async forgotPassword(body: ForgotPasswordDto) {
+    const { email } = body;
+    const userFound = await this.userService.getUser({ email });
+
+    if (!userFound) throw new NotFoundException(ErrorMessage.USER_NOT_FOUND);
+
+    const expiration = new Date();
+    expiration.setMinutes(expiration.getMinutes() + 15);
+
+    const resetPasswordCode = crypto.randomBytes(32).toString('hex');
+
+    const query = { resetPasswordCode, exp: new Date(expiration).getTime() };
+
+    const link = new URL('reset-password', this.configService.frontendUrl);
+
+    Object.entries(query).forEach(([key, value]) => {
+      link.searchParams.set(key, value.toString());
+    });
+
+    const emailData: EmailData = {
+      email,
+      subject: 'Recuperación de contraseña',
+      template: 'password-recovery.hbs',
+      // Frontend example: https://iupi-fintech.frontend/auth/reset-password?code=${code}&exp=${exp}
+      variables: { link },
+    };
+
+    if (this.configService.nodeEnv === Environment.PRODUCTION)
+      await this.mailerService.sendMail(emailData);
+    else if (this.configService.nodeEnv === Environment.DEVELOPMENT)
+      await this.mailerService.sendMailDev(emailData);
+
+    const userUpdated = Object.assign(userFound, { resetPasswordCode });
+
+    await this.userService.updateUser(userUpdated);
+
+    return { message: 'password recovery process initialized' };
+  }
+
+  async resetPassword(query: ResetPasswordQueryDto, body: ResetPasswordDto) {
+    const { code: resetPasswordCode, exp } = query;
+    const { newPassword, confirmPassword } = body;
+
+    const userFound = await this.userService.getUser({ resetPasswordCode });
+
+    if (!userFound) throw new NotFoundException(ErrorMessage.USER_NOT_FOUND);
+
+    if (parseInt(exp) <= new Date().getTime())
+      throw new UnauthorizedException(ErrorMessage.EXPIRED_TIME);
+
+    if (newPassword != confirmPassword)
+      throw new BadRequestException(ErrorMessage.PASSWORD_UNMATCH);
+
+    const hashed = await bcrypt.hash(newPassword, 10);
+
+    const updatedUser = Object.assign(userFound, { resetPasswordCode: null, password: hashed });
+
+    await this.userService.updateUser(updatedUser);
+
+    return { message: 'password successfully reset' };
   }
 
   async logout(req: UserRequest, res: Response) {

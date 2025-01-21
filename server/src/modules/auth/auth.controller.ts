@@ -1,9 +1,19 @@
-import { Controller, Get, Post, Param, Body, Req, Res, HttpCode, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Query,
+  Body,
+  Req,
+  Res,
+  HttpCode,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
   ApiBody,
-  ApiParam,
   ApiBadRequestResponse,
   ApiNotFoundResponse,
   ApiNotAcceptableResponse,
@@ -13,21 +23,33 @@ import {
   ApiOkResponse,
   ApiUnauthorizedResponse,
   ApiForbiddenResponse,
+  ApiQuery,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import { Response } from 'express';
 
-import { UserRequest } from '../../common/interfaces/user-request.interface';
+import { UserRequest } from '../../common/interfaces';
 import { IsLogin } from '../../common/decorators/is-login.decorator';
-import { JwtRefreshGuard } from '../../common/guards/jwt-refresh.guard';
-import { Digit32HexCodePipe } from '../../common/pipes';
+import { JwtGuard, JwtRefreshGuard } from '../../common/guards';
 
 import { AuthService } from './auth.service';
-import { LoginDto, RegistryDto } from './dto';
+import {
+  LoginDto,
+  RegistryDto,
+  ResetPasswordQueryDto,
+  ResetPasswordDto,
+  ForgotPasswordDto,
+  ChangePasswordDto,
+} from './dto';
 import {
   RegistrySuccess,
   VerifySuccess,
   LoginSucess,
   LogoutSuccess,
+  PasswordRecoveryInitialized,
+  RefreshSucess,
+  PasswordChangeSuccess,
+  PasswordResetSuccess,
 } from './auth-success.response';
 
 @ApiTags('Auth')
@@ -42,18 +64,18 @@ export class AuthController {
   @ApiConflictResponse({ description: 'User already registered' })
   @ApiCreatedResponse(RegistrySuccess)
   @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
-  async registry(@Body() data: RegistryDto) {
-    return await this.authService.registry(data);
+  async registry(@Body() dto: RegistryDto) {
+    return await this.authService.registry(dto);
   }
 
-  @Get('verify/:code')
+  @Get('verify')
   @ApiOperation({ summary: 'Verify registered user' })
-  @ApiParam({ name: 'code', description: 'Must be a valid 32-digit hex code', required: true })
+  @ApiQuery({ name: 'code', required: true })
   @ApiNotFoundResponse({ description: 'User not found' })
   @ApiNotAcceptableResponse({ description: 'Invalid 32-digit hex code' })
   @ApiOkResponse(VerifySuccess)
   @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
-  async verify(@Param('code', new Digit32HexCodePipe()) code: string) {
+  async verify(@Query('code') code: string) {
     return await this.authService.verify(code);
   }
 
@@ -64,17 +86,64 @@ export class AuthController {
   @ApiOperation({ summary: 'Login and get credentials' })
   @ApiBody({ type: LoginDto, required: true })
   @ApiBadRequestResponse({ description: 'Incoming data is invalid, or already logged in' })
-  @ApiUnauthorizedResponse({ description: 'Invalid credentials' })
   @ApiForbiddenResponse({ description: 'User not verified' })
   @ApiNotFoundResponse({ description: 'User not found' })
+  @ApiUnauthorizedResponse({ description: 'Invalid credentials' })
   @ApiOkResponse(LoginSucess)
   @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
   async login(
     @Req() req: UserRequest,
     @Res({ passthrough: true }) res: Response,
-    @Body() data: LoginDto,
+    @Body() dto: LoginDto,
   ) {
-    return await this.authService.login(req, res, data);
+    return await this.authService.login(req, res, dto);
+  }
+
+  @Get('refresh')
+  @UseGuards(JwtRefreshGuard)
+  @ApiOperation({ summary: 'Refresh session' })
+  @ApiBadRequestResponse({ description: 'Not logged in' })
+  @ApiOkResponse(RefreshSucess)
+  @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
+  async refresh(@Req() req: UserRequest, @Res({ passthrough: true }) res: Response) {
+    return await this.authService.refresh(req, res);
+  }
+
+  @Put('password-change')
+  @UseGuards(JwtGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Change Password' })
+  @ApiBody({ type: ChangePasswordDto, required: true })
+  @ApiBadRequestResponse({ description: 'Incoming data is invalid' })
+  @ApiConflictResponse({ description: 'The passwords are equal' })
+  @ApiCreatedResponse(PasswordChangeSuccess)
+  @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
+  async changePassword(@Req() req: UserRequest, @Body() body: ChangePasswordDto) {
+    return await this.authService.changePassword(req.user.id, body);
+  }
+
+  @Post('forgot-password')
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Password recovery process' })
+  @ApiBody({ type: ForgotPasswordDto, required: true })
+  @ApiBadRequestResponse({ description: 'Incoming data is invalid' })
+  @ApiNotFoundResponse({ description: 'User not found' })
+  @ApiOkResponse(PasswordRecoveryInitialized)
+  @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
+  async forgotPassword(@Body() body: ForgotPasswordDto) {
+    return await this.authService.forgotPassword(body);
+  }
+
+  @Put('password-reset')
+  @ApiOperation({ summary: 'Reset Password' })
+  @ApiBody({ type: ResetPasswordDto, required: true })
+  @ApiBadRequestResponse({ description: `Incoming data is invalid, or the passwords don't match` })
+  @ApiUnauthorizedResponse({ description: 'Time to reset password expired' })
+  @ApiNotFoundResponse({ description: 'User not found' })
+  @ApiCreatedResponse(PasswordResetSuccess)
+  @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
+  async resetPassword(@Query() query: ResetPasswordQueryDto, @Body() body: ResetPasswordDto) {
+    return await this.authService.resetPassword(query, body);
   }
 
   @Get('logout')

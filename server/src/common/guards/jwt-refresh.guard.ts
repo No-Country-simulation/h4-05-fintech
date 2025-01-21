@@ -65,8 +65,7 @@ export class JwtRefreshGuard implements CanActivate {
 
     try {
       if (!isLogin) {
-        const payload = await this.verifyJwt(refreshToken);
-        req.user = payload;
+        await this.verifyJwt(refreshToken);
         return true;
       } else {
         if (refreshToken) {
