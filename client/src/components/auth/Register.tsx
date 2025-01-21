@@ -4,8 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import axios from "axios";
-const registry: string = import.meta.env.VITE_REGISTRY as string;
+import { instance } from "@/api/axios";
 
 interface formValues {
   email: string;
@@ -41,8 +40,8 @@ const Register = () => {
     setError("");
 
     try {
-      const { data } = await axios.post(
-        registry,
+      const { data } = await instance.post(
+        '/auth/registry',
         formData
       );
       const accessToken = data.accessToken;

@@ -1,7 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import axios from "axios";
-const verify: string  = import.meta.env.VITE_VERIFIY as string;
+import { instance } from '@/api/axios';
 
 const VerifyPage = ()  => {
   const [verified, setVerified] = useState<boolean | null>(null);
@@ -10,7 +9,7 @@ const VerifyPage = ()  => {
   const code = searchParams.get('code');
 
   useEffect(() => {
-    const response = axios.get(`${verify}/${code}`);
+    const response = instance.get(`/auth/verify?code=${code}`);
     response.then(() => setVerified(true)).catch((_error) => setVerified(false))
   }, [code])
 

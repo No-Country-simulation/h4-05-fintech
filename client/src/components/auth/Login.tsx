@@ -3,9 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import axios from "axios";
-
-const login: string = import.meta.env.VITE_LOGIN as string;
+import { instance } from "@/api/axios";
 
 interface formValues {
   email: string;
@@ -36,9 +34,16 @@ const LoginPage = () => {
     setError("");
 
     try {
-      const { data } = await axios.post(
-        login,
-        formData
+      const { data } = await instance.post(
+        '/auth/login',
+        formData,
+        {
+          withCredentials: true,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Credentials': 'true',
+          }
+        }
       );
       setMessage(data.message);
     } catch (error: any) {
