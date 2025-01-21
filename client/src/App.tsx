@@ -5,6 +5,7 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import  Verify  from "./components/auth/Verify";
 import Dashboard from "./components/profile/Dashboard";
+import Protected from "./components/protected/Protected";
 
 
 
@@ -15,7 +16,10 @@ function App() {
         <Routes>
           {/* Redirige la raíz ("/") a "/auth" */}
           <Route path="/" element={<Navigate to="/auth" replace />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+
+          <Protected>
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Protected>
           
           {/* Ruta principal de autenticación */}
           <Route path="/auth" element={<Auth />} />
