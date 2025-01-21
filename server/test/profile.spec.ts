@@ -74,7 +74,7 @@ describe('Profile', () => {
         investmentKnowledge: InvestmentKnowledge.ME_SUENA_PERO,
         riskReactions: RiskReactions.MANTENDRIA_INVERSION,
         financialEducation: FinancialEducation.CARRERA_PROFESIONAL,
-        investmentExperience: [InvestmentExperience.BONOS],
+        investmentExperience: [InvestmentExperience.BONOS, InvestmentExperience.CDEARS],
         investmentPurpose: InvestmentPurpose.AHORRO,
         investmentTimeframes: InvestmentTimesframes.CORTO,
         incomeSources: IncomeSources.AHORROS,
@@ -99,8 +99,9 @@ describe('Profile', () => {
           .send(result);
 
         expect(statusCode).toEqual(404);
-        expect(JSON.parse(error['text']).message).toContain(ErrorMessage.USER_NOT_FOUND);
+        expect(JSON.parse(error['text']).message).toContain(ErrorMessage.USER_PROFILE_NOT_FOUND);
       } catch (error) {
+        console.log(error);
         fail(`Validation should not throw an error for valid data: ${error}`);
       }
     });
@@ -111,7 +112,7 @@ describe('Profile', () => {
         investmentKnowledge: InvestmentKnowledge.ME_SUENA_PERO,
         riskReactions: RiskReactions.MANTENDRIA_INVERSION,
         financialEducation: FinancialEducation.CARRERA_PROFESIONAL,
-        investmentExperience: [InvestmentExperience.BONOS],
+        investmentExperience: [InvestmentExperience.BONOS, InvestmentExperience.CDEARS],
         investmentPurpose: InvestmentPurpose.AHORRO,
         investmentTimeframes: InvestmentTimesframes.CORTO,
         incomeSources: IncomeSources.AHORROS,
@@ -138,6 +139,7 @@ describe('Profile', () => {
         expect(statusCode).toEqual(409);
         expect(JSON.parse(error['text']).message).toContain(ErrorMessage.PROFILE_CREATED);
       } catch (error) {
+        console.log(error);
         fail(`Validation should not throw an error for valid data: ${error}`);
       }
     });
@@ -148,7 +150,7 @@ describe('Profile', () => {
         investmentKnowledge: InvestmentKnowledge.ME_SUENA_PERO,
         riskReactions: RiskReactions.MANTENDRIA_INVERSION,
         financialEducation: FinancialEducation.CARRERA_PROFESIONAL,
-        investmentExperience: [InvestmentExperience.BONOS],
+        investmentExperience: [InvestmentExperience.BONOS, InvestmentExperience.CDEARS],
         investmentPurpose: InvestmentPurpose.AHORRO,
         investmentTimeframes: InvestmentTimesframes.CORTO,
         incomeSources: IncomeSources.AHORROS,
@@ -176,6 +178,7 @@ describe('Profile', () => {
         expect(header['content-type']).toContain('application/json');
         expect(body.message).toContain('financial profile successfully created');
       } catch (error) {
+        console.log(error);
         fail(`Validation should not throw an error for valid data: ${error}`);
       }
     });
@@ -209,7 +212,8 @@ describe('Profile', () => {
       expect(body.name).toContain(normalUserProfile.name);
       expect(body.lastname).toContain(normalUserProfile.lastname);
       expect(body.image).toContain(normalUserProfile.image);
-      expect(body.financialProfile).toContain(normalUserProfile.financialProfile);
+      expect(body.surveyAnswered).toBe(true);
+      expect(body.financialProfileResults).toBe(normalUserProfile.financialProfileResults);
       expect(body.itemsSaved).toBeInstanceOf(Array);
     });
   });

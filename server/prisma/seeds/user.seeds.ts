@@ -9,7 +9,6 @@ export const unverifiedUser: User = {
   blocked: false,
   verificationCode: '6c1f78b489714f4789816dfa97238b009cf0946ffdfeba6231b1f964f3c682d8',
   resetPasswordCode: null,
-  profileCreated: false,
   createdAt: new Date(),
   updatedAt: new Date(),
 };
@@ -23,7 +22,6 @@ export const unverifiedUser2: User = {
   blocked: false,
   verificationCode: '89e74c25b5bf6b0d5aad9bf9f6110745274056375db20b66cb81e0d61100b40b',
   resetPasswordCode: null,
-  profileCreated: false,
   createdAt: new Date(),
   updatedAt: new Date(),
 };
@@ -37,7 +35,6 @@ export const normalUser: User = {
   blocked: false,
   verificationCode: null,
   resetPasswordCode: null,
-  profileCreated: false,
   createdAt: new Date(),
   updatedAt: new Date(),
 };
@@ -51,7 +48,6 @@ export const userToBlock: User = {
   blocked: false,
   verificationCode: null,
   resetPasswordCode: null,
-  profileCreated: false,
   createdAt: new Date(),
   updatedAt: new Date(),
 };
@@ -65,7 +61,6 @@ export const blockedUser: User = {
   blocked: true,
   verificationCode: null,
   resetPasswordCode: null,
-  profileCreated: false,
   createdAt: new Date(),
   updatedAt: new Date(),
 };
@@ -79,7 +74,6 @@ export const forgotPasswordUser: User = {
   blocked: false,
   verificationCode: null,
   resetPasswordCode: 'aefa05b6cfaa09a10ea6100d1a4bf8123b0a06b877139a77a684a6c9e176a911',
-  profileCreated: false,
   createdAt: new Date(),
   updatedAt: new Date(),
 };
@@ -93,7 +87,6 @@ export const adminUser: User = {
   blocked: false,
   verificationCode: null,
   resetPasswordCode: null,
-  profileCreated: true,
   createdAt: new Date(),
   updatedAt: new Date(),
 };

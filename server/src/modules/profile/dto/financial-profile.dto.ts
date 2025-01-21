@@ -35,7 +35,10 @@ export class FinancialProfileDto {
 
   @ApiProperty({ enum: InvestmentExperience, required: true })
   @IsNotEmpty()
-  @IsEnum(InvestmentExperience)
+  @IsEnum(InvestmentExperience, {
+    each: true,
+    message: 'Each role must be a valid InvestmentExperience',
+  })
   investmentExperience: InvestmentExperience[];
 
   @ApiProperty({ enum: RiskReactions, required: true })
@@ -85,7 +88,7 @@ export class FinancialProfileDto {
 
   @ApiProperty({ enum: SavingsRanges, required: false })
   @IsOptional()
-  @IsEnum(SavingPlans)
+  @IsEnum(SavingsRanges)
   savingsRanges: SavingsRanges;
 
   // @ApiProperty({ enum: MonthlyContribution })

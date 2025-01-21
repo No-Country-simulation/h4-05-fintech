@@ -1,3 +1,5 @@
+# Este script es el encargado de compilar el código typescript para ser desplegado en Render
+
 # Instalar dependencias
 npm ci 
 

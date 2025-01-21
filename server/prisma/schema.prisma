@@ -20,13 +20,10 @@ model User {
   verified              Boolean             @default(false)
   attempts              Int                 @default(0)
   blocked               Boolean             @default(false)
-  profileCreated        Boolean             @default(false) @map("profile_created")
   verificationCode      String?             @map("verification_code")
   resetPasswordCode     String?             @map("reset_password_code")
   auth                  Auth[]
   userProfile           UserProfile?
-  financialProfile      FinancialProfile?
-  financialData         FinancialData?
   createdAt             DateTime            @default(now()) @map("created_at")
   updatedAt             DateTime            @default(now()) @map("updated_at")
 }
@@ -41,10 +38,25 @@ model Auth {
   updatedAt     DateTime  @default(now()) @map("updated_at")
 }
 
+model UserProfile {
+  id                        String              @id @default(uuid())
+  user                      User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                    String              @unique @map("user_id")
+  name                      String?
+  lastname                  String?
+  image                     String?
+  surveyAnswered            Boolean             @default(false) @map("profile_created")
+  financialProfileData      FinancialProfile?
+  financialData             FinancialData?
+  financialProfileResults   String?             @map("financial_profile")
+  itemsSaved                String[]            @map("items_saved")
+  updatedAt                 DateTime            @default(now()) @map("updated_at")
+}
+
 model FinancialProfile {
   id                              String                @id @default(uuid())
-  user                            User?                 @relation(fields: [userId], references: [id])
-  userId                          String?               @unique @map("user_id")
+  userProfile                     UserProfile?          @relation(fields: [userProfileId], references: [id])
+  userProfileId                   String?               @unique @map("user_profile_id")
   // PREGUNTAS PRIORITARIAS
   financialGoals                  String                @map("financial_goals")
   investmentKnowledge             String                @map("investment_knowledge")
@@ -64,22 +76,10 @@ model FinancialProfile {
   // monthlyContribution          String?               @map("monthly_contribution")
 }
 
-model UserProfile {
-  id                  String        @id @default(uuid())
-  user                User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId              String        @unique @map("user_id")
-  name                String?
-  lastname            String?
-  image               String?
-  financialProfile    String?       @map("financial_profile")
-  itemsSaved          String[]      @map("items_saved")
-  updatedAt           DateTime      @default(now()) @map("updated_at")
-}
-
 model FinancialData {
-  id        String    @id @default(uuid())
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String    @unique @map("user_id")
-  income    Int       @default(0)
-  expenses  Int       @default(0)
+  id                  String            @id @default(uuid())
+  profileUser         UserProfile?      @relation(fields: [userProfileId], references: [id], onDelete: Cascade)
+  userProfileId       String?           @unique @map("user_id")
+  income              Int               @default(0)
+  expenses            Int               @default(0)
 }

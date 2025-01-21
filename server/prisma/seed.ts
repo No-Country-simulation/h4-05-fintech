@@ -7,8 +7,8 @@ const prisma = new PrismaClient();
 
 async function seed() {
   await prisma.user.createMany({ data: userSeeds });
-  await prisma.financialProfile.createMany({ data: financialProfileSeeds });
   await prisma.userProfile.createMany({ data: userProfileSeeds });
+  await prisma.financialProfile.createMany({ data: financialProfileSeeds });
 }
 
 seed()

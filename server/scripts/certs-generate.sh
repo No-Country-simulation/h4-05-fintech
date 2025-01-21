@@ -1,3 +1,5 @@
+rm -rf certs
+
 # Crear directorio para certificados autogenerados
 mkdir certs
 

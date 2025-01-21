@@ -19,7 +19,6 @@ import { Environment, ErrorMessage } from '../../common/enums';
 
 import config from '../../config';
 import { FinancialProfileDto, UpdateProfileDto } from './dto';
-import { UserService } from '../user/user.service';
 
 @Injectable()
 export class ProfileService {
@@ -27,7 +26,6 @@ export class ProfileService {
     @Inject(config.KEY) private readonly configService: ConfigType<typeof config>,
     private readonly prisma: PrismaService,
     private readonly httpService: HttpService,
-    private readonly userService: UserService,
     private readonly fileUploaderService: FileUploaderService,
   ) {}
 
@@ -63,18 +61,22 @@ export class ProfileService {
   };
 
   async createFinancialProfile(req: UserRequest, dto: FinancialProfileDto) {
-    const { id, id: userId } = req.user;
+    const userProfileFound = await this.getUserProfile(req);
 
-    const userFound = await this.userService.getUser({ id });
+    if (userProfileFound.surveyAnswered) throw new ConflictException(ErrorMessage.PROFILE_CREATED);
 
-    if (!userFound) throw new NotFoundException(ErrorMessage.USER_NOT_FOUND);
+    const userProfileUpdated = Object.assign(userProfileFound, {
+      surveyAnswered: true,
+      updatedAt: new Date(),
+    });
 
-    if (userFound.profileCreated) throw new ConflictException(ErrorMessage.PROFILE_CREATED);
+    const { id: userProfileId } = userProfileFound;
 
-    const userUpdated = Object.assign(userFound, { profileCreated: true, updatedAt: new Date() });
+    await this.prisma.financialProfile.create({ data: { userProfileId, ...dto } });
 
-    await this.prisma.financialProfile.create({ data: { userId, ...dto } });
-    await this.userService.updateUser(userUpdated);
+    const where: Prisma.UserProfileWhereUniqueInput = { id: userProfileFound.id };
+    const data: Prisma.UserProfileUpdateInput = { ...userProfileUpdated };
+    await this.prisma.userProfile.update({ where, data });
 
     // Cuando data ya tenga su modelo funcionando, implementará esta lógica
 
@@ -90,18 +92,6 @@ export class ProfileService {
 
   async createUserProfile(userId: string) {
     await this.prisma.userProfile.create({ data: { userId } });
-  }
-
-  async getFinancialProfile(req: UserRequest) {
-    const { id: userId } = req.user;
-    const financialProfileFound = await this.prisma.financialProfile.findFirst({
-      where: { userId },
-    });
-
-    if (!financialProfileFound)
-      throw new NotFoundException(ErrorMessage.FINANCIAL_PROFILE_NOT_FOUND);
-
-    return financialProfileFound;
   }
 
   async getFinancialProfileFromData(url: string, dto: FinancialProfileDto) {

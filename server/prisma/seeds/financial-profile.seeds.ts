@@ -1,5 +1,4 @@
 import crypto from 'node:crypto';
-import { adminUser } from './user.seeds';
 import { FinancialProfile } from '@prisma/client';
 import {
   ExpensesRatios,
@@ -14,7 +13,8 @@ import {
   RiskReactions,
   SavingPlans,
   SavingsRanges,
-} from 'src/modules/profile/enums';
+} from '../../src/modules/profile/enums';
+import { adminUserProfile } from './user-profile.seeds';
 
 const occupation = [
   'Controlador de tráfico aéreo',
@@ -369,7 +369,7 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
 
     const financialProfile: FinancialProfile = {
       id: crypto.randomUUID(),
-      userId: undefined,
+      userProfileId: undefined,
       financialGoals: financialGoals(),
       investmentKnowledge: investmentKnowledge(),
       riskReactions: riskReaction(),
@@ -393,7 +393,7 @@ export const financialProfileRandomData = (): FinancialProfile[] => {
 
 const financialProfile: FinancialProfile = {
   id: crypto.randomUUID(),
-  userId: adminUser.id,
+  userProfileId: adminUserProfile.id,
   financialGoals: FinancialGoals.IMPREVISTOS,
   investmentKnowledge: InvestmentKnowledge.NO_TENGO_IDEA,
   financialEducation: FinancialEducation.NO_TENGO_FORMACION,
