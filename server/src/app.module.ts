@@ -9,7 +9,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ProfileModule } from './modules/profile/profile.module';
 
 import config from './config';
-import { CacheModule } from '@nestjs/cache-manager';
+// import { CacheModule } from '@nestjs/cache-manager';
 import { CacheConfigProvider } from './cache-config.provider';
 import { FileUploaderModule } from './common/modules/file-uploader/file-uploader.module';
 
@@ -25,10 +25,10 @@ import { FileUploaderModule } from './common/modules/file-uploader/file-uploader
       load: [config],
       isGlobal: true,
     }),
-    CacheModule.registerAsync({
-      isGlobal: true,
-      useClass: CacheConfigProvider,
-    }),
+    // CacheModule.registerAsync({
+    //  isGlobal: true,
+    //  useClass: CacheConfigProvider,
+    // }),
   ],
   controllers: [],
   providers: [],
