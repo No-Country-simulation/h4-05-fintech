@@ -15,10 +15,10 @@ const useLogin = ({ onSuccess, onReject }: options ) => {
   
   const setLogin = (formData: ILogin) => {
     setLoading(true);
+    setSessionLoading(true);
 
     login(formData)
       .then(({ data }) => {
-        setSessionLoading(true);
         setAccessToken(data.accessToken);
       })
       .then(() => {

@@ -37,8 +37,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const from = location.state?.from.pathname;
 
-  console.log(session);
-
   const { setRefresh } = useRefresh({
     onSuccess: () => {
       setSessionLoading(false);
