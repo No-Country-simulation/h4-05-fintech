@@ -1,33 +1,34 @@
-import { instance } from "@/api/axios";
 import { useNavigate } from "react-router";
+import { Button } from "../ui/button";
+import useLogout from "@/hooks/useLogout";
 
 const Dashboard = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const handleLogout = async () => {
-        console.log("Logout");
-        
-            try {
-            await instance.get(
-                '/auth/logout',
-                {
-                withCredentials: true,
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Credentials': 'true',
-                }
-                }
-            );
-            navigate('/auth');
-            } catch (error: any) {
-            console.error(error);
-            }
-    }
+  const { setLogout } = useLogout({
+    onSuccess: () =>  navigate('/auth'),
+    onReject: () => console.error("Ha ocurrido un error"),
+  })
+
+  const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    setLogout();
+  }
 
   return (
-    <div>
-        <button onClick={handleLogout}>Logout</button>
-    </div>
+    <nav className="flex justify-between items-center py-3">
+      <div>
+        <p className="text-[#BDE9FF]">Mi tablero</p>
+      </div>
+      <div>
+        <Button 
+          className="w-full px-4 py-3 bg-[#11668233] text-[#BDE9FF] text-base font-normal tracking-wide"
+          onClick={handleLogout}
+        >
+          Cerrar sesión
+        </Button>
+      </div>
+    </nav>
   )
 }
 

@@ -1,57 +1,48 @@
 "use client";
+import { useState } from "react";
+import { AxiosError } from "axios";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
-import { instance } from "@/api/axios";
+import { IRegister } from "@/interfaces/auth,interfaces";
+import { ApiErrorMessages, IApiError } from "@/api/api-errors";
+import { registerUser } from "@/api/auth.routes";
 
-interface formValues {
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
 
-const initilValues: formValues = {
+const initilValues: IRegister = {
   email: "",
   password: "",
   confirmPassword: "",
 };
 
-
-
 const Register = () => {
-  const [formData, setFormData] = useState<formValues>(initilValues);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [message, setMessage] = useState("");
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [error, setError] = useState("");
+  const [formData, setFormData] = useState<IRegister>(initilValues);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setError(null);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Submitted");
-    setMessage("");
-    setError("");
+    const response = registerUser(formData);
 
-    try {
-      const { data } = await instance.post(
-        '/auth/registry',
-        formData
-      );
-      const accessToken = data.accessToken;
-      console.log(accessToken);
-      setMessage(data.message);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      console.error(error);
-      setError(error.data?.message || "¡La operación se realizó con éxito!");
-    }
+    response
+      .then(() => console.log('Registrado exitosamente'))
+      .catch((error: AxiosError) => {
+        const errorMessage: IApiError = error.response?.data as IApiError;
+        switch (errorMessage.message) {
+          case ApiErrorMessages.REGISTERED_USER:
+            setError("Usuario ya registrado");
+            break;
+          default:
+            break
+        }
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -109,7 +100,7 @@ const Register = () => {
                 Confirmar contraseña
               </Label>
               <Input
-                id="password"
+                id="confirmPassword"
                 type="password"
                 name="confirmPassword"
                 value={formData.confirmPassword}
@@ -121,15 +112,21 @@ const Register = () => {
                 Minimo 8 caracteres
               </p>
             </div>
-
-            <Button
-              type="submit"
-              className="w-full h-[52px] bg-[#8D4E2A33] text-[#BDE9FF] text-base font-normal tracking-wide"
-            >
-              Registrarse
-            </Button>
+            {loading 
+              ? <Button
+                  type="submit"
+                  className="w-full h-[52px] bg-[#8D4E2A33] text-[#BDE9FF] text-base font-normal tracking-wide"
+                >
+                  Cargando...
+                </Button>
+              : <Button
+                  type="submit"
+                  className="w-full h-[52px] bg-[#8D4E2A33] text-[#BDE9FF] text-base font-normal tracking-wide"
+                >
+                  Registrarse
+                </Button>
+            }
           </form>
-          {message && <p>{message}</p>}
           {error && <p>{error}</p>}
           <div className="flex justify-center items-center gap-4 mt-5">
             <a href="#" className="hover:opacity-80 transition-opacity">
