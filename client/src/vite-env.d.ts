@@ -6,6 +6,7 @@ interface ImportMetaEnv {
     VITE_LOGOUT: string;
     VITE_VERIFY: string;
     VITE_PORT: string;
+    VITE_API_URL: string;
 }
 
 interface ImportMeta {

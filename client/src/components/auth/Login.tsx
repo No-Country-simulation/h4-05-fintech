@@ -1,52 +1,58 @@
+"use client";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
-import axios from "axios";
+import { ILogin } from "@/interfaces/auth,interfaces";
+import useLogin from "@/hooks/useLogin";
+import { ApiErrorMessages, IApiError } from "@/api/api-errors";
+import { AuthContext } from "@/context/AuthContext";
 
-const login: string = import.meta.env.VITE_LOGIN as string;
-
-interface formValues {
-  email: string;
-  password: string;
-}
-
-const initilValues: formValues = {
+const initilValues: ILogin = {
   email: "",
   password: "",
 };
 
 const LoginPage = () => {
+  const [formData, setFormData] = useState<ILogin>(initilValues);
+  const [error, setError] = useState<string | null>(null);
+  const { setSessionLoading } = useContext(AuthContext);
 
-  const [formData, setFormData] = useState<formValues>(initilValues); 
+  const navigate = useNavigate();
 
-
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+  const { setLogin, loading } = useLogin({
+    onSuccess: () => {
+      setSessionLoading(false);
+      navigate('/dashboard');
+    },
+    onReject: ({ response }) => {
+      const errorMessage: IApiError = response?.data as IApiError;
+      switch (errorMessage.message) {
+        case ApiErrorMessages.USER_NOT_FOUND:
+          setError("Usuario no encontrado");
+          break;
+        case ApiErrorMessages.INVALID_CREDENTIALS:
+          setError("Contraseña inválida");
+          break;
+        case ApiErrorMessages.USER_BLOCKED:
+          setError("Usuario bloqueado")
+          break;
+        default:
+          break
+      }
+    }
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setError(null);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Submitted");
-    setMessage("");
-    setError("");
-
-    try {
-      const { data } = await axios.post(
-        login,
-        formData
-      );
-      setMessage(data.message);
-    } catch (error: any) {
-      console.error(error);
-      setError(
-        error.response?.data?.message || "¡La operación se realizó con éxito!"
-      );
-    }
+    setLogin(formData);
   };
 
   return (
@@ -99,13 +105,16 @@ const LoginPage = () => {
                 Recuperar Contraseña
               </p>
             </div>
-
-            <Button type="submit" className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide">
-              Iniciar sesión
-            </Button>
+            {loading 
+              ? <Button type="submit" className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide" disabled={true}>
+                  Cargando...
+                </Button>
+              : <Button type="submit" className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide">
+                  Iniciar sesión
+                </Button>
+            }
           </form>
-          {message && <p>{message}</p>}
-          {error && <p>{error}</p>}
+          {error && <p className="text-center text-red-600">{error}</p>}
           <div className="flex justify-center items-center gap-4 mt-5">
             <a href="#" className="hover:opacity-80 transition-opacity">
               <img
