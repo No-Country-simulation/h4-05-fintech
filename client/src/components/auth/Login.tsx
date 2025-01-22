@@ -18,8 +18,8 @@ const initilValues: ILogin = {
 const LoginPage = () => {
   const [formData, setFormData] = useState<ILogin>(initilValues);
   const [error, setError] = useState<string | null>(null);
-
   const { setSessionLoading } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
   const { setLogin, loading } = useLogin({

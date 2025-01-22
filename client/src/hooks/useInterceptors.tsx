@@ -4,8 +4,7 @@ import { AxiosError } from 'axios';
 import useRefresh from './useRefresh';
 import { AuthContext } from '@/context/AuthContext';
 
-
-export const useAxiosPrivate = () => {
+export const useProtectedRoutes = () => {
   const { accessToken, setAccessToken } = useContext(AuthContext);
   const hasFetched = useRef(false);
   const { setRefresh } = useRefresh({})
@@ -13,6 +12,8 @@ export const useAxiosPrivate = () => {
   useEffect(() => {
     if (!hasFetched.current) {
       hasFetched.current = true
+
+      console.log(accessToken);
 
       const requestIntercept = apiProtectedRoutes.interceptors.request.use(
         (config) => {
@@ -48,5 +49,7 @@ export const useAxiosPrivate = () => {
     }
   }, [setRefresh])
 
-  return apiProtectedRoutes;
+  return { apiProtectedRoutes };
 }
+
+export default useProtectedRoutes;

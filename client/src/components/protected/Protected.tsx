@@ -7,7 +7,9 @@ const Protected = () => {
   const location = useLocation();
 
   return sessionLoading
-    ? <h1 className="text-lightBlue font-medium mt-5 -mb-4 text-base">Cargando...</h1>
+    ? <main className="min-h-screen flex flex-col items-center justify-center">
+        <h1 className="text-lightBlue font-medium mt-5 -mb-4 text-base">Cargando...</h1>
+      </main> 
     : session
       ? <Outlet />
       : <Navigate to="/auth" state={{ from: location }} replace />;
