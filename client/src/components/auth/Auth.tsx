@@ -13,8 +13,8 @@ const Auth = () => {
             className="w-[342px] h-[50px]"
           />
         </div>
-        <Card className="shadow-none border-none mt-30">
-          <div>
+        <Card className= " flex flex-col shadow-none border-none">
+          <div className=" justify-end grid-rows-12 mt-[20rem]">
             <Link to="/auth/login">
               <Button className="w-full h-[52px] bg-[#11668233] text-[#BDE9FF] text-base font-normal tracking-wide">
                 Iniciar sesión

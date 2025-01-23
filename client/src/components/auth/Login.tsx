@@ -64,8 +64,8 @@ const LoginPage = () => {
             Inicio de Sesión
           </h1>
         </div>
-        <Card className="shadow-none border-none">
-          <form onSubmit={handleSubmit} className="space-y-2">
+        <Card className=" border-none shadow-none">
+          <form onSubmit={handleSubmit} className="space-y-2 mt-[10rem]">
             <div className="rounded-lg space-y-2 bg-[#11668233] p-3">
               <Label htmlFor="email" className="text-[#8BD0EF]">
                 Correo electrónico
