@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const location = useLocation();
   const hasFetched = useRef(false);
 
-  const from = location.state?.from.pathname;
+  const from = location.state?.from?.pathname;
 
   const { setRefresh } = useRefresh({
     onSuccess: () => {

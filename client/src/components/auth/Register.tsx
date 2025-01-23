@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { IRegister } from "@/interfaces/auth,interfaces";
 import { ApiErrorMessages, IApiError } from "@/api/api-errors";
 import { registerUser } from "@/api/auth.routes";
+import { useNavigate } from "react-router";
 
 
 const initilValues: IRegister = {
@@ -21,6 +22,8 @@ const Register = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
+  const navigate = useNavigate();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError(null);
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -31,15 +34,21 @@ const Register = () => {
     const response = registerUser(formData);
 
     response
-      .then(() => console.log('Registrado exitosamente'))
+      .then(() => navigate('/auth/registered', { 
+        state: { 
+          email: formData.email, 
+          registered: false 
+        } 
+      }))
       .catch((error: AxiosError) => {
         const errorMessage: IApiError = error.response?.data as IApiError;
-        switch (errorMessage.message) {
-          case ApiErrorMessages.REGISTERED_USER:
-            setError("Usuario ya registrado");
-            break;
-          default:
-            break
+        if (errorMessage.message === ApiErrorMessages.REGISTERED_USER) {
+          navigate('/auth/registered', { 
+            state: { 
+              email: formData.email, 
+              registered: true 
+            } 
+          })
         }
       })
       .finally(() => setLoading(false));
@@ -117,7 +126,7 @@ const Register = () => {
                   type="submit"
                   className="w-full h-[52px] bg-[#8D4E2A33] text-[#BDE9FF] text-base font-normal tracking-wide"
                 >
-                  Cargando...
+                  Procesando...
                 </Button>
               : <Button
                   type="submit"

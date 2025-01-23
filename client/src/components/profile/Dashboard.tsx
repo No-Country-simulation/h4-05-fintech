@@ -37,6 +37,8 @@ const Dashboard = () => {
       response
         .then(({ data }) => {
           setProfileData(data);
+          const { surveyAnswered } = data;
+          if (!surveyAnswered) navigate('/survey');
         })
     }
   }, [])
