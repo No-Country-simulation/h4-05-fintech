@@ -11,14 +11,16 @@ type options = {
 
 const useLogin = ({ onSuccess, onReject }: options ) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const { setAccessToken, setSessionLoading } = useContext(AuthContext);
+  const { setIsLogin, setAccessToken, setSession, setSessionLoading } = useContext(AuthContext);
   
   const setLogin = (formData: ILogin) => {
     setLoading(true);
-    setSessionLoading(true);
 
     login(formData)
       .then(({ data }) => {
+        setIsLogin(true);
+        setSessionLoading(true);
+        setSession(true);
         setAccessToken(data.accessToken);
       })
       .then(() => {

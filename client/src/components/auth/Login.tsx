@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -8,7 +8,6 @@ import { Label } from "@/components/ui/label";
 import { ILogin } from "@/interfaces/auth,interfaces";
 import useLogin from "@/hooks/useLogin";
 import { ApiErrorMessages, IApiError } from "@/api/api-errors";
-import { AuthContext } from "@/context/AuthContext";
 
 const initilValues: ILogin = {
   email: "",
@@ -18,15 +17,11 @@ const initilValues: ILogin = {
 const LoginPage = () => {
   const [formData, setFormData] = useState<ILogin>(initilValues);
   const [error, setError] = useState<string | null>(null);
-  const { setSessionLoading } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
   const { setLogin, loading } = useLogin({
-    onSuccess: () => {
-      setSessionLoading(false);
-      navigate('/dashboard');
-    },
+    onSuccess: () => navigate('/dashboard'),
     onReject: ({ response }) => {
       const errorMessage: IApiError = response?.data as IApiError;
       switch (errorMessage.message) {
