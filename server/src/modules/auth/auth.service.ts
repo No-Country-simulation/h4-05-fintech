@@ -28,7 +28,7 @@ import { ProfileService } from '../profile/profile.service';
 import {
   LoginDto,
   RegistryDto,
-  ForgotPasswordDto,
+  SendEmailDto,
   ResetPasswordDto,
   ResetPasswordQueryDto,
   ChangePasswordDto,
@@ -179,6 +179,37 @@ export class AuthService {
     return { message: 'user successfully verified' };
   }
 
+  async resendVerification(body: SendEmailDto) {
+    const { email } = body;
+    const userFound = await this.userService.getUser({ email });
+
+    if (!userFound) throw new NotFoundException(ErrorMessage.USER_NOT_FOUND);
+
+    const verificationCode = crypto.randomBytes(32).toString('hex');
+
+    const link = new URL('verify', this.baseUrl);
+    link.searchParams.set('code', verificationCode);
+
+    const emailData: EmailData = {
+      email,
+      subject: 'Bienvenido a iUPI',
+      template: 'verify.hbs',
+      // Frontend example: https://iupi-fintech.frontend/auth/verify?code=${code}
+      variables: { link },
+    };
+
+    if (this.configService.nodeEnv === Environment.PRODUCTION)
+      await this.mailerService.sendMail(emailData);
+    else if (this.configService.nodeEnv === Environment.DEVELOPMENT)
+      await this.mailerService.sendMailDev(emailData);
+
+    const userUpdated = Object.assign(userFound, { verificationCode });
+
+    await this.userService.updateUser(userUpdated);
+
+    return { message: 'Verification email successfully resent' };
+  }
+
   async login(req: UserRequest, res: Response, body: LoginDto): Promise<{ accessToken: string }> {
     const { email, password } = body;
     const userFound = await this.userService.getUser({ email });
@@ -277,7 +308,7 @@ export class AuthService {
     return { message: 'password successfully changed' };
   }
 
-  async forgotPassword(body: ForgotPasswordDto) {
+  async forgotPassword(body: SendEmailDto) {
     const { email } = body;
     const userFound = await this.userService.getUser({ email });
 

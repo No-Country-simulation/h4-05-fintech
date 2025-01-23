@@ -31,6 +31,11 @@ export const RegistrySuccess: ApiResponseNoStatusOptions = {
   schema: successMessage('user successfully created'),
 };
 
+export const VerificationResendSuccess: ApiResponseNoStatusOptions = {
+  description: 'Verification email successfully resent',
+  schema: successMessage('Verification email successfully resent'),
+};
+
 export const VerifySuccess: ApiResponseNoStatusOptions = {
   description: 'User successfully verified',
   schema: successMessage('user successfully verified'),

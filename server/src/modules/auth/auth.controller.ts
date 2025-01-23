@@ -38,7 +38,7 @@ import {
   RegistryDto,
   ResetPasswordQueryDto,
   ResetPasswordDto,
-  ForgotPasswordDto,
+  SendEmailDto,
   ChangePasswordDto,
 } from './dto';
 import {
@@ -50,6 +50,7 @@ import {
   RefreshSucess,
   PasswordChangeSuccess,
   PasswordResetSuccess,
+  VerificationResendSuccess,
 } from './auth-success.response';
 
 @ApiTags('Auth')
@@ -64,8 +65,20 @@ export class AuthController {
   @ApiConflictResponse({ description: 'User already registered' })
   @ApiCreatedResponse(RegistrySuccess)
   @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
-  async registry(@Body() dto: RegistryDto) {
-    return await this.authService.registry(dto);
+  async registry(@Body() body: RegistryDto) {
+    return await this.authService.registry(body);
+  }
+
+  @Post('resend-verification')
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Resend verification email' })
+  @ApiBody({ type: SendEmailDto, required: true })
+  @ApiBadRequestResponse({ description: `Incoming data is invalid` })
+  @ApiNotFoundResponse({ description: 'User not found' })
+  @ApiOkResponse(VerificationResendSuccess)
+  @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
+  async resendVerification(@Body() body: SendEmailDto) {
+    return await this.authService.resendVerification(body);
   }
 
   @Get('verify')
@@ -94,9 +107,9 @@ export class AuthController {
   async login(
     @Req() req: UserRequest,
     @Res({ passthrough: true }) res: Response,
-    @Body() dto: LoginDto,
+    @Body() body: LoginDto,
   ) {
-    return await this.authService.login(req, res, dto);
+    return await this.authService.login(req, res, body);
   }
 
   @Get('refresh')
@@ -125,12 +138,12 @@ export class AuthController {
   @Post('forgot-password')
   @HttpCode(200)
   @ApiOperation({ summary: 'Password recovery process' })
-  @ApiBody({ type: ForgotPasswordDto, required: true })
+  @ApiBody({ type: SendEmailDto, required: true })
   @ApiBadRequestResponse({ description: 'Incoming data is invalid' })
   @ApiNotFoundResponse({ description: 'User not found' })
   @ApiOkResponse(PasswordRecoveryInitialized)
   @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
-  async forgotPassword(@Body() body: ForgotPasswordDto) {
+  async forgotPassword(@Body() body: SendEmailDto) {
     return await this.authService.forgotPassword(body);
   }
 
