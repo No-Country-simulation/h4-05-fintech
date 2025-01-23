@@ -55,7 +55,7 @@ const VerifyPage = ()  => {
                     </Button>
                   </Link>
                 </div>
-              : <h1 className="text-lightBlue font-medium mt-5 -mb-4 text-base">
+              : <h1 className="text-lightBlue font-medium mt-5 mb-4 text-base text-center">
                   Ha ocurrido un error en el proceso de verificación.
                 </h1>
             }

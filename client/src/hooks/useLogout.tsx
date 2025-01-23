@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { AxiosError } from "axios";
 import { logout } from "@/api/auth.routes";
 import { AuthContext } from "@/context/AuthContext";
@@ -9,28 +9,28 @@ type options = {
 }
 
 const useLogout = ({ onSuccess, onReject }: options ) => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const { setAccessToken } = useContext(AuthContext);
+  const { setAccessToken, setSessionLoading, setSession } = useContext(AuthContext);
 
   const setLogout = () => {
-    setLoading(true);
+    setSessionLoading(true);
 
     logout()
       .then(() => {
         setAccessToken(null);
       })
       .then(() => {
+        setSession(false);
         onSuccess?.();
       })
       .catch((error: AxiosError) => {
         onReject?.(error)
       })
       .finally(() => {
-        setLoading(false);
+        setSessionLoading(false);
       })
   }
 
-  return { setLogout, loading };
+  return { setLogout };
 }
 
 export default useLogout;

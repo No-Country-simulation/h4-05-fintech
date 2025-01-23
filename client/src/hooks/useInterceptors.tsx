@@ -13,8 +13,6 @@ export const useProtectedRoutes = () => {
     if (!hasFetched.current) {
       hasFetched.current = true
 
-      console.log(accessToken);
-
       const requestIntercept = apiProtectedRoutes.interceptors.request.use(
         (config) => {
           if (!config.headers.Authorization) {
@@ -47,7 +45,7 @@ export const useProtectedRoutes = () => {
         apiProtectedRoutes.interceptors.response.eject(responseIntercept)
       }
     }
-  }, [setRefresh])
+  }, [])
 
   return { apiProtectedRoutes };
 }

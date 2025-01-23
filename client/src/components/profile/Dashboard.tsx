@@ -1,9 +1,9 @@
-import { useNavigate } from "react-router";
 import { Button } from "../ui/button";
 import useLogout from "@/hooks/useLogout";
 import useProtectedRoutes from "@/hooks/useInterceptors";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IProfileData } from "@/interfaces/profile.interfaces";
+import { useNavigate } from "react-router";
 
 const defaultValues: IProfileData = {
   id: "",
@@ -16,23 +16,29 @@ const defaultValues: IProfileData = {
 }
 
 const Dashboard = () => {
-  const [profileData, setProfileData] = useState<IProfileData>(defaultValues)
+  const [profileData, setProfileData] = useState<IProfileData>(defaultValues);
+
+  const hasFetched = useRef(false);
   const navigate = useNavigate();
 
   const { setLogout } = useLogout({
-    onSuccess: () =>  navigate('/auth'),
+    onSuccess: () => navigate('/auth'),
     onReject: () => console.error("Ha ocurrido un error"),
   })
 
   const { apiProtectedRoutes } = useProtectedRoutes();
 
   useEffect(() => {
-    const response = apiProtectedRoutes.get<IProfileData>('/profile/data')
+    if (!hasFetched.current) {
+      hasFetched.current = true;
 
-    response
-      .then(({ data }) => {
-        setProfileData(data);
-      })
+      const response = apiProtectedRoutes.get<IProfileData>('/profile/data');
+
+      response
+        .then(({ data }) => {
+          setProfileData(data);
+        })
+    }
   }, [])
 
   const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -56,7 +62,7 @@ const Dashboard = () => {
       </div>
     </nav>
     <section>
-      <p>{profileData.name}</p>
+      <p>{profileData.id}</p>
       <p>{profileData.lastname}</p>
       <p>{profileData.financialProfileResults}</p>
     </section>

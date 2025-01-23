@@ -8,7 +8,11 @@ export interface IAuthContext {
   session: boolean,
   setSession: Dispatch<SetStateAction<boolean>>,
   sessionLoading: boolean,
-  setSessionLoading: Dispatch<SetStateAction<boolean>>
+  setSessionLoading: Dispatch<SetStateAction<boolean>>,
+  isLogin: boolean,
+  setIsLogin: Dispatch<SetStateAction<boolean>>,
+  protectedPage: boolean | null,
+  setProtectedPage: Dispatch<SetStateAction<boolean | null>>,
 };
 
 const defaultState: IAuthContext = {
@@ -18,6 +22,10 @@ const defaultState: IAuthContext = {
   setSession: () => {},
   sessionLoading: false,
   setSessionLoading: () => {},
+  isLogin: false,
+  setIsLogin: () => {},
+  protectedPage: null,
+  setProtectedPage: () => {},
 };
 
 interface AuthProviderProps {
@@ -30,6 +38,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [accessToken, setAccessToken] = useState<string | null>(null)
   const [sessionLoading, setSessionLoading] = useState<boolean>(true);
   const [session, setSession] = useState<boolean>(false);
+  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [protectedPage, setProtectedPage] = useState<boolean | null>(null);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -46,7 +56,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     onReject: () => {
       setSessionLoading(false);
       setSession(false);
-      navigate('/auth');
+      if (protectedPage) navigate('/auth');
     },
     setToken: (token: string) => setAccessToken(token),
   })
@@ -67,6 +77,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setSession,
         sessionLoading,
         setSessionLoading,
+        isLogin,
+        setIsLogin,
+        protectedPage,
+        setProtectedPage,
       }}>
       {children}
     </AuthContext.Provider>
