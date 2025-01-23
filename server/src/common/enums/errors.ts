@@ -6,6 +6,7 @@ export enum ErrorMessage {
   LOGGED_IN = 'already logged in',
   NOT_LOGGED_IN = 'not logged in',
   USER_NOT_VERIFIED = 'user not verified',
+  USER_VERIFIED = 'user already verified',
   NO_ACCESS = 'no allowed to access',
   PROFILE_CREATED = 'profile created',
   EXPIRED_TIME = 'expired time',

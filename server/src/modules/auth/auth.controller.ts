@@ -73,7 +73,7 @@ export class AuthController {
   @HttpCode(200)
   @ApiOperation({ summary: 'Resend verification email' })
   @ApiBody({ type: SendEmailDto, required: true })
-  @ApiBadRequestResponse({ description: `Incoming data is invalid` })
+  @ApiBadRequestResponse({ description: `Incoming data is invalid, or user verified` })
   @ApiNotFoundResponse({ description: 'User not found' })
   @ApiOkResponse(VerificationResendSuccess)
   @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })

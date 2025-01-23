@@ -185,6 +185,8 @@ export class AuthService {
 
     if (!userFound) throw new NotFoundException(ErrorMessage.USER_NOT_FOUND);
 
+    if (userFound.verified) throw new BadRequestException(ErrorMessage.USER_NOT_VERIFIED);
+
     const verificationCode = crypto.randomBytes(32).toString('hex');
 
     const link = new URL('verify', this.baseUrl);
