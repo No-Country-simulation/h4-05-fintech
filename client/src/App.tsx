@@ -9,6 +9,7 @@ import Protected from "./components/protected/Protected";
 import { AuthProvider } from "./context/AuthContext";
 import Unprotected from "./components/protected/Unprotetcted";
 import FinancialObjectives from "./components/profile/FinancialObjectives/FinancialObjectives";
+import Experience from "./components/profile/FinancialObjectives/Experience";
 
 
 
@@ -29,6 +30,7 @@ function App() {
               {/* Ruta principal de autenticación */}
               <Route path="/auth" element={<Auth />} />
               <Route path="/FinancialObjectives" element={<FinancialObjectives />} />
+              <Route path="/experience" element={<Experience />} />
   
               {/* Subrutas de autenticación */}
               <Route path="/auth/register" element={<Register />} />
