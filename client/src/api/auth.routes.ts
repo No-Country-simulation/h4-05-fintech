@@ -10,6 +10,12 @@ export const registerUser = (formData: IRegister): Promise<AxiosResponse> => {
   });
 }
 
+export const resendVerification = (email: string): Promise<AxiosResponse> => {
+  return apiRoutes.post('/auth/resend-verification', { email }, {
+    signal: controller.signal,
+  });
+}
+
 export const verifyUser = (code: string | null): Promise<AxiosResponse> => {
   return apiRoutes.get(`/auth/verify?code=${code}`);;
 }

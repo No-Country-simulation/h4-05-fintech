@@ -1,8 +1,11 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
+import { AxiosError } from "axios";
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
+import { resendVerification } from "@/api/auth.routes";
+import { IApiError } from "@/api/api-errors";
 
 const Registered = () => {
   const location = useLocation();
@@ -17,6 +20,18 @@ const Registered = () => {
       if (!email) navigate('/auth/register')
     }
   }, [])
+
+  const handleVerificationResend = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const response = resendVerification(email);
+
+    response
+      .then(() => console.log('Verification email resent'))
+      .catch((error: AxiosError) => {
+        const errorMessage: IApiError = error.response?.data as IApiError;
+        console.error(errorMessage.message);        
+      });
+  }
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center">
@@ -55,7 +70,10 @@ const Registered = () => {
             </Link>
           </div>
           <div className="mt-5">
-            <Button className="w-full h-[52px] bg-[#11668233] text-[#BDE9FF] text-base font-normal tracking-wide">
+            <Button 
+              className="w-full h-[52px] bg-[#11668233] text-[#BDE9FF] text-base font-normal tracking-wide"
+              onClick={handleVerificationResend}
+            >
               Reenviar confirmación
             </Button>
           </div>

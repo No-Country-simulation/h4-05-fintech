@@ -64,8 +64,8 @@ const LoginPage = () => {
             Inicio de Sesión
           </h1>
         </div>
-        <Card className="shadow-none border-none">
-          <form onSubmit={handleSubmit} className="space-y-2">
+        <Card className=" border-none shadow-none">
+          <form onSubmit={handleSubmit} className="space-y-2 mt-[10rem]">
             <div className="rounded-lg space-y-2 bg-[#11668233] p-3">
               <Label htmlFor="email" className="text-[#8BD0EF]">
                 Correo electrónico
@@ -78,6 +78,7 @@ const LoginPage = () => {
                 onChange={handleChange}
                 placeholder="Ingrese su correo electronico"
                 className="bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
+                required
               />
               <p className="text-xs text-[#8BD0EF] font-medium">
                 Mínimo 8 caracteres
@@ -95,6 +96,7 @@ const LoginPage = () => {
                 onChange={handleChange}
                 placeholder="***********"
                 className="bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
+                required
               />
               <p className="text-xs text-[#8BD0EF] font-medium">
                 Recuperar Contraseña

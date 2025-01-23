@@ -82,6 +82,7 @@ const Register = () => {
                 onChange={handleChange}
                 placeholder="Ingrese su correo electronico"
                 className="bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
+                required
               />
               <p className="text-xs text-[#8BD0EF] font-medium">
                 Ingrese una cuenta de correo válida
@@ -99,6 +100,7 @@ const Register = () => {
                 onChange={handleChange}
                 placeholder="***********"
                 className="bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
+                required
               />
               <p className="text-xs text-[#8BD0EF] font-medium">
                 Minimo 8 caracteres
@@ -116,6 +118,7 @@ const Register = () => {
                 onChange={handleChange}
                 placeholder="***********"
                 className="bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
+                required
               />
               <p className="text-xs text-[#8BD0EF] font-medium">
                 Minimo 8 caracteres
