@@ -1,0 +1,19 @@
+.financial-objectives {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Espacio entre los elementos */
+    align-items: center; /* Alinea horizontalmente al centro */
+    min-height: 100vh; /* Asegura que tome toda la altura de la pantalla */
+    margin: 0; /* Elimina márgenes del body */
+}
+
+.financial-objectives-title {
+    display: flex;
+    justify-content: center; /* Centra contenido horizontalmente dentro del componente */
+    align-items: center; /* Centra contenido verticalmente dentro del componente */
+    height: 100%; /* Ajusta si quieres centrarlo completamente dentro del contenedor */
+}
+
+.financial-objectives-button {
+    margin-bottom: 0; /* Evita márgenes adicionales al fondo */
+}

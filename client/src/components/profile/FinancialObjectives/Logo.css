@@ -1,0 +1,66 @@
+.logo-container {
+  width: 343px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.logo-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.logo-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.8px;
+  height: 49.85px;
+  position: relative;
+}
+
+.dot-small {
+  width: 12.21px;
+  height: 12.21px;
+  border-radius: 9.97px;
+  background-color: #8BD0EF;
+}
+
+.dot-medium {
+  width: 17.37px;
+  height: 31.47px;
+  border-radius: 9.97px;
+  background-color: #8BD0EF;
+}
+
+.dot-large {
+  width: 29.91px;
+  height: 49.85px;
+  border-radius: 12px;
+  background-color: #8BD0EF;
+}
+
+.logo-image {
+  width: 61.49px;
+  height: 49.85px;
+}
+
+.logo-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.title-text {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.25px;
+  text-align: center;
+  color: #8BD0EF;
+  max-width: 342px;
+  margin: 0 auto;
+}

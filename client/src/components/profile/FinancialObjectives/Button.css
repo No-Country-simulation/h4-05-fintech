@@ -1,0 +1,32 @@
+.button-primary {
+    width: 343px;
+    height: 52px;
+    padding: 14px 24px;
+    background: rgba(141, 78, 42, 0.4);
+    border: 1px solid #003546;
+    border-radius: 8px;
+    cursor: pointer;
+    
+    /* Text styles */
+    color: #BDE9FF;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.5px;
+    text-align: center;
+    
+    /* Reset default button styles */
+    outline: none;
+    box-sizing: border-box;
+  }
+  
+  .button-primary:hover {
+    opacity: 0.9;
+  }
+  
+  .button-primary:active {
+    transform: scale(0.98);
+  }
+  
+  

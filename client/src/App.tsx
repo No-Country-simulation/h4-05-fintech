@@ -8,6 +8,9 @@ import Dashboard from "./components/profile/Dashboard";
 import Protected from "./components/protected/Protected";
 import { AuthProvider } from "./context/AuthContext";
 import Unprotected from "./components/protected/Unprotetcted";
+import FinancialObjectives from "./components/profile/FinancialObjectives/FinancialObjectives";
+
+
 
 function App() {
   return (
@@ -25,6 +28,7 @@ function App() {
             <Route element={<Unprotected/>}>
               {/* Ruta principal de autenticación */}
               <Route path="/auth" element={<Auth />} />
+              <Route path="/FinancialObjectives" element={<FinancialObjectives />} />
   
               {/* Subrutas de autenticación */}
               <Route path="/auth/register" element={<Register />} />
