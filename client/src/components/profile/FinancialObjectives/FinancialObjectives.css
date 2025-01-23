@@ -5,6 +5,7 @@
     align-items: center; /* Alinea horizontalmente al centro */
     min-height: 100vh; /* Asegura que tome toda la altura de la pantalla */
     margin: 0; /* Elimina márgenes del body */
+    padding: 20px;
 }
 
 .financial-objectives-title {
