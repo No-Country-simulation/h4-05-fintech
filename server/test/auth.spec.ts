@@ -2,7 +2,7 @@ import request from 'supertest';
 import { app, validationPipe, authService } from './jest.setup';
 import {
   ChangePasswordDto,
-  ForgotPasswordDto,
+  SendEmailDto,
   LoginDto,
   RegistryDto,
   ResetPasswordDto,
@@ -483,7 +483,7 @@ describe('Auth', () => {
   describe('POST /forgot-password', () => {
     it('Should not initilize recovery because no data', async () => {
       try {
-        await validationPipe.transform({}, { type: 'body', metatype: ForgotPasswordDto });
+        await validationPipe.transform({}, { type: 'body', metatype: SendEmailDto });
         fail('Validation pipe should throw an error for invalid data');
       } catch (error) {
         expect(error.getResponse().statusCode).toEqual(400);
@@ -493,7 +493,7 @@ describe('Auth', () => {
     it('Should not initilize recovery because invalid data', async () => {
       const data = { emai: 'juanito' };
       try {
-        await validationPipe.transform(data, { type: 'body', metatype: ForgotPasswordDto });
+        await validationPipe.transform(data, { type: 'body', metatype: SendEmailDto });
         fail('Validation pipe should throw an error for invalid data');
       } catch (error) {
         expect(error.getResponse().statusCode).toEqual(400);
@@ -505,7 +505,7 @@ describe('Auth', () => {
       try {
         const result = await validationPipe.transform(data, {
           type: 'body',
-          metatype: ForgotPasswordDto,
+          metatype: SendEmailDto,
         });
 
         const { statusCode, error } = await request(app.getHttpServer())
@@ -525,7 +525,7 @@ describe('Auth', () => {
       try {
         const result = await validationPipe.transform(data, {
           type: 'body',
-          metatype: ForgotPasswordDto,
+          metatype: SendEmailDto,
         });
 
         const { statusCode, body } = await request(app.getHttpServer())
