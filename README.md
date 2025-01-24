@@ -1,4 +1,5 @@
 [![server](https://github.com/No-Country-simulation/h4-05-fintech/actions/workflows/server.yml/badge.svg)](https://github.com/No-Country-simulation/h4-05-fintech/actions/workflows/server.yml)
+[![iUPi-.fintech](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/simple/pdsjfm&style=flat&logo=cypress)](https://cloud.cypress.io/projects/pdsjfm/runs)
 
 ```markdown
 <h1 align="center">Cómo Enlazar GitHub con tu Servidor de Discord</h1>
