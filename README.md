@@ -1,3 +1,5 @@
+[![server](https://github.com/No-Country-simulation/h4-05-fintech/actions/workflows/server.yml/badge.svg)](https://github.com/No-Country-simulation/h4-05-fintech/actions/workflows/server.yml)
+
 ```markdown
 <h1 align="center">Cómo Enlazar GitHub con tu Servidor de Discord</h1>
 
