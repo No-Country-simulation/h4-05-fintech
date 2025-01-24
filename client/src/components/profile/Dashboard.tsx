@@ -48,6 +48,18 @@ const Dashboard = () => {
     setLogout();
   }
 
+  const handleUpdateProfile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProfileData({ ...profileData, [e.target.name]: e.target.value });
+  }
+
+  const handleSubmitProfile = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const response = apiProtectedRoutes.put<IProfileData>('/profile/data', profileData);
+
+    response
+      .then(({ data }) => console.log('Perfil actualizado con éxito'));
+  }
+
   return (
     <main>
       <nav className="flex justify-between items-center py-3">
