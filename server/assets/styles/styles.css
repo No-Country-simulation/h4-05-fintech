@@ -1,0 +1,38 @@
+.header {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border-width: 10px;
+  border-color: black;
+  margin: 5px;
+}
+
+.header svg {
+  width: 60px;
+  height: 60px;
+  margin-right: 15px;
+}
+
+.header p {
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.body {
+  text-align: center;
+}
+
+.body a {
+  background-color: rgb(67, 0, 67);
+  padding: 7px 10px 7px 10px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+}
+
+.body a:hover {
+  background-color: purple;
+}

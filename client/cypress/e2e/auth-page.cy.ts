@@ -98,7 +98,7 @@ describe('Testing the auth pages', () => {
     })
 
     describe('Testing login page', () => {
-      it('From auth main page, enter to login page', () => {
+      it('Login successful', () => {
         cy.visit('/auth');
         cy.get('[data-cy="login"]').should('have.text', 'Iniciar sesión').click();
         cy.url().should('include', '/login');
