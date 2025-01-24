@@ -6,7 +6,7 @@ interface LogoProps {
 }
 
 export const Logo: React.FC<LogoProps> = ({ 
-  title = "Super iUPi, para que podamos ofrecerte las mejores recomendaciones de inversión, necesitamos conocer tus aspiraciones financieras. ¿Nos contás un poco más?"
+  title 
 }) => {
   return (
     <div className="logo-container">
