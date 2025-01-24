@@ -36,6 +36,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Node Setup
+        uses: actions/setup-node@v4
+        with:
+          node: 18
+
       - name: Install dependencies on server
         run: npm ci
         working-directory: ./server
@@ -46,6 +51,11 @@ jobs:
           FRONTEND_URL: 'http://localhost:9000'
           DATABASE_URL: 'postgres://iupi-fintech-test:1cf4eb8f04a84637@localhost:5432/iupi-fintech-test-db'
         working-directory: ./server
+
+      - name: Wait for backend
+        run: |
+          until curl -s http://localhost:3000/health; do echo "Waiting for backend..." sleep 5 done
+        timeout-minutes: 2
 
       - name: Run frontend testing
         uses: cypress-io/github-action@v6
