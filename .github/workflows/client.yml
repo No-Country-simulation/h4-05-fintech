@@ -52,14 +52,6 @@ jobs:
           DATABASE_URL: 'postgres://iupi-fintech-test:1cf4eb8f04a84637@localhost:5432/iupi-fintech-test-db'
         working-directory: ./server
 
-      - name: Wait for backend
-        run: |
-          until curl -s http://localhost:3000/health; do 
-            echo "Waiting for backend..." 
-            sleep 5 
-          done
-        timeout-minutes: 2
-
       - name: Run frontend testing
         uses: cypress-io/github-action@v6
         with:

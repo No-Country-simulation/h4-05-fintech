@@ -38,7 +38,7 @@ function App() {
             {/* Rutas protegidas */}
             <Route element={<Protected/>}>
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="survey" element={<FinancialSurvey/>} />
+              <Route path="/survey" element={<FinancialSurvey/>} />
             </Route>
   
             {/* Ruta 404 para manejar rutas no encontradas */}

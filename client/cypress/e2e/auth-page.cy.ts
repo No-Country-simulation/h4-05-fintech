@@ -24,6 +24,8 @@ describe('Testing the auth pages', () => {
     describe('Testing register page', () => {
       it('Register successful', () => {
         cy.visit('/auth');
+        cy.clearAllCookies();
+
         cy.get('[data-cy="register"]').should('have.text', 'Registrarme').click();
         cy.url().should('include', '/register');
   
@@ -61,6 +63,8 @@ describe('Testing the auth pages', () => {
 
       it('Already registered', () => {
         cy.visit('/auth');
+        cy.clearAllCookies();
+
         cy.get('[data-cy="register"]').should('have.text', 'Registrarme').click();
         cy.url().should('include', '/register');
   
@@ -100,6 +104,8 @@ describe('Testing the auth pages', () => {
     describe('Testing login page', () => {
       it('Login successful', () => {
         cy.visit('/auth');
+        cy.clearAllCookies();
+
         cy.get('[data-cy="login"]').should('have.text', 'Iniciar sesión').click();
         cy.url().should('include', '/login');
   
