@@ -45,7 +45,7 @@ export const useProtectedRoutes = () => {
         apiProtectedRoutes.interceptors.response.eject(responseIntercept)
       }
     }
-  }, [])
+  }, [setRefresh])
 
   return { apiProtectedRoutes };
 }

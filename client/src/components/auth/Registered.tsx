@@ -43,39 +43,59 @@ const Registered = () => {
             width={342}
             height={50}
           />
-          {!registered 
-            ? <h1 className="text-lightBlue font-medium mt-5 mb-4 text-center">
-                Revisa tu dirección de correo
-              </h1>
-            : <h1 className="text-lightBlue font-medium mt-5 mb-4 text-center">
-                El correo <span className="text-orange-600">{email}</span> ya está registrado
-              </h1>
-          }
-          {!registered 
-            ? <p className="text-lightBlue text-center">
-                Te hemos una confimación de registro a <span className="text-orange-600">{email}</span>
-              </p>
-            : <p className="text-lightBlue text-center">
-                Si aún no has verificado tu correo, reenvía el código de verificación.
-                Si ya lo has veriifcado, intenta iniciar sesión.
-              </p>
-            }
         </div>
         <Card className="shadow-none border-none">
-          <div>
-            <Link to="/auth/login">
-              <Button className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide">
-                {!registered ? "Ya lo confirmé" : "Iniciar sesión"}
+          <div className="justify-end space-y-3 grid-rows-12 mt-[16rem]">
+            <div>
+              {!registered 
+                ? <h1
+                    data-cy="register-message"
+                    className="text-lightBlue font-medium mt-5 mb-4 text-center"
+                  >
+                    Revisa tu dirección de correo
+                  </h1>
+                : <h1
+                    data-cy="register-message"
+                    className="text-lightBlue font-medium mt-5 mb-4 text-center"
+                  >
+                    El correo <span className="text-orange-600">{email}</span> ya está registrado
+                  </h1>
+              }
+              {!registered 
+                ? <p
+                    data-cy="register-description"
+                    className="text-lightBlue text-center"
+                  >
+                    Te hemos una confimación de registro a <span className="text-orange-600">{email}</span>
+                  </p>
+                : <p 
+                    data-cy="register-description"
+                    className="text-lightBlue text-center"
+                  >
+                    Si aún no has verificado tu correo, reenvía el código de verificación.
+                    Si ya lo has veriifcado, intenta iniciar sesión.
+                  </p>
+                }
+            </div>
+            <div>
+              <Link to="/auth/login">
+                <Button
+                  data-cy="login-button"
+                  className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide"
+                >
+                  {!registered ? "Ya lo confirmé" : "Iniciar sesión"}
+                </Button>
+              </Link>
+            </div>
+            <div>
+              <Button
+                data-cy="verification-button"
+                className="w-full h-[52px] bg-[#11668233] text-[#BDE9FF] text-base font-normal tracking-wide"
+                onClick={handleVerificationResend}
+              >
+                Reenviar confirmación
               </Button>
-            </Link>
-          </div>
-          <div className="mt-5">
-            <Button 
-              className="w-full h-[52px] bg-[#11668233] text-[#BDE9FF] text-base font-normal tracking-wide"
-              onClick={handleVerificationResend}
-            >
-              Reenviar confirmación
-            </Button>
+            </div>
           </div>
         </Card>
       </div>

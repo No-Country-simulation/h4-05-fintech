@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label";
 import { ILogin } from "@/interfaces/auth,interfaces";
 import useLogin from "@/hooks/useLogin";
 import { ApiErrorMessages, IApiError } from "@/api/api-errors";
+import { loginWithApple, loginWithGoogle } from "@/api/auth.routes";
+import { OAuth2Button } from "../ui/oauth2-button";
 
 const initilValues: ILogin = {
   email: "",
@@ -40,6 +42,16 @@ const LoginPage = () => {
     }
   });
 
+  const handleGoogleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    loginWithGoogle();
+  }
+  
+  const handleAppleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    loginWithApple();
+  }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError(null);
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -71,6 +83,7 @@ const LoginPage = () => {
                 Correo electrónico
               </Label>
               <Input
+                data-cy="email-input"
                 id="email"
                 type="email"
                 name="email"
@@ -89,6 +102,7 @@ const LoginPage = () => {
                 Contraseña
               </Label>
               <Input
+                data-cy="password-input"
                 id="password"
                 type="password"
                 name="password"
@@ -106,29 +120,28 @@ const LoginPage = () => {
               ? <Button type="submit" className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide" disabled={true}>
                   Cargando...
                 </Button>
-              : <Button type="submit" className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide">
+              : <Button 
+                  data-cy="login-button"
+                  type="submit" 
+                  className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide">
                   Iniciar sesión
                 </Button>
             }
           </form>
           {error && <p className="text-center text-red-600">{error}</p>}
           <div className="flex justify-center items-center gap-4 mt-5">
-            <a href="#" className="hover:opacity-80 transition-opacity">
-              <img
-                src="https://res.cloudinary.com/di0cvbfdb/image/upload/v1736977163/fintech/qv7hg5otdckrcprbxtrf.svg"
-                alt="Login with Apple"
-                width={25}
-                height={31}
-              />
-            </a>
-            <a href="#" className="hover:opacity-80 transition-opacity">
-              <img
-                src="https://res.cloudinary.com/di0cvbfdb/image/upload/v1736977147/fintech/mass56ztwpkywyfnbhx9.svg"
-                alt="Login with Google"
-                width={25}
-                height={26}
-              />
-            </a>
+            <OAuth2Button
+              data-cy="apple-button"
+              label="Apple" 
+              className="hover:opacity-80 transition-opacity" 
+              onClick={handleAppleLogin}
+            />
+            <OAuth2Button
+              data-cy="google-button"
+              label="Google"
+              className="hover:opacity-80 transition-opacity" 
+              onClick={handleGoogleLogin}
+            />
           </div>
         </Card>
       </div>

@@ -33,6 +33,14 @@ export const login = (formData: ILogin): Promise<AxiosResponse<{ accessToken: st
   );
 }
 
+export const loginWithGoogle = (): Promise<AxiosResponse> => {
+  return apiRoutes.get('/oauth2/google/login');
+}
+
+export const loginWithApple = (): Promise<AxiosResponse> => {
+  return apiRoutes.get('/oauth2/google/apple');
+}
+
 export const refreshSession = (): Promise<AxiosResponse<{ accessToken: string }>> => {
   return apiRoutes.get('/auth/refresh',
     {

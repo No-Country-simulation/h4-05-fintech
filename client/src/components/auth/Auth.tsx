@@ -13,21 +13,28 @@ const Auth = () => {
             className="w-[342px] h-[50px]"
           />
         </div>
-        <Card className= " flex flex-col shadow-none border-none">
-          <div className=" justify-end grid-rows-12 mt-[20rem]">
-            <Link to="/auth/login">
-              <Button className="w-full h-[52px] bg-[#11668233] text-[#BDE9FF] text-base font-normal tracking-wide">
-                Iniciar sesión
-              </Button>
-            </Link>
-          </div>
-
-          <div className="mt-5">
-            <Link to="/auth/register">
-              <Button className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide">
-                Registrarme
-              </Button>
-            </Link>
+        <Card className= "flex flex-col shadow-none border-none">
+          <div className="justify-end space-y-6 grid-rows-12 mt-[20rem]">
+            <div>
+              <Link to="/auth/login">
+                <Button 
+                  className="w-full h-[52px] bg-[#11668233] text-[#BDE9FF] text-base font-normal tracking-wide"
+                  data-cy="login"
+                >
+                  Iniciar sesión
+                </Button>
+              </Link>
+            </div>
+            <div>
+              <Link to="/auth/register">
+                <Button 
+                  className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide"
+                  data-cy="register"
+                >
+                  Registrarme
+                </Button>
+              </Link>
+            </div>
           </div>
         </Card>
       </div>

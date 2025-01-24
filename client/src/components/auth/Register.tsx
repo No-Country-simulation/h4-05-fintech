@@ -7,8 +7,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { IRegister } from "@/interfaces/auth,interfaces";
 import { ApiErrorMessages, IApiError } from "@/api/api-errors";
-import { registerUser } from "@/api/auth.routes";
+import { loginWithApple, loginWithGoogle, registerUser } from "@/api/auth.routes";
 import { useNavigate } from "react-router";
+import { OAuth2Button } from "../ui/oauth2-button";
 
 
 const initilValues: IRegister = {
@@ -23,6 +24,16 @@ const Register = () => {
   const [error, setError] = useState<string | null>(null);
 
   const navigate = useNavigate();
+
+  const handleGoogleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    loginWithGoogle();
+  }
+
+  const handleAppleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    loginWithApple();
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError(null);
@@ -75,6 +86,7 @@ const Register = () => {
                 Correo electrónico
               </Label>
               <Input
+                data-cy="email-input"
                 id="email"
                 type="email"
                 name="email"
@@ -93,6 +105,7 @@ const Register = () => {
                 Contraseña
               </Label>
               <Input
+                data-cy="password-input"
                 id="password"
                 type="password"
                 name="password"
@@ -111,6 +124,7 @@ const Register = () => {
                 Confirmar contraseña
               </Label>
               <Input
+                data-cy="confirm-password-input"
                 id="confirmPassword"
                 type="password"
                 name="confirmPassword"
@@ -132,6 +146,7 @@ const Register = () => {
                   Procesando...
                 </Button>
               : <Button
+                  data-cy="register-button"
                   type="submit"
                   className="w-full h-[52px] bg-[#8D4E2A33] text-[#BDE9FF] text-base font-normal tracking-wide"
                 >
@@ -141,22 +156,18 @@ const Register = () => {
           </form>
           {error && <p>{error}</p>}
           <div className="flex justify-center items-center gap-4 mt-5">
-            <a href="#" className="hover:opacity-80 transition-opacity">
-              <img
-                src="https://res.cloudinary.com/di0cvbfdb/image/upload/v1736977163/fintech/qv7hg5otdckrcprbxtrf.svg"
-                alt="Login with Apple"
-                width={25}
-                height={31}
-              />
-            </a>
-            <a href="#" className="hover:opacity-80 transition-opacity">
-              <img
-                src="https://res.cloudinary.com/di0cvbfdb/image/upload/v1736977147/fintech/mass56ztwpkywyfnbhx9.svg"
-                alt="Login with Google"
-                width={25}
-                height={26}
-              />
-            </a>
+            <OAuth2Button
+              data-cy="apple-button"
+              label="Apple" 
+              className="hover:opacity-80 transition-opacity" 
+              onClick={handleAppleLogin}
+            />
+            <OAuth2Button
+              data-cy="google-button"
+              label="Google"
+              className="hover:opacity-80 transition-opacity" 
+              onClick={handleGoogleLogin}
+            />
           </div>
         </Card>
       </div>

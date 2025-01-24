@@ -7,7 +7,9 @@
     "start": "VITE_PORT=3000 react-scripts start",
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start:cypress": "vite --port 9000",
+    "cypress:run": "npx cypress run"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.1",
@@ -27,11 +29,11 @@
   },
   "devDependencies": {
     "@types/json-schema": "^7.0.15",
-    "@types/node": "^22.10.7",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "autoprefixer": "^10.4.20",
+    "cypress": "^14.0.0",
     "postcss": "^8.5.1",
     "tailwindcss": "^3.4.17",
     "typescript": "~5.6.2",

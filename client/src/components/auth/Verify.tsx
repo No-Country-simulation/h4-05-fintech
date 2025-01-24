@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
 import { Button } from '../ui/button';
 import { verifyUser } from '@/api/auth.routes';
+import { Card } from '../ui/card';
 
 const VerifyPage = ()  => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -44,21 +45,27 @@ const VerifyPage = ()  => {
                 width={342}
                 height={50}
               />
+            <Card className="shadow-none border-none">
             {verified
-              ? <div>
-                  <h1 className="text-lightBlue font-medium mt-5 mb-4 text-base">
-                    Usuario verificado con éxito. Ya puedes iniciar sesión.
-                  </h1>
-                  <Link to="/auth/login">
-                    <Button type="submit" className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide">
-                      Iniciar sesión
-                    </Button>
-                  </Link>
+              ? <div className="justify-end space-y-3 grid-rows-12 mt-[16rem]">
+                  <div>
+                    <h1 className="text-lightBlue font-medium mt-5 mb-4 text-base">
+                      Usuario verificado con éxito. Ya puedes iniciar sesión.
+                    </h1>
+                  </div>
+                  <div>
+                    <Link to="/auth/login">
+                      <Button type="submit" className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide">
+                        Iniciar sesión
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               : <h1 className="text-lightBlue font-medium mt-5 mb-4 text-base text-center">
                   Ha ocurrido un error en el proceso de verificación.
                 </h1>
             }
+            </Card>
             </div>
           </div>
         }
