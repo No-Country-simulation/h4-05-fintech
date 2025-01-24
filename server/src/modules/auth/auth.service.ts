@@ -68,7 +68,7 @@ export class AuthService {
       : '2h';
 
   private cookieName =
-    this.configService.nodeEnv === Environment.PRODUCTION
+    this.configService.nodeEnv === Environment.PRODUCTION || Environment.STAGING
       ? this.configService.cookieName
       : 'refresh-cookie';
 
