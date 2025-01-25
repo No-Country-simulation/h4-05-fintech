@@ -7,16 +7,15 @@ describe('Testing the auth pages', () => {
       cy.viewport('iphone-5');
       cy.clearCookie('refresh-cookie');
       cy.clearCookies();
+      cy.getCookie('refresh-cookie').then((cookie) => {
+        console.log('Cookie:', cookie);
+      });
     });
 
     it('Register successful', () => {
       cy.visit('/auth');
       cy.get('[data-cy="register"]').should('have.text', 'Registrarme').click();
       cy.url().should('include', '/register');
-
-      cy.getCookie('refresh-cookie').then((cookie) => {
-        console.log('Cookie:', cookie);
-      });
   
       // Components should be visible
       cy.get('[data-cy="email-input"]').should('be.visible');
@@ -53,10 +52,6 @@ describe('Testing the auth pages', () => {
       cy.visit('/auth');
       cy.get('[data-cy="register"]').should('have.text', 'Registrarme').click();
       cy.url().should('include', '/register');
-
-      cy.getCookie('refresh-cookie').then((cookie) => {
-        console.log('Cookie:', cookie);
-      });
   
       // Components should be visible
       cy.get('[data-cy="email-input"]').should('be.visible');
@@ -101,10 +96,6 @@ describe('Testing the auth pages', () => {
       cy.get('[data-cy="login"]').should('have.text', 'Iniciar sesión').click();
       cy.url().should('include', '/login');
 
-      cy.getCookie('refresh-cookie').then((cookie) => {
-        console.log('Cookie:', cookie);
-      });
-  
       // Components should be visible
       cy.get('[data-cy="email-input"]').should('be.visible');
       cy.get('[data-cy="password-input"]').should('be.visible');
