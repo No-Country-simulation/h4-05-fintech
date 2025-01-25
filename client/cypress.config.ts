@@ -7,6 +7,7 @@ export default defineConfig({
     baseUrl: "http://localhost:9000",
     video: true,
     videoCompression: true,
+    chromeWebSecurity: false,
     setupNodeEvents(on, _config) {
       on(
         'after:spec',
