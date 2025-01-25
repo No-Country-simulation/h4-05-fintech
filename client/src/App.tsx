@@ -8,6 +8,7 @@ import Dashboard from "./components/profile/Dashboard";
 import Protected from "./components/protected/Protected";
 import { AuthProvider } from "./context/AuthContext";
 import Unprotected from "./components/protected/Unprotetcted";
+import InicioOnbording from "./components/profile/InicioOnboarding";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/" element={<Navigate to="/auth" replace />} />
 
             {/* Rutas neutras */}
+              <Route path= "/perfil" element={<InicioOnbording />} />
 
             {/* Rutas no-protegidas */}
             <Route element={<Unprotected/>}>
