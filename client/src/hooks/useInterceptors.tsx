@@ -1,17 +1,19 @@
-import { useContext, useEffect, useRef } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { apiProtectedRoutes } from '@/api/axios'
 import { AxiosError } from 'axios';
 import useRefresh from './useRefresh';
 import { AuthContext } from '@/context/AuthContext';
 
 export const useProtectedRoutes = () => {
+  const [request, setRequest] = useState<boolean>(false)
   const { accessToken, setAccessToken } = useContext(AuthContext);
   const hasFetched = useRef(false);
   const { setRefresh } = useRefresh({})
 
   useEffect(() => {
-    if (!hasFetched.current) {
+    if (!hasFetched.current || request) {
       hasFetched.current = true
+      setRequest(false);
 
       const requestIntercept = apiProtectedRoutes.interceptors.request.use(
         (config) => {
@@ -28,6 +30,7 @@ export const useProtectedRoutes = () => {
           const prevRequest = error.config
           if (!prevRequest) return;
           else if (error?.response?.status === 401) {
+            console.log('error');
             const data = await setRefresh();
             if (data) {
               const { accessToken: newAccessToken } = data;
@@ -45,9 +48,9 @@ export const useProtectedRoutes = () => {
         apiProtectedRoutes.interceptors.response.eject(responseIntercept)
       }
     }
-  }, [setRefresh])
+  }, [request])
 
-  return { apiProtectedRoutes };
+  return { apiProtectedRoutes, setRequest };
 }
 
 export default useProtectedRoutes;

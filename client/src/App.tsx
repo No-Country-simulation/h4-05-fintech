@@ -1,53 +1,27 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import MainLayout from "./components/layout/MainLayout";
-import Auth from "./components/auth/Auth";
-import Login from "./components/auth/Login";
-import Register from "./components/auth/Register";
-import Verify from "./components/auth/Verify";
-import Dashboard from "./components/profile/Dashboard";
-import Protected from "./components/protected/Protected";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
-import Unprotected from "./components/protected/Unprotetcted";
-import FinancialSurvey from "./components/profile/FinancialSurvey";
-import Registered from "./components/auth/Registered";
+import MainLayout from "./components/layout/MainLayout";
+
+// GRUPO DE RUTAS
+import AuthRoutes from "./components/auth/AuthRoutes";
+import DashboardRoutes from "./components/dashboard/DashboardRoutes";
+import FinancialSurveyRoutes from "./components/financial-survey/SurveyRoutes ";
+
+const router = createBrowserRouter([
+  {
+    element: <AuthProvider><MainLayout /></AuthProvider>,
+    errorElement: <p>Not found</p>,
+    children: [
+      { path: "/auth/*", element: <AuthRoutes /> },
+      { path: "/dashboard/*", element: <DashboardRoutes /> },
+      { path: "/financial-survey/*", element: <FinancialSurveyRoutes /> }
+    ]
+  }
+])
 
 function App() {
   return (
-    <Router>
-      <AuthProvider>
-        <MainLayout>
-          <Routes>
-          
-            {/* Redirige la raíz ("/") a "/auth" */}
-            <Route path="/" element={<Navigate to="/auth" replace />} />
-
-            {/* Rutas neutras */}
-
-            {/* Rutas no protegidas */}
-            <Route element={<Unprotected/>}>
-              {/* Ruta principal de autenticación */}
-              <Route path="/auth" element={<Auth />} />
-  
-              {/* Subrutas de autenticación */}
-              <Route path="/auth/register" element={<Register />} />
-              <Route path="/auth/login" element={<Login/>} />
-              <Route path="/auth/registered" element={< Registered />} />
-              <Route path="/auth/verify" element={<Verify />} />
-            </Route>
-
-            {/* Rutas protegidas */}
-            <Route element={<Protected/>}>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/survey" element={<FinancialSurvey/>} />
-            </Route>
-  
-            {/* Ruta 404 para manejar rutas no encontradas */}
-            <Route path="*" element={<Navigate to="/auth" replace />} />
-          
-          </Routes>
-        </MainLayout>
-      </AuthProvider>
-    </Router>
+    <RouterProvider router={router} />  
   );
 }
 

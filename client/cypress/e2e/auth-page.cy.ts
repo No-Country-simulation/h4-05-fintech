@@ -8,10 +8,6 @@ describe('Testing the auth pages', () => {
     });
 
     it('Register successful', () => {
-      cy.getCookie('refresh-cookie').then((cookie) => {
-        cy.log('Cookie:', cookie); // Aparece en el panel de Cypress
-      });
-
       cy.visit('/auth');
       cy.get('[data-cy="register"]').should('have.text', 'Registrarme').click();
       cy.url().should('include', '/register');
@@ -48,10 +44,6 @@ describe('Testing the auth pages', () => {
     });
 
     it('Already registered', () => {
-      cy.getCookie('refresh-cookie').then((cookie) => {
-        cy.log('Cookie:', cookie); // Aparece en el panel de Cypress
-      });
-
       cy.visit('/auth');
       cy.get('[data-cy="register"]').should('have.text', 'Registrarme').click();
       cy.url().should('include', '/register');
@@ -95,10 +87,6 @@ describe('Testing the auth pages', () => {
       });
 
     it('Login successful', () => {
-      cy.getCookie('refresh-cookie').then((cookie) => {
-        cy.log('Cookie:', cookie); // Aparece en el panel de Cypress
-      });
-
       cy.visit('/auth');
       cy.get('[data-cy="login"]').should('have.text', 'Iniciar sesión').click();
       cy.url().should('include', '/login');

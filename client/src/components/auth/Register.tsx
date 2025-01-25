@@ -11,7 +11,6 @@ import { loginWithApple, loginWithGoogle, registerUser } from "@/api/auth.routes
 import { useNavigate } from "react-router";
 import { OAuth2Button } from "../ui/oauth2-button";
 
-
 const initilValues: IRegister = {
   email: "",
   password: "",
@@ -52,7 +51,6 @@ const Register = () => {
         } 
       }))
       .catch((error: AxiosError) => {
-        console.log(error);
         const errorMessage: IApiError = error.response?.data as IApiError;
         if (errorMessage.message === ApiErrorMessages.REGISTERED_USER) {
           navigate('/auth/registered', { 

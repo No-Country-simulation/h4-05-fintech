@@ -38,7 +38,7 @@ const Dashboard = () => {
         .then(({ data }) => {
           setProfileData(data);
           const { surveyAnswered } = data;
-          if (!surveyAnswered) navigate('/survey');
+          if (!surveyAnswered) navigate('/financial-survey');
         })
     }
   }, [])
@@ -54,7 +54,7 @@ const Dashboard = () => {
 
   const handleSubmitProfile = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = apiProtectedRoutes.put<IProfileData>('/profile/data', profileData);
+    const response = apiProtectedRoutes.put('/profile/data', profileData);
 
     response
       .then(({ data }) => console.log('Perfil actualizado con éxito'));
