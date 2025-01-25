@@ -6,8 +6,6 @@ describe('Testing the auth pages', () => {
   context('Testing on iphone-5 resolution', () => {
     beforeEach(() => {
       cy.viewport('iphone-5');
-      cy.clearCookies();
-      cy.setCookie('refresh-token', '')
     });
 
     describe('Testing register page', () => {

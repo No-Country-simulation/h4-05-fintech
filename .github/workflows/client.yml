@@ -71,7 +71,6 @@ jobs:
           start: npm run start:cypress
           wait-on: 'http://localhost:9000'
           record: true
-          parallel: true
           working-directory: ./client
         env:
           VITE_API_URL: http//localhost:3000
