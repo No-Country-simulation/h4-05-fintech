@@ -1,55 +1,35 @@
-const register = {
-  email: 'newuser@email.com',
-  password: 'newNormalUser123',
-  confirmPassword: 'newNormalUser123',
-};
+import { ApiErrorMessages } from "@/api/api-errors";
+import { login, register, registeredUser, normalUserRefreshToken } from "cypress/seeds/user.seeds";
 
-const registeredUser = {
-  email: 'unverified@email.com',
-  password: 'unverifiedUser0',
-  confirmPassword: 'unverifiedUser0',
-};
-
-const login = {
-  email: 'normal@email.com',
-  password: 'normalUser1',
-};
 
 describe('Testing the auth pages', () => {
   context('Testing on iphone-5 resolution', () => {
     beforeEach(() => {
       cy.viewport('iphone-5');
-      cy.clearCookie('refresh-cookie');
     });
 
     describe('Testing register page', () => {
       it('Register successful', () => {
         cy.visit('/auth');
-        cy.getCookie('refresh-cookie').then((cookie) => {
-          if (cookie) cy.log('Cookie exists');
-          else cy.log('Cookie does not exist');
-        })
-
         cy.get('[data-cy="register"]').should('have.text', 'Registrarme').click();
         cy.url().should('include', '/register');
   
         // Components should be visible
         cy.get('[data-cy="email-input"]').should('be.visible');
         cy.get('[data-cy="password-input"]').should('be.visible');
-        cy.get('[data-cy="password-input"]').should('be.visible');
-        cy.get('[data-cy="register-button"]').should('be.visible');
+        cy.get('[data-cy="confirm-password-input"]').should('be.visible');
         cy.get('[data-cy="apple-button"]').should('be.visible');
         cy.get('[data-cy="google-button"]').should('be.visible');
   
         // Input data
         cy.get('[data-cy="email-input"]').type(register.email);
         cy.get('[data-cy="password-input"]').type(register.password);
-        cy.get('[data-cy="password-input"]').type(register.confirmPassword);
+        cy.get('[data-cy="confirm-password-input"]').type(register.confirmPassword);
 
         // Submit data
-        cy.intercept('POST', '/auth/registry', { statusCode: 201 }).as('user-register');
-        cy.get('[data-cy="register-button"]').submit();
-        cy.wait('@user-register').then((interception) => {
+        cy.intercept('POST', '/auth/registry', { statusCode: 201 }).as('register');
+        cy.get('[data-cy="register-form"]').submit();
+        cy.wait('@register').then((interception) => {
           expect(interception?.response?.statusCode).to.equal(201);
         });
 
@@ -67,31 +47,32 @@ describe('Testing the auth pages', () => {
 
       it('Already registered', () => {
         cy.visit('/auth');
-        cy.getCookie('refresh-cookie').then((cookie) => {
-          if (cookie) cy.log('Cookie exists');
-          else cy.log('Cookie does not exist');
-        })
-
         cy.get('[data-cy="register"]').should('have.text', 'Registrarme').click();
         cy.url().should('include', '/register');
   
         // Components should be visible
         cy.get('[data-cy="email-input"]').should('be.visible');
         cy.get('[data-cy="password-input"]').should('be.visible');
-        cy.get('[data-cy="password-input"]').should('be.visible');
-        cy.get('[data-cy="register-button"]').should('be.visible');
+        cy.get('[data-cy="confirm-password-input"]').should('be.visible');
         cy.get('[data-cy="apple-button"]').should('be.visible');
         cy.get('[data-cy="google-button"]').should('be.visible');
   
         // Input data
         cy.get('[data-cy="email-input"]').type(registeredUser.email);
         cy.get('[data-cy="password-input"]').type(registeredUser.password);
-        cy.get('[data-cy="password-input"]').type(registeredUser.confirmPassword);
+        cy.get('[data-cy="confirm-password-input"]').type(registeredUser.confirmPassword);
 
         // Submit data
-        cy.intercept('POST', '/auth/registry', { statusCode: 409 }).as('user-register');
-        cy.get('[data-cy="register-button"]').submit();
-        cy.wait('@user-register').then((interception) => {
+        cy.intercept('POST', '/auth/registry',
+          { 
+            statusCode: 409,
+            body: {
+              message: ApiErrorMessages.REGISTERED_USER,
+            },
+          })
+          .as('register');
+        cy.get('[data-cy="register-form"]').submit();
+        cy.wait('@register').then((interception) => {
           expect(interception?.response?.statusCode).to.equal(409);
         });
 
@@ -111,18 +92,12 @@ describe('Testing the auth pages', () => {
     describe('Testing login page', () => {
       it('Login successful', () => {
         cy.visit('/auth');
-        cy.getCookie('refresh-cookie').then((cookie) => {
-          if (cookie) cy.log('Cookie exists');
-          else cy.log('Cookie does not exist');
-        })
-
         cy.get('[data-cy="login"]').should('have.text', 'Iniciar sesión').click();
         cy.url().should('include', '/login');
   
         // Components should be visible
         cy.get('[data-cy="email-input"]').should('be.visible');
         cy.get('[data-cy="password-input"]').should('be.visible');
-        cy.get('[data-cy="login-button"]').should('be.visible');
         cy.get('[data-cy="apple-button"]').should('be.visible');
         cy.get('[data-cy="google-button"]').should('be.visible');
   
@@ -131,11 +106,23 @@ describe('Testing the auth pages', () => {
         cy.get('[data-cy="password-input"]').type(login.password);
 
         // Submit data
-        cy.intercept('POST', '/auth/registry', { statusCode: 200 }).as('user-login');
-        cy.get('[data-cy="login-button"]').submit();
-        cy.wait('@user-login').then((interception) => {
+        cy.intercept('POST', '/auth/login', { statusCode: 200 }).as('login');
+        cy.get('[data-cy="login-form"]').submit();
+        cy.wait('@login').then((interception) => {
           expect(interception?.response?.statusCode).to.equal(200);
         });
+
+        // Dashboard page
+        cy.url().should('include', '/dashboard');
+
+        // Logout
+        cy.setCookie('refresh-token', normalUserRefreshToken)
+        cy.intercept('GET', '/auth/logout', { statusCode: 200 }).as('logout');
+        cy.get('[data-cy="logout-button"]').should('be.visible').click();
+        cy.wait('@logout').then((interception) => {
+          expect(interception?.response?.statusCode).to.equal(200);
+        });
+        cy.url().should('include', '/auth');
       })
     })
   })

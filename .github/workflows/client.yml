@@ -45,6 +45,14 @@ jobs:
         run: npm ci
         working-directory: ./server
 
+      - name: Run migration 
+        run: npm run prisma:migrate
+        working-directory: ./server
+
+      - name: Run seeders
+        run: npm run prisma:seed
+        working-directory: ./server
+
       - name: Run server
         run: npm run start &
         env:

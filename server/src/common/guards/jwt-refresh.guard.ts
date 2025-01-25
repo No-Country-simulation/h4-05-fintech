@@ -51,8 +51,7 @@ export class JwtRefreshGuard implements CanActivate {
   private removeCookie(res: Response) {
     const options: CookieOptions = {
       httpOnly: true,
-      secure:
-        this.configService.nodeEnv === Environment.PRODUCTION || Environment.STAGING ? true : false,
+      secure: this.configService.nodeEnv === Environment.PRODUCTION ? true : false,
       sameSite: 'none',
     };
     res.clearCookie(this.cookieName, options);

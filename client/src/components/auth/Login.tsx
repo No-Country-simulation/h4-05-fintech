@@ -77,7 +77,11 @@ const LoginPage = () => {
           </h1>
         </div>
         <Card className=" border-none shadow-none">
-          <form onSubmit={handleSubmit} className="space-y-2 mt-[10rem]">
+          <form
+            data-cy="login-form"
+            onSubmit={handleSubmit} 
+            className="space-y-2 mt-[10rem]"
+          >
             <div className="rounded-lg space-y-2 bg-[#11668233] p-3">
               <Label htmlFor="email" className="text-[#8BD0EF]">
                 Correo electrónico
@@ -121,9 +125,9 @@ const LoginPage = () => {
                   Cargando...
                 </Button>
               : <Button 
-                  data-cy="login-button"
                   type="submit" 
-                  className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide">
+                  className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide"
+                >
                   Iniciar sesión
                 </Button>
             }

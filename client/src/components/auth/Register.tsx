@@ -52,6 +52,7 @@ const Register = () => {
         } 
       }))
       .catch((error: AxiosError) => {
+        console.log(error);
         const errorMessage: IApiError = error.response?.data as IApiError;
         if (errorMessage.message === ApiErrorMessages.REGISTERED_USER) {
           navigate('/auth/registered', { 
@@ -80,7 +81,11 @@ const Register = () => {
           </h1>
         </div>
         <Card className="shadow-none border-none">
-          <form onSubmit={handleSubmit} className="space-y-2">
+          <form 
+            data-cy="register-form" 
+            onSubmit={handleSubmit} 
+            className="space-y-2"
+          >
             <div className="rounded-lg space-y-2 bg-[#11668233] p-3">
               <Label htmlFor="email" className="text-[#8BD0EF]">
                 Correo electrónico
@@ -146,7 +151,6 @@ const Register = () => {
                   Procesando...
                 </Button>
               : <Button
-                  data-cy="register-button"
                   type="submit"
                   className="w-full h-[52px] bg-[#8D4E2A33] text-[#BDE9FF] text-base font-normal tracking-wide"
                 >

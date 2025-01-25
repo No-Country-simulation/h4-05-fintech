@@ -67,7 +67,8 @@ const Dashboard = () => {
         <p className="text-[#BDE9FF]">Mi tablero</p>
       </div>
       <div>
-        <Button 
+        <Button
+          data-cy="logout-button"
           className="w-full px-4 py-3 bg-[#11668233] text-[#BDE9FF] text-base font-normal tracking-wide"
           onClick={handleLogout}
         >

@@ -19,6 +19,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "sh ./scripts/e2e-testing.sh",
     "prisma:migrate": "sh ./scripts/migrate.sh",
+    "prisma:seed": "ts-node prisma/seed.ts",
     "render:build": "sh ./scripts/render-build.sh",
     "certs:autogenerate": "sh ./scripts/certs-generate.sh"
   },
