@@ -6,6 +6,3 @@ npx prisma migrate reset --force --skip-seed
 
 # Ejecuta las migraciones a la base de datos
 npx prisma migrate dev --name init --skip-seed
-
-# Ingresa datos preliminares en las tablas 
-npx ts-node prisma/seed.ts
