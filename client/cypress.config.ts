@@ -4,7 +4,7 @@ import fs from 'node:fs';
 export default defineConfig({
   e2e: {
     supportFile: false,
-    baseUrl: "http://localhost:3000",
+    baseUrl: "http://localhost:9000",
     video: true,
     videoCompression: true,
     setupNodeEvents(on, _config) {
