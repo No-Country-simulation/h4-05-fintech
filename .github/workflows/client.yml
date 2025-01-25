@@ -41,17 +41,21 @@ jobs:
         with:
           node: 18
 
-      - name: Install dependencies on server
+      - name: Install dependencies for server
         run: npm ci
         working-directory: ./server
 
       - name: Run migration 
         run: npm run prisma:migrate
         working-directory: ./server
+        env:
+          DATABASE_URL: 'postgres://iupi-fintech-test:1cf4eb8f04a84637@localhost:5432/iupi-fintech-test-db'
 
       - name: Run seeders
         run: npm run prisma:seed
         working-directory: ./server
+        env:
+          DATABASE_URL: 'postgres://iupi-fintech-test:1cf4eb8f04a84637@localhost:5432/iupi-fintech-test-db'
 
       - name: Run server
         run: npm run start &
