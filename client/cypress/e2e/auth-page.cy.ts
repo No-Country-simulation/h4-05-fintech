@@ -7,6 +7,7 @@ describe('Testing the auth pages', () => {
     beforeEach(() => {
       cy.viewport('iphone-5');
       cy.clearCookies();
+      cy.setCookie('refresh-token', '')
     });
 
     describe('Testing register page', () => {
