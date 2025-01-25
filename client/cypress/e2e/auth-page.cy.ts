@@ -5,7 +5,7 @@ describe('Testing the auth pages', () => {
   context('Testing on iphone-5 resolution', () => {
     beforeEach(() => {
       cy.viewport('iphone-5');
-      cy.clearCookie('cypress-cloud-cookie-name');
+      cy.clearCookie('refresh-cookie');
     });
 
     it('Register successful', () => {
