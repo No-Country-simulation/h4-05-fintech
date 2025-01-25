@@ -5,14 +5,12 @@ describe('Testing the auth pages', () => {
   context('Testing on iphone-5 resolution', () => {
     beforeEach(() => {
       cy.viewport('iphone-5');
-      cy.clearCookie('refresh-cookie');
-      cy.clearCookies();
-      cy.getCookie('refresh-cookie').then((cookie) => {
-        console.log('Cookie:', cookie);
-      });
     });
 
     it('Register successful', () => {
+      cy.setCookie('refresh-cookie', '');
+      cy.getCookie('refresh-cookie').should('not.exist');
+
       cy.visit('/auth');
       cy.get('[data-cy="register"]').should('have.text', 'Registrarme').click();
       cy.url().should('include', '/register');
@@ -49,6 +47,9 @@ describe('Testing the auth pages', () => {
     });
 
     it('Already registered', () => {
+      cy.setCookie('refresh-cookie', '');
+      cy.getCookie('refresh-cookie').should('not.exist');
+
       cy.visit('/auth');
       cy.get('[data-cy="register"]').should('have.text', 'Registrarme').click();
       cy.url().should('include', '/register');
@@ -92,6 +93,9 @@ describe('Testing the auth pages', () => {
       });
 
     it('Login successful', () => {
+      cy.setCookie('refresh-cookie', '');
+      cy.getCookie('refresh-cookie').should('not.exist');
+
       cy.visit('/auth');
       cy.get('[data-cy="login"]').should('have.text', 'Iniciar sesión').click();
       cy.url().should('include', '/login');
