@@ -22,18 +22,17 @@ function App() {
             <Route path="/" element={<Navigate to="/auth" replace />} />
 
             {/* Rutas neutras */}
-            {/* Ruta principal de autenticación */}
-            <Route path="/auth" element={<Auth />} />
-  
-            {/* Subrutas de autenticación */}
-            <Route path="/auth/register" element={<Register />} />
-            <Route path="/auth/login" element={<Login/>} />
-            <Route path="/auth/registered" element={< Registered />} />
-            <Route path="/auth/verify" element={<Verify />} />
 
             {/* Rutas no protegidas */}
             <Route element={<Unprotected/>}>
-              
+              {/* Ruta principal de autenticación */}
+              <Route path="/auth" element={<Auth />} />
+  
+              {/* Subrutas de autenticación */}
+              <Route path="/auth/register" element={<Register />} />
+              <Route path="/auth/login" element={<Login/>} />
+              <Route path="/auth/registered" element={< Registered />} />
+              <Route path="/auth/verify" element={<Verify />} />
             </Route>
 
             {/* Rutas protegidas */}
