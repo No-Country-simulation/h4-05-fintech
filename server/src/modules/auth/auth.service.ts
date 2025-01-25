@@ -86,7 +86,7 @@ export class AuthService {
 
   private setCookie = async (res: Response, refreshToken: string) => {
     const options: CookieOptions = {
-      httpOnly: true,
+      httpOnly: this.configService.nodeEnv === Environment.STAGING ? false : true,
       secure: this.configService.nodeEnv === Environment.PRODUCTION ? true : false,
       sameSite: 'none',
       expires: new Date(new Date().getTime() + 2 * 60 * 60 * 1000),
@@ -96,7 +96,7 @@ export class AuthService {
 
   private async removeCookie(res: Response) {
     const options: CookieOptions = {
-      httpOnly: true,
+      httpOnly: this.configService.nodeEnv === Environment.STAGING ? false : true,
       secure: this.configService.nodeEnv === Environment.PRODUCTION ? true : false,
       sameSite: 'none',
     };
