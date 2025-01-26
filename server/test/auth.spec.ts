@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { app, validationPipe, authService } from './jest.setup';
+import { app, validationPipe, credentialsService } from './jest.setup';
 import {
   ChangePasswordDto,
   SendEmailDto,
@@ -299,7 +299,7 @@ describe('Auth', () => {
           .send(result);
 
         const { accessToken } = body;
-        const { id } = await authService.decodeToken({ accessToken });
+        const { id } = await credentialsService.verifyAccessToken(accessToken);
 
         expect(statusCode).toEqual(200);
         expect(header['content-type']).toContain('application/json');
@@ -324,7 +324,7 @@ describe('Auth', () => {
           .send(result);
 
         const { accessToken } = body;
-        const { id } = await authService.decodeToken({ accessToken });
+        const { id } = await credentialsService.verifyAccessToken(accessToken);
 
         expect(statusCode).toEqual(200);
         expect(header['content-type']).toContain('application/json');
@@ -349,7 +349,7 @@ describe('Auth', () => {
           .send(result);
 
         const { accessToken } = body;
-        const { id } = await authService.decodeToken({ accessToken });
+        const { id } = await credentialsService.verifyAccessToken(accessToken);
 
         expect(statusCode).toEqual(200);
         expect(header['content-type']).toContain('application/json');
@@ -392,7 +392,7 @@ describe('Auth', () => {
         .set('Cookie', `refresh-cookie=${normalUserRefreshToken}`);
 
       const { accessToken } = body;
-      const { id } = await authService.decodeToken({ accessToken });
+      const { id } = await credentialsService.verifyAccessToken(accessToken);
 
       expect(statusCode).toEqual(200);
       expect(header['content-type']).toContain('application/json');

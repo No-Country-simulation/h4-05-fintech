@@ -2,11 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 
 import { AppModule } from '../src/app.module';
-import { AuthService } from '../src/modules/auth/auth.service';
+import { CredentialsService } from 'src/common/modules/cookies/credentials.service';
 
 export let app: INestApplication;
 export let validationPipe: ValidationPipe;
-export let authService: AuthService;
+export let credentialsService: CredentialsService;
 
 beforeAll(async () => {
   const moduleRef: TestingModule = await Test.createTestingModule({
@@ -19,7 +19,7 @@ beforeAll(async () => {
     forbidNonWhitelisted: true,
   });
 
-  authService = app.get<AuthService>(AuthService);
+  credentialsService = app.get<CredentialsService>(CredentialsService);
 
   await app.init();
 });

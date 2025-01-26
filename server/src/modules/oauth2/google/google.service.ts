@@ -3,12 +3,15 @@ import crypto from 'node:crypto';
 import { Injectable, Inject, BadRequestException, NotFoundException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigType } from '@nestjs/config';
+import { User } from '@prisma/client';
 import { firstValueFrom } from 'rxjs';
 import { Response } from 'express';
 
 import { UserService } from '../../user/user.service';
 import { ProfileService } from '../../profile/profile.service';
 
+import { PrismaService } from '../../../common/modules/prisma/prisma.service';
+import { CredentialsService } from '../../../common/modules/cookies/credentials.service';
 import { UserRequest } from '../../../common/interfaces';
 import { ErrorMessage } from '../../../common/enums';
 
@@ -21,9 +24,6 @@ import {
   GoogleUserInfo,
 } from './google.interfaces';
 import config from '../../../config';
-import { PrismaService } from 'src/common/modules/prisma/prisma.service';
-import { User } from '@prisma/client';
-import { CredentialsService } from 'src/common/modules/cookies/credentials.service';
 
 @Injectable()
 export class GoogleAuthService {
