@@ -17,7 +17,7 @@ import { ErrorMessage } from '../enums';
 import { Response } from 'express';
 import { APPLE_CALLBACK, GOOGLE_CALLBACK, IS_LOGIN } from '../decorators';
 import { PrismaService } from '../modules/prisma/prisma.service';
-import { CredentialsService } from '../modules/cookies/credentials.service';
+import { CredentialsService } from '../modules/credentials/credentials.service';
 
 @Injectable()
 export class OAuth2Guard implements CanActivate {

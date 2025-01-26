@@ -20,7 +20,7 @@ import { UserRequest } from '../../common/interfaces';
 import { EmailData } from '../../common/modules/mailer/mailer.interface';
 import { PrismaService } from '../../common/modules/prisma/prisma.service';
 import { MailerService } from '../../common/modules/mailer/mailer.service';
-import { CredentialsService } from '../../common/modules/cookies/credentials.service';
+import { CredentialsService } from '../../common/modules/credentials/credentials.service';
 
 import { UserService } from '../user/user.service';
 import { ProfileService } from '../profile/profile.service';

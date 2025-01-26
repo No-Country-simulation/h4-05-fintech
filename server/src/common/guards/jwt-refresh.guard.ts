@@ -8,7 +8,7 @@ import { IS_LOGIN } from '../decorators/is-login.decorator';
 import { ErrorMessage } from '../enums';
 import { UserRequest } from '../interfaces/user-request.interface';
 import { PrismaService } from '../modules/prisma/prisma.service';
-import { CredentialsService } from '../modules/cookies/credentials.service';
+import { CredentialsService } from '../modules/credentials/credentials.service';
 
 @Injectable()
 export class JwtRefreshGuard implements CanActivate {

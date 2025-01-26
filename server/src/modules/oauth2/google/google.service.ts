@@ -11,7 +11,7 @@ import { UserService } from '../../user/user.service';
 import { ProfileService } from '../../profile/profile.service';
 
 import { PrismaService } from '../../../common/modules/prisma/prisma.service';
-import { CredentialsService } from '../../../common/modules/cookies/credentials.service';
+import { CredentialsService } from '../../../common/modules/credentials/credentials.service';
 import { UserRequest } from '../../../common/interfaces';
 import { ErrorMessage } from '../../../common/enums';
 

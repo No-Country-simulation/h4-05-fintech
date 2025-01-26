@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 
 import { AppModule } from '../src/app.module';
-import { CredentialsService } from 'src/common/modules/cookies/credentials.service';
+import { CredentialsService } from '../src/common/modules/credentials/credentials.service';
 
 export let app: INestApplication;
 export let validationPipe: ValidationPipe;

@@ -13,7 +13,7 @@ import config from './config';
 // import { CacheConfigProvider } from './cache-config.provider';
 import { FileUploaderModule } from './common/modules/file-uploader/file-uploader.module';
 import { OAuth2Module } from './modules/oauth2/oauth2.module';
-import { CredentialsModule } from './common/modules/cookies/credentials.module';
+import { CredentialsModule } from './common/modules/credentials/credentials.module';
 
 @Module({
   imports: [

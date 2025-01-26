@@ -3,7 +3,7 @@ import { TokenExpiredError, JsonWebTokenError } from '@nestjs/jwt';
 
 import { ErrorMessage } from '../enums';
 import { UserRequest } from '../interfaces/user-request.interface';
-import { CredentialsService } from '../modules/cookies/credentials.service';
+import { CredentialsService } from '../modules/credentials/credentials.service';
 
 @Injectable()
 export class JwtGuard implements CanActivate {
