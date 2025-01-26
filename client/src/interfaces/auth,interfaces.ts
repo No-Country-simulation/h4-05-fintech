@@ -8,3 +8,13 @@ export interface IRegister {
   password: string;
   confirmPassword: string;
 }
+
+export interface IResetPasswordQuery {
+  code: string | null;
+  exp: string | null;
+}
+
+export interface IResetPassword {
+  newPassword: string;
+  confirmPassword: string;
+}

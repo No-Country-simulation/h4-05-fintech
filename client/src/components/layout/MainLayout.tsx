@@ -1,6 +1,4 @@
-import { Outlet } from "react-router";
-
-const MainLayout = () => {
+const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div
       className="min-h-screen bg-cover bg-center bg-no-repeat"
@@ -9,7 +7,7 @@ const MainLayout = () => {
       }}
     >
       <div className="container mx-auto px-4">
-        <Outlet />
+        {children}
       </div>
     </div>
   );

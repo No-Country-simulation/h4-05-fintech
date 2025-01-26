@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { AxiosError } from "axios";
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,7 +10,6 @@ import { Label } from "@/components/ui/label";
 import { IRegister } from "@/interfaces/auth,interfaces";
 import { ApiErrorMessages, IApiError } from "@/api/api-errors";
 import { loginWithApple, loginWithGoogle, registerUser } from "@/api/auth.routes";
-import { useNavigate } from "react-router";
 import { OAuth2Button } from "../ui/oauth2-button";
 
 const initilValues: IRegister = {
@@ -17,7 +18,7 @@ const initilValues: IRegister = {
   confirmPassword: "",
 };
 
-const Register = () => {
+const RegisterPage = () => {
   const [formData, setFormData] = useState<IRegister>(initilValues);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -26,12 +27,14 @@ const Register = () => {
 
   const handleGoogleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    loginWithGoogle();
+    const response = loginWithGoogle();
+    response.then(({ data }) => window.location.href = data.url);
   }
 
   const handleAppleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    loginWithApple();
+    const response = loginWithApple();
+    response.then(({ data }) => window.location.href = data.url);
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -177,4 +180,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterPage;

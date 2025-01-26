@@ -1,4 +1,4 @@
-import { ILogin, IRegister } from "@/interfaces/auth,interfaces";
+import { ILogin, IRegister, IResetPassword, IResetPasswordQuery } from "@/interfaces/auth,interfaces";
 import { apiRoutes } from "./axios";
 import { AxiosResponse } from "axios";
 
@@ -33,12 +33,12 @@ export const login = (formData: ILogin): Promise<AxiosResponse<{ accessToken: st
   );
 }
 
-export const loginWithGoogle = (): Promise<AxiosResponse> => {
-  return apiRoutes.get('/oauth2/google/login');
+export const loginWithGoogle = (): Promise<AxiosResponse<{ url: string }>> => {
+  return apiRoutes.get<{ url: string }>('/oauth2/google/login');
 }
 
-export const loginWithApple = (): Promise<AxiosResponse> => {
-  return apiRoutes.get('/oauth2/google/apple');
+export const loginWithApple = (): Promise<AxiosResponse<{ url: string }>> => {
+  return apiRoutes.get<{ url: string }>('/oauth2/apple/login');
 }
 
 export const refreshSession = (): Promise<AxiosResponse<{ accessToken: string }>> => {
@@ -54,11 +54,33 @@ export const refreshSession = (): Promise<AxiosResponse<{ accessToken: string }>
 }
 
 export const logout = (): Promise<AxiosResponse> => {
-  return apiRoutes.get('/auth/logout', {
-    withCredentials: true,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': 'true',
+  return apiRoutes.get('/auth/logout', 
+    {
+      withCredentials: true,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': 'true',
+      }
     }
+  );
+}
+
+export const forgotPassword = (email: string): Promise<AxiosResponse> => {
+  return apiRoutes.post('/auth/forgot-password', { email }, {
+    signal: controller.signal,
   });
+}
+
+export const resetPassword = (
+  query: IResetPasswordQuery, 
+  formData: IResetPassword
+): Promise<AxiosResponse> => {
+  const { code, exp } = query;
+  return apiRoutes.put(
+    `/auth/password-reset?code=${code}&exp=${exp}`, 
+    formData, 
+    {
+      signal: controller.signal,
+   }
+  );
 }

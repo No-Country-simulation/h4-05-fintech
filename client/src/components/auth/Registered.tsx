@@ -7,7 +7,7 @@ import { Button } from "../ui/button";
 import { resendVerification } from "@/api/auth.routes";
 import { IApiError } from "@/api/api-errors";
 
-const Registered = () => {
+const RegisteredPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const hasTriggered = useRef(false);
@@ -103,4 +103,4 @@ const Registered = () => {
   );
 };
 
-export default Registered;
+export default RegisteredPage;

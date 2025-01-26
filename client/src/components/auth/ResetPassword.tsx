@@ -1,56 +1,29 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { useLocation } from "react-router";
+import { AxiosError } from "axios";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ILogin } from "@/interfaces/auth,interfaces";
-import useLogin from "@/hooks/useLogin";
-import { ApiErrorMessages, IApiError } from "@/api/api-errors";
-import { loginWithApple, loginWithGoogle } from "@/api/auth.routes";
-import { OAuth2Button } from "../ui/oauth2-button";
+import { IResetPassword, IResetPasswordQuery } from "@/interfaces/auth,interfaces";
+import { resetPassword } from "@/api/auth.routes";
 
-const initilValues: ILogin = {
-  email: "",
-  password: "",
+const initilValues: IResetPassword = {
+  newPassword: "",
+  confirmPassword: ""
 };
 
-const LoginPage = () => {
-  const [formData, setFormData] = useState<ILogin>(initilValues);
+const ResetPasswordPage = () => {
+  const [formData, setFormData] = useState<IResetPassword>(initilValues);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const navigate = useNavigate();
+  const location = useLocation();
 
-  const { setLogin, loading } = useLogin({
-    onSuccess: () => navigate('/dashboard'),
-    onReject: ({ response }) => {
-      const errorMessage: IApiError = response?.data as IApiError;
-      switch (errorMessage.message) {
-        case ApiErrorMessages.USER_NOT_FOUND:
-          setError("Usuario no encontrado");
-          break;
-        case ApiErrorMessages.INVALID_CREDENTIALS:
-          setError("Contraseña inválida");
-          break;
-        case ApiErrorMessages.USER_BLOCKED:
-          setError("Usuario bloqueado")
-          break;
-        default:
-          break
-      }
-    }
-  });
-
-  const handleGoogleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const response = loginWithGoogle();
-    response.then(({ data }) => window.location.href = data.url);
-  }
-
-  const handleAppleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const response = loginWithApple();
-    response.then(({ data }) => window.location.href = data.url);
+  const searchParams = new URLSearchParams(location.search);
+  const query: IResetPasswordQuery = {
+    code: searchParams.get('code'),
+    exp: searchParams.get('exp'),
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,9 +33,16 @@ const LoginPage = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLogin(formData);
-  };
+    setLoading(true);
 
+    const response = resetPassword(query, formData);
+
+    response
+      .then(() => console.log('Password successfully reset'))
+      .catch((error: AxiosError) => console.error(error))
+      .finally(() => setLoading(false));
+  };
+  
   return (
     <main className="min-h-screen flex flex-col items-center justify-center">
       <div className="w-full max-w-md space-y-6">
@@ -85,16 +65,16 @@ const LoginPage = () => {
           >
             <div className="rounded-lg space-y-2 bg-[#11668233] p-3">
               <Label htmlFor="email" className="text-[#8BD0EF]">
-                Correo electrónico
+                Nueva contraseña
               </Label>
               <Input
-                data-cy="email-input"
-                id="email"
-                type="email"
-                name="email"
-                value={formData.email}
+                data-cy="password-input"
+                id="password"
+                type="password"
+                name="newPassword"
+                value={formData.newPassword}
                 onChange={handleChange}
-                placeholder="Ingrese su correo electronico"
+                placeholder="***********"
                 className="bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
                 required
               />
@@ -107,19 +87,19 @@ const LoginPage = () => {
                 Contraseña
               </Label>
               <Input
-                data-cy="password-input"
-                id="password"
+                data-cy="confirm-password-input"
+                id="confirmPassword"
                 type="password"
-                name="password"
-                value={formData.password}
+                name="confirmPassword"
+                value={formData.confirmPassword}
                 onChange={handleChange}
                 placeholder="***********"
                 className="bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
                 required
               />
-              <Link to={"/auth/forgot-password"}>
-                <p className="text-xs text-[#8BD0EF] font-medium">Recuperar Contraseña</p>
-              </Link>
+              <p className="text-xs text-[#8BD0EF] font-medium">
+                Minimo 8 caracteres
+              </p>
             </div>
             {loading 
               ? <Button type="submit" className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide" disabled={true}>
@@ -134,24 +114,10 @@ const LoginPage = () => {
             }
           </form>
           {error && <p className="text-center text-red-600">{error}</p>}
-          <div className="flex justify-center items-center gap-4 mt-5">
-            <OAuth2Button
-              data-cy="apple-button"
-              label="Apple" 
-              className="hover:opacity-80 transition-opacity" 
-              onClick={handleAppleLogin}
-            />
-            <OAuth2Button
-              data-cy="google-button"
-              label="Google"
-              className="hover:opacity-80 transition-opacity" 
-              onClick={handleGoogleLogin}
-            />
-          </div>
         </Card>
       </div>
     </main>
   );
 };
 
-export default LoginPage;
+export default ResetPasswordPage;

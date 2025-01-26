@@ -11,16 +11,16 @@ import {
   NotAcceptableException,
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
 import { Prisma, User } from '@prisma/client';
-import { CookieOptions, Response } from 'express';
+import { Response } from 'express';
 import bcrypt from 'bcrypt';
 
 import { Environment, ErrorMessage } from '../../common/enums';
-import { JwtPayload, UserRequest } from '../../common/interfaces';
+import { UserRequest } from '../../common/interfaces';
 import { EmailData } from '../../common/modules/mailer/mailer.interface';
 import { PrismaService } from '../../common/modules/prisma/prisma.service';
 import { MailerService } from '../../common/modules/mailer/mailer.service';
+import { CredentialsService } from '../../common/modules/cookies/credentials.service';
 
 import { UserService } from '../user/user.service';
 import { ProfileService } from '../profile/profile.service';
@@ -41,91 +41,14 @@ export class AuthService {
   constructor(
     @Inject(config.KEY) private readonly configService: ConfigType<typeof config>,
     private readonly prisma: PrismaService,
-    private readonly jwtService: JwtService,
     private readonly mailerService: MailerService,
+    private readonly credentialsService: CredentialsService,
     private readonly userService: UserService,
     private readonly profileService: ProfileService,
   ) {}
 
-  private accessSecret =
-    this.configService.nodeEnv === Environment.PRODUCTION
-      ? this.configService.jwt.accessSecret
-      : 'access-secret';
-
-  private accessExpiration =
-    this.configService.nodeEnv === Environment.PRODUCTION
-      ? this.configService.jwt.accessExpiration
-      : '15m';
-
-  private refreshSecret =
-    this.configService.nodeEnv === Environment.PRODUCTION
-      ? this.configService.jwt.refreshSecret
-      : 'refresh-secret';
-
-  private refreshExpiration =
-    this.configService.nodeEnv === Environment.PRODUCTION
-      ? this.configService.jwt.refreshExpiration
-      : '2h';
-
-  private cookieName =
-    this.configService.nodeEnv === Environment.PRODUCTION
-      ? this.configService.cookieName
-      : 'refresh-cookie';
-
-  private accessToken = async (payload: JwtPayload): Promise<string> =>
-    await this.jwtService.signAsync(payload, {
-      secret: this.accessSecret,
-      expiresIn: this.accessExpiration,
-    });
-
-  private refreshToken = async (payload: JwtPayload): Promise<string> =>
-    await this.jwtService.signAsync(payload, {
-      secret: this.refreshSecret,
-      expiresIn: this.refreshExpiration,
-    });
-
-  private setCookie = async (res: Response, refreshToken: string) => {
-    const options: CookieOptions = {
-      httpOnly: this.configService.nodeEnv === Environment.STAGING ? false : true,
-      secure: this.configService.nodeEnv === Environment.PRODUCTION ? true : false,
-      sameSite: 'none',
-      expires: new Date(new Date().getTime() + 2 * 60 * 60 * 1000),
-    };
-    res.cookie(this.cookieName, refreshToken, options);
-  };
-
-  private async removeCookie(res: Response) {
-    const options: CookieOptions = {
-      httpOnly: this.configService.nodeEnv === Environment.STAGING ? false : true,
-      secure: this.configService.nodeEnv === Environment.PRODUCTION ? true : false,
-      sameSite: 'none',
-    };
-    res.clearCookie(this.cookieName, options);
-  }
-
   // https://iupi-fintech.frontend/auth/verify?code=${code}
   private baseUrl = new URL('/auth/', this.configService.frontendUrl);
-
-  async decodeToken(token: {
-    accessToken?: string;
-    refreshToken?: string;
-  }): Promise<JwtPayload | undefined> {
-    const { accessToken, refreshToken } = token;
-    let payload: JwtPayload;
-    try {
-      if (accessToken)
-        payload = await this.jwtService.verifyAsync<JwtPayload>(accessToken, {
-          secret: this.accessSecret,
-        });
-      else if (refreshToken)
-        payload = await this.jwtService.verifyAsync<JwtPayload>(refreshToken, {
-          secret: this.refreshSecret,
-        });
-      return payload;
-    } catch (error) {
-      throw new UnauthorizedException(error.message);
-    }
-  }
 
   async registry(body: RegistryDto) {
     const { email, password, confirmPassword } = body;
@@ -238,8 +161,8 @@ export class AuthService {
     if (isMatch && userFound.blocked) throw new ForbiddenException(ErrorMessage.USER_BLOCKED);
 
     const [accessToken, refreshToken] = await Promise.all([
-      this.accessToken({ id: userFound.id }),
-      this.refreshToken({ id: userFound.id }),
+      this.credentialsService.accessToken({ id: userFound.id }),
+      this.credentialsService.refreshToken({ id: userFound.id }),
     ]);
 
     const userAgent = req.headers['user-agent'] ?? 'testing';
@@ -249,7 +172,7 @@ export class AuthService {
     const userUpdated = Object.assign(userFound, { attempts: 0 });
     await this.userService.updateUser(userUpdated);
 
-    await this.setCookie(res, refreshToken);
+    await this.credentialsService.setCookie(res, refreshToken);
 
     return { accessToken };
   }
@@ -258,11 +181,11 @@ export class AuthService {
     const refreshToken = req.headers.cookie?.split('=')[1];
     const userAgent = req.headers['user-agent'] ?? 'testing';
 
-    const { id } = await this.decodeToken({ refreshToken });
+    const { id } = await this.credentialsService.verifyRefreshToken(refreshToken);
 
     const [accessToken, newRefreshToken] = await Promise.all([
-      this.accessToken({ id }),
-      this.refreshToken({ id }),
+      this.credentialsService.accessToken({ id }),
+      this.credentialsService.refreshToken({ id }),
     ]);
 
     const authList = await this.prisma.auth.findMany({ where: { userId: id } });
@@ -282,8 +205,8 @@ export class AuthService {
         },
       });
 
-    await this.removeCookie(res);
-    await this.setCookie(res, newRefreshToken);
+    await this.credentialsService.removeCookie(res);
+    await this.credentialsService.setCookie(res, newRefreshToken);
 
     return { accessToken };
   }
@@ -375,7 +298,7 @@ export class AuthService {
   async logout(req: UserRequest, res: Response) {
     const refreshToken = req.headers.cookie?.split('=')[1];
 
-    await this.removeCookie(res);
+    await this.credentialsService.removeCookie(res);
     const where: Prisma.AuthWhereInput = refreshToken && { refreshToken };
     await this.prisma.auth.deleteMany({ where });
 

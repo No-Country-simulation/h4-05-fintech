@@ -8,6 +8,13 @@ export interface IProfileData {
   itemsSaved: string[];
 };
 
+export interface IUpdateProfileData {
+  name: string;
+  lastname: string;
+  image: string;
+  itemsSaved: string[];
+};
+
 export interface IFinancialSurvey {      
   financialGoals: FinancialGoals;
   investmentKnowledge: InvestmentKnowledge;

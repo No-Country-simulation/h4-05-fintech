@@ -1,8 +1,8 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Link } from "react-router-dom";
 
-const Auth = () => {
+const AuthPage = () => {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center">
       <div className="w-full max-w-md space-y-6">
@@ -42,4 +42,4 @@ const Auth = () => {
   );
 };
 
-export default Auth;
+export default AuthPage;

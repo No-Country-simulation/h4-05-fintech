@@ -32,5 +32,14 @@ export default registerAs('config', () => {
       apiSecret: process.env.CLOUDINARY_API_SECRET,
       mainFolder: process.env.CLOUDINARY_MAIN_FOLDER,
     },
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackUri: process.env.GOOGLE_CALLBACK_URI,
+    },
+    apple: {
+      clientId: process.env.APPLE_CLIENT_ID,
+      callbackUri: process.env.APPLE_CALLBACK_URI,
+    },
   };
 });

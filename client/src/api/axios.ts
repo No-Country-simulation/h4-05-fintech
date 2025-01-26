@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const baseURL = import.meta.env.VITE_API_URL;
+export const baseURL = new URL(import.meta.env.VITE_API_URL);
 
-export const apiRoutes = axios.create({ baseURL });
+export const apiRoutes = axios.create({ baseURL: baseURL.toString() });
 
 export const apiProtectedRoutes = axios.create({ 
-  baseURL,  
+  baseURL: baseURL.toString(),  
   withCredentials: true,
   headers: {
     'Access-Control-Allow-Origin': '*',

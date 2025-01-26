@@ -19,6 +19,7 @@ import { Environment, ErrorMessage } from '../../common/enums';
 
 import config from '../../config';
 import { FinancialProfileDto, UpdateProfileDto } from './dto';
+import { ICreateProfile } from './profile.interface';
 
 @Injectable()
 export class ProfileService {
@@ -90,8 +91,8 @@ export class ProfileService {
     return { message: 'financial profile successfully created' };
   }
 
-  async createUserProfile(userId: string) {
-    await this.prisma.userProfile.create({ data: { userId } });
+  async createUserProfile(userId: string, body?: ICreateProfile) {
+    await this.prisma.userProfile.create({ data: { userId, ...body } });
   }
 
   async getFinancialProfileFromData(url: string, dto: FinancialProfileDto) {
