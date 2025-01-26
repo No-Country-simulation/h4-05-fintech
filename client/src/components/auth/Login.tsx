@@ -66,7 +66,9 @@ const LoginPage = () => {
         <Card className=" border-none shadow-none">
           <form onSubmit={handleSubmit} className="space-y-2 mt-[10rem]">
             <div className="rounded-lg space-y-2 bg-[#11668233] p-3">
-              <Label htmlFor="email" className="text-[#8BD0EF]">
+              <Label htmlFor="email"
+                className="text-[#8BD0EF]"
+              >
                 Correo electrónico
               </Label>
               <Input
@@ -101,13 +103,13 @@ const LoginPage = () => {
                 Recuperar Contraseña
               </p>
             </div>
-            {loading 
+            {loading
               ? <Button type="submit" className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide" disabled={true}>
-                  Cargando...
-                </Button>
+                Cargando...
+              </Button>
               : <Button type="submit" className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide">
-                  Iniciar sesión
-                </Button>
+                Iniciar sesión
+              </Button>
             }
           </form>
           {error && <p className="text-center text-red-600">{error}</p>}
