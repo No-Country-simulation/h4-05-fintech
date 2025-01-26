@@ -19,6 +19,7 @@ import { Environment, ErrorMessage } from '../../common/enums';
 
 import config from '../../config';
 import { FinancialProfileDto, UpdateProfileDto } from './dto';
+import { ICreateProfile } from './profile.interface';
 
 @Injectable()
 export class ProfileService {
@@ -90,8 +91,8 @@ export class ProfileService {
     return { message: 'financial profile successfully created' };
   }
 
-  async createUserProfile(userId: string) {
-    await this.prisma.userProfile.create({ data: { userId } });
+  async createUserProfile(userId: string, body?: ICreateProfile) {
+    await this.prisma.userProfile.create({ data: { userId, ...body } });
   }
 
   async getFinancialProfileFromData(url: string, dto: FinancialProfileDto) {
@@ -116,13 +117,11 @@ export class ProfileService {
   async updateUserProfile(req: UserRequest, body: UpdateProfileDto) {
     const userProfileFound = await this.getUserProfile(req);
 
-    if (body.image && this.configService.nodeEnv === Environment.PRODUCTION)
-      await this.remoteStorage(userProfileFound, body);
-    else if (body.image && this.configService.nodeEnv === Environment.DEVELOPMENT)
-      await this.remoteStorage(userProfileFound, body);
-    else if (body.image && this.configService.nodeEnv === Environment.TESTING)
-      this.localStorage(userProfileFound, body);
-    else if (!body.image) {
+    if (body.image) {
+      if (this.configService.nodeEnv === Environment.PRODUCTION)
+        await this.remoteStorage(userProfileFound, body);
+      else this.localStorage(userProfileFound, body);
+    } else if (!body.image) {
       const updatedProfile = Object.assign(userProfileFound, body);
       const where: Prisma.UserProfileWhereUniqueInput = { id: userProfileFound.id };
       const data: Prisma.UserProfileUpdateInput = { ...updatedProfile, updatedAt: new Date() };

@@ -11,6 +11,7 @@ export const normalUserProfile: UserProfile = {
   financialProfileResults: null,
   itemsSaved: ['items', 'saved'],
   updatedAt: new Date(),
+  notifications: false,
 };
 
 export const adminUserProfile: UserProfile = {
@@ -23,6 +24,7 @@ export const adminUserProfile: UserProfile = {
   financialProfileResults: 'no financial profile defined',
   itemsSaved: ['items', 'saved'],
   updatedAt: new Date(),
+  notifications: false,
 };
 
 export const userProfileSeeds = [normalUserProfile, adminUserProfile];

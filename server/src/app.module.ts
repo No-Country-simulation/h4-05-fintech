@@ -12,14 +12,18 @@ import config from './config';
 // import { CacheModule } from '@nestjs/cache-manager';
 // import { CacheConfigProvider } from './cache-config.provider';
 import { FileUploaderModule } from './common/modules/file-uploader/file-uploader.module';
+import { OAuth2Module } from './modules/ouath2/oauth2.module';
+import { CredentialsModule } from './common/modules/credentials/credentials.module';
 
 @Module({
   imports: [
     PrismaModule,
     MailerModule,
+    CredentialsModule,
     FileUploaderModule,
     UserModule,
     AuthModule,
+    OAuth2Module,
     ProfileModule,
     ConfigModule.forRoot({
       load: [config],
