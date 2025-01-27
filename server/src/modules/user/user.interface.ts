@@ -7,6 +7,7 @@ export interface IFindUserBy {
 
 export interface ICreateUser {
   email: string;
-  password: string;
-  verificationCode: string;
+  password?: string;
+  verificationCode?: string;
+  verified?: boolean;
 }

@@ -1,52 +1,36 @@
-import {
-  Injectable,
-  Inject,
-  CanActivate,
-  ExecutionContext,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-import { ConfigType } from '@nestjs/config';
-import { JwtService, TokenExpiredError, JsonWebTokenError } from '@nestjs/jwt';
+import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
+import { TokenExpiredError, JsonWebTokenError } from '@nestjs/jwt';
+import { Socket } from 'socket.io';
 
-import config from '../../config';
-import { Environment, ErrorMessage } from '../enums';
-import { JwtPayload, UserRequest } from '../interfaces/user-request.interface';
-import { PrismaService } from '../modules/prisma/prisma.service';
+import { ErrorMessage } from '../enums';
+import { UserRequest } from '../interfaces/user-request.interface';
+import { CredentialsService } from '../modules/credentials/credentials.service';
+import { Reflector } from '@nestjs/core';
+import { IS_WEBSOCKETS } from '../decorators';
 
 @Injectable()
 export class JwtGuard implements CanActivate {
   constructor(
-    @Inject(config.KEY) private readonly configService: ConfigType<typeof config>,
-    private readonly prisma: PrismaService,
     private readonly reflector: Reflector,
-    private readonly jwtService: JwtService,
+    private readonly credentialsService: CredentialsService,
   ) {}
 
-  private accessSercret =
-    this.configService.nodeEnv === Environment.PRODUCTION
-      ? this.configService.jwt.accessSecret
-      : 'access-secret';
-
-  private extractJwtFromBearerHeader(req: UserRequest): string | undefined {
-    const [type, token] = req.headers.authorization?.split(' ') ?? [];
-    return type === 'Bearer' ? token : undefined;
-  }
-
-  private async verifyJwt(token: string): Promise<JwtPayload> {
-    const payload = this.jwtService.verifyAsync<JwtPayload>(token, {
-      secret: this.accessSercret,
-    });
-    return payload;
-  }
-
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    const isWebSockets = this.reflector.get<boolean>(IS_WEBSOCKETS, context.getHandler());
+
     try {
-      const request = context.switchToHttp().getRequest<UserRequest>();
-      const token = this.extractJwtFromBearerHeader(request);
-      const payload = await this.verifyJwt(token);
-      request.user = payload;
-      return true;
+      if (isWebSockets) {
+        const client = context.switchToWs().getClient<Socket>();
+        const accessToken = await this.credentialsService.extractTokenFromClientHeader(client);
+        await this.credentialsService.verifyAccessToken(accessToken);
+        return true;
+      } else {
+        const request = context.switchToHttp().getRequest<UserRequest>();
+        const accessToken = await this.credentialsService.extractJwtFromBearerHeader(request);
+        const payload = await this.credentialsService.verifyAccessToken(accessToken);
+        request.user = payload;
+        return true;
+      }
     } catch (error) {
       if (error instanceof JsonWebTokenError || error instanceof TokenExpiredError) {
         throw new UnauthorizedException(ErrorMessage.NO_ACCESS);

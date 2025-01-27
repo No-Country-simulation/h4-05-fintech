@@ -1,20 +1,26 @@
+import crypto from 'node:crypto';
 import request from 'supertest';
-import { app, validationPipe, authService } from './jest.setup';
+import { app, validationPipe, credentialsService } from './jest.setup';
 import {
   ChangePasswordDto,
-  ForgotPasswordDto,
+  SendEmailDto,
   LoginDto,
   RegistryDto,
   ResetPasswordDto,
-  ResetPasswordQueryDto,
 } from '../src/modules/auth/dto';
 import { ErrorMessage } from '../src/common/enums';
 import {
+  codeForVerification1,
+  expiredCodeForPasswordReset,
   expiredRefreshToken,
+  invalidCodeForPasswordReset,
+  invalidCodeForVerification,
   invalidRefreshToken,
   normalUser,
   normalUserRefreshToken,
   normalUserToken,
+  userNotFoundForPasswordReset,
+  userNotFoundForVerification,
 } from '../prisma/seeds/user.seeds';
 
 describe('Auth', () => {
@@ -120,16 +126,16 @@ describe('Auth', () => {
   describe('GET /auth/verify?code=code', () => {
     it('Should not verify because the code format is not valid', async () => {
       const { statusCode, error } = await request(app.getHttpServer()).get(
-        '/auth/verify?code=code',
+        `/auth/verify?code=${invalidCodeForVerification}`,
       );
 
       expect(statusCode).toEqual(406);
-      expect(JSON.parse(error['text']).message).toContain('invalid 32-digit code');
+      expect(JSON.parse(error['text']).message).toContain(ErrorMessage.INVALID_CODE);
     });
 
     it('Should not verify because user not found', async () => {
       const { statusCode, error } = await request(app.getHttpServer()).get(
-        '/auth/verify?code=cc9a156c065df8dcc4440e46489f544c02bb6464ff5a2fd9b67baba44ed528fe',
+        `/auth/verify?code=${userNotFoundForVerification}`,
       );
 
       expect(statusCode).toEqual(404);
@@ -138,7 +144,7 @@ describe('Auth', () => {
 
     it('Should successfully verify an user', async () => {
       const { statusCode, header, body } = await request(app.getHttpServer()).get(
-        '/auth/verify?code=6c1f78b489714f4789816dfa97238b009cf0946ffdfeba6231b1f964f3c682d8',
+        `/auth/verify?code=${codeForVerification1}`,
       );
 
       expect(statusCode).toEqual(200);
@@ -299,7 +305,7 @@ describe('Auth', () => {
           .send(result);
 
         const { accessToken } = body;
-        const { id } = await authService.decodeToken({ accessToken });
+        const { id } = await credentialsService.verifyAccessToken(accessToken);
 
         expect(statusCode).toEqual(200);
         expect(header['content-type']).toContain('application/json');
@@ -324,7 +330,7 @@ describe('Auth', () => {
           .send(result);
 
         const { accessToken } = body;
-        const { id } = await authService.decodeToken({ accessToken });
+        const { id } = await credentialsService.verifyAccessToken(accessToken);
 
         expect(statusCode).toEqual(200);
         expect(header['content-type']).toContain('application/json');
@@ -349,7 +355,7 @@ describe('Auth', () => {
           .send(result);
 
         const { accessToken } = body;
-        const { id } = await authService.decodeToken({ accessToken });
+        const { id } = await credentialsService.verifyAccessToken(accessToken);
 
         expect(statusCode).toEqual(200);
         expect(header['content-type']).toContain('application/json');
@@ -392,7 +398,7 @@ describe('Auth', () => {
         .set('Cookie', `refresh-cookie=${normalUserRefreshToken}`);
 
       const { accessToken } = body;
-      const { id } = await authService.decodeToken({ accessToken });
+      const { id } = await credentialsService.verifyAccessToken(accessToken);
 
       expect(statusCode).toEqual(200);
       expect(header['content-type']).toContain('application/json');
@@ -483,7 +489,7 @@ describe('Auth', () => {
   describe('POST /forgot-password', () => {
     it('Should not initilize recovery because no data', async () => {
       try {
-        await validationPipe.transform({}, { type: 'body', metatype: ForgotPasswordDto });
+        await validationPipe.transform({}, { type: 'body', metatype: SendEmailDto });
         fail('Validation pipe should throw an error for invalid data');
       } catch (error) {
         expect(error.getResponse().statusCode).toEqual(400);
@@ -493,7 +499,7 @@ describe('Auth', () => {
     it('Should not initilize recovery because invalid data', async () => {
       const data = { emai: 'juanito' };
       try {
-        await validationPipe.transform(data, { type: 'body', metatype: ForgotPasswordDto });
+        await validationPipe.transform(data, { type: 'body', metatype: SendEmailDto });
         fail('Validation pipe should throw an error for invalid data');
       } catch (error) {
         expect(error.getResponse().statusCode).toEqual(400);
@@ -505,7 +511,7 @@ describe('Auth', () => {
       try {
         const result = await validationPipe.transform(data, {
           type: 'body',
-          metatype: ForgotPasswordDto,
+          metatype: SendEmailDto,
         });
 
         const { statusCode, error } = await request(app.getHttpServer())
@@ -525,7 +531,7 @@ describe('Auth', () => {
       try {
         const result = await validationPipe.transform(data, {
           type: 'body',
-          metatype: ForgotPasswordDto,
+          metatype: SendEmailDto,
         });
 
         const { statusCode, body } = await request(app.getHttpServer())
@@ -562,86 +568,69 @@ describe('Auth', () => {
     });
 
     it('Should not reset password because invalid code', async () => {
-      try {
-        const query = { code: '123', exp: '1737081143339' };
+      const { statusCode, error } = await request(app.getHttpServer()).put(
+        `/auth/password-reset?code=${invalidCodeForPasswordReset}`,
+      );
 
-        await validationPipe.transform(query, {
-          type: 'body',
-          metatype: ResetPasswordQueryDto,
-        });
-      } catch (error) {
-        expect(error.getResponse().statusCode).toEqual(400);
-      }
+      expect(statusCode).toEqual(406);
+      expect(JSON.parse(error['text']).message).toContain(ErrorMessage.INVALID_CODE);
     });
 
     it('Should not reset password because user not found', async () => {
-      try {
-        const query = {
-          code: '5fc52b6a54ddd853d26b7edfe1312af2e6379efa8e18aafbb247248cec061747',
-          exp: '1737081143339',
-        };
+      const { statusCode, error } = await request(app.getHttpServer()).put(
+        `/auth/password-reset?code=${userNotFoundForPasswordReset}`,
+      );
 
-        await validationPipe.transform(query, {
-          type: 'body',
-          metatype: ResetPasswordQueryDto,
-        });
-
-        const { statusCode, error } = await request(app.getHttpServer()).put(
-          `/auth/password-reset?code=${query.code}&exp=${query.exp}`,
-        );
-
-        expect(statusCode).toEqual(404);
-        expect(JSON.parse(error['text']).message).toContain(ErrorMessage.USER_NOT_FOUND);
-      } catch (error) {
-        fail(`Validation should not throw an error for valid data: ${error}`);
-      }
+      expect(statusCode).toEqual(404);
+      expect(JSON.parse(error['text']).message).toContain(ErrorMessage.USER_NOT_FOUND);
     });
 
     it('Should not reset password because time expired', async () => {
-      const query = {
-        code: 'aefa05b6cfaa09a10ea6100d1a4bf8123b0a06b877139a77a684a6c9e176a911',
-        exp: '1737081143339',
-      };
+      const { statusCode, error } = await request(app.getHttpServer()).put(
+        `/auth/password-reset?code=${expiredCodeForPasswordReset}`,
+      );
 
-      await validationPipe.transform(query, {
-        type: 'body',
-        metatype: ResetPasswordQueryDto,
-      });
-
-      try {
-        const { statusCode, error } = await request(app.getHttpServer()).put(
-          `/auth/password-reset?code=${query.code}&exp=${query.exp}`,
-        );
-
-        expect(statusCode).toEqual(401);
-        expect(JSON.parse(error['text']).message).toContain(ErrorMessage.EXPIRED_TIME);
-      } catch (error) {
-        fail(`Validation should not throw an error for valid data: ${error}`);
-      }
+      expect(statusCode).toEqual(401);
+      expect(JSON.parse(error['text']).message).toContain(ErrorMessage.EXPIRED_TIME);
     });
 
     it('Should successfully reset password', async () => {
+      const encryptKey = Buffer.from(
+        'd109cd4b5dea3329a60cd9b495b6d6a42cb2623cf7a406625481799c0afbe19e',
+        'hex',
+      );
+      const iv = crypto.randomBytes(16);
+
       const expiration = new Date();
       const exp = expiration.setMinutes(expiration.getMinutes() + 15).toString();
       const query = {
-        code: 'aefa05b6cfaa09a10ea6100d1a4bf8123b0a06b877139a77a684a6c9e176a911',
+        code: '45cf303dff2954150f614cb744f3e093a6e1d0a083366928880a08c6caeeb5cd',
         exp,
       };
+
+      const text = Object.values(query).join(';');
+
+      const cipher = crypto.createCipheriv('aes-256-cbc', encryptKey, iv);
+      let encrypted = cipher.update(text);
+      encrypted = Buffer.concat([encrypted, cipher.final()]);
+
+      const encryptedData = {
+        iv: iv.toString('hex'),
+        encryptedData: encrypted.toString('hex'),
+      };
+
+      const code = Object.values(encryptedData).join('.');
+
       const data = { newPassword: 'normalUser123', confirmPassword: 'normalUser123' };
 
       try {
-        await validationPipe.transform(query, {
-          type: 'body',
-          metatype: ResetPasswordQueryDto,
-        });
-
         const result = await validationPipe.transform(data, {
           type: 'body',
           metatype: ResetPasswordDto,
         });
 
         const { statusCode, body } = await request(app.getHttpServer())
-          .put(`/auth/password-reset?code=${query.code}&exp=${query.exp}`)
+          .put(`/auth/password-reset?code=${code}`)
           .send(result);
 
         expect(statusCode).toEqual(200);

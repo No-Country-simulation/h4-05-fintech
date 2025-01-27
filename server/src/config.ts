@@ -7,6 +7,7 @@ export default registerAs('config', () => {
     frontendUrl: process.env.FRONTEND_URL,
     backendUrl: process.env.BACKEND_URL,
     dataModelUrl: process.env.DATA_MODEL_URL,
+    encriptKey: process.env.ENCRYPT_KEY,
     jwt: {
       accessSecret: process.env.JWT_ACCESS_SECRET,
       accessExpiration: process.env.JWT_ACCESS_EXPIRATION,
@@ -31,6 +32,15 @@ export default registerAs('config', () => {
       apiKey: process.env.CLOUDINARY_API_KEY,
       apiSecret: process.env.CLOUDINARY_API_SECRET,
       mainFolder: process.env.CLOUDINARY_MAIN_FOLDER,
+    },
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackUri: process.env.GOOGLE_CALLBACK_URI,
+    },
+    apple: {
+      clientId: process.env.APPLE_CLIENT_ID,
+      callbackUri: process.env.APPLE_CALLBACK_URI,
     },
   };
 });

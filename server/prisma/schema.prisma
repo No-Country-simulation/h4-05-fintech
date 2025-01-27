@@ -16,7 +16,7 @@ datasource db {
 model User {
   id                    String              @id @default(uuid())
   email                 String              @unique
-  password              String
+  password              String?
   verified              Boolean             @default(false)
   attempts              Int                 @default(0)
   blocked               Boolean             @default(false)
@@ -46,10 +46,11 @@ model UserProfile {
   lastname                  String?
   image                     String?
   surveyAnswered            Boolean             @default(false) @map("survey_answered")
-  financialProfileData      FinancialProfile?
-  financialData             FinancialData?
   financialProfileResults   String?             @map("financial_profile")
   itemsSaved                String[]            @map("items_saved")
+  notifications             Boolean             @default(false)
+  financialProfileData      FinancialProfile?
+  financialData             FinancialData?
   updatedAt                 DateTime            @default(now()) @map("updated_at")
 }
 
@@ -82,4 +83,6 @@ model FinancialData {
   userProfileId       String?           @unique @map("user_id")
   income              Int               @default(0)
   expenses            Int               @default(0)
+  targetPeriod        DateTime          @map("target_period") @default(now())
+  financialTarget     String?           @map("financial_target")
 }

@@ -11,28 +11,21 @@ import {
   NotAcceptableException,
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
 import { Prisma, User } from '@prisma/client';
-import { CookieOptions, Response } from 'express';
+import { Response } from 'express';
 import bcrypt from 'bcrypt';
 
 import { Environment, ErrorMessage } from '../../common/enums';
-import { JwtPayload, UserRequest } from '../../common/interfaces';
+import { UserRequest } from '../../common/interfaces';
 import { EmailData } from '../../common/modules/mailer/mailer.interface';
 import { PrismaService } from '../../common/modules/prisma/prisma.service';
 import { MailerService } from '../../common/modules/mailer/mailer.service';
+import { CredentialsService } from '../../common/modules/credentials/credentials.service';
 
 import { UserService } from '../user/user.service';
 import { ProfileService } from '../profile/profile.service';
 
-import {
-  LoginDto,
-  RegistryDto,
-  ForgotPasswordDto,
-  ResetPasswordDto,
-  ResetPasswordQueryDto,
-  ChangePasswordDto,
-} from './dto';
+import { LoginDto, RegistryDto, ResetPasswordDto, ChangePasswordDto, SendEmailDto } from './dto';
 
 import config from '../../config';
 
@@ -41,91 +34,13 @@ export class AuthService {
   constructor(
     @Inject(config.KEY) private readonly configService: ConfigType<typeof config>,
     private readonly prisma: PrismaService,
-    private readonly jwtService: JwtService,
     private readonly mailerService: MailerService,
+    private readonly credentialsService: CredentialsService,
     private readonly userService: UserService,
     private readonly profileService: ProfileService,
   ) {}
 
-  private accessSecret =
-    this.configService.nodeEnv === Environment.PRODUCTION
-      ? this.configService.jwt.accessSecret
-      : 'access-secret';
-
-  private accessExpiration =
-    this.configService.nodeEnv === Environment.PRODUCTION
-      ? this.configService.jwt.accessExpiration
-      : '15m';
-
-  private refreshSecret =
-    this.configService.nodeEnv === Environment.PRODUCTION
-      ? this.configService.jwt.refreshSecret
-      : 'refresh-secret';
-
-  private refreshExpiration =
-    this.configService.nodeEnv === Environment.PRODUCTION
-      ? this.configService.jwt.refreshExpiration
-      : '2h';
-
-  private cookieName =
-    this.configService.nodeEnv === Environment.PRODUCTION
-      ? this.configService.cookieName
-      : 'refresh-cookie';
-
-  private accessToken = async (payload: JwtPayload): Promise<string> =>
-    await this.jwtService.signAsync(payload, {
-      secret: this.accessSecret,
-      expiresIn: this.accessExpiration,
-    });
-
-  private refreshToken = async (payload: JwtPayload): Promise<string> =>
-    await this.jwtService.signAsync(payload, {
-      secret: this.refreshSecret,
-      expiresIn: this.refreshExpiration,
-    });
-
-  private setCookie = async (res: Response, refreshToken: string) => {
-    const options: CookieOptions = {
-      httpOnly: true,
-      secure: this.configService.nodeEnv === Environment.PRODUCTION ? true : false,
-      sameSite: 'none',
-      expires: new Date(new Date().getTime() + 2 * 60 * 60 * 1000),
-    };
-    res.cookie(this.cookieName, refreshToken, options);
-  };
-
-  private async removeCookie(res: Response) {
-    const options: CookieOptions = {
-      httpOnly: true,
-      secure: this.configService.nodeEnv === Environment.PRODUCTION ? true : false,
-      sameSite: 'none',
-    };
-    res.clearCookie(this.cookieName, options);
-  }
-
-  // https://iupi-fintech.frontend/auth/verify?code=${code}
   private baseUrl = new URL('/auth/', this.configService.frontendUrl);
-
-  async decodeToken(token: {
-    accessToken?: string;
-    refreshToken?: string;
-  }): Promise<JwtPayload | undefined> {
-    const { accessToken, refreshToken } = token;
-    let payload: JwtPayload;
-    try {
-      if (accessToken)
-        payload = await this.jwtService.verifyAsync<JwtPayload>(accessToken, {
-          secret: this.accessSecret,
-        });
-      else if (refreshToken)
-        payload = await this.jwtService.verifyAsync<JwtPayload>(refreshToken, {
-          secret: this.refreshSecret,
-        });
-      return payload;
-    } catch (error) {
-      throw new UnauthorizedException(error.message);
-    }
-  }
 
   async registry(body: RegistryDto) {
     const { email, password, confirmPassword } = body;
@@ -140,14 +55,17 @@ export class AuthService {
     const hashed = await bcrypt.hash(password, 10);
     const verificationCode = crypto.randomBytes(32).toString('hex');
 
+    const encrypted = await this.credentialsService.encrypt(verificationCode);
+
+    const code = Object.values(encrypted).join('.');
+
     const link = new URL('verify', this.baseUrl);
-    link.searchParams.set('code', verificationCode);
+    link.searchParams.set('code', code);
 
     const emailData: EmailData = {
       email,
       subject: 'Bienvenido a iUPI',
       template: 'verify.hbs',
-      // Frontend example: https://iupi-fintech.frontend/auth/verify?code=${code}
       variables: { link },
     };
 
@@ -161,11 +79,52 @@ export class AuthService {
     return { message: 'user successfully registered' };
   }
 
-  async verify(verificationCode: string) {
+  async resendVerification(body: SendEmailDto) {
+    const { email } = body;
+    const userFound = await this.userService.getUser({ email });
+
+    if (!userFound) throw new NotFoundException(ErrorMessage.USER_NOT_FOUND);
+
+    if (userFound.verified) throw new BadRequestException(ErrorMessage.USER_VERIFIED);
+
+    const verificationCode = crypto.randomBytes(32).toString('hex');
+
+    const encrypted = await this.credentialsService.encrypt(verificationCode);
+
+    const code = Object.values(encrypted).join('.');
+
+    const link = new URL('verify', this.baseUrl);
+    link.searchParams.set('code', code);
+
+    const emailData: EmailData = {
+      email,
+      subject: 'Bienvenido a iUPI',
+      template: 'verify.hbs',
+      variables: { link },
+    };
+
+    if (this.configService.nodeEnv === Environment.PRODUCTION)
+      await this.mailerService.sendMail(emailData);
+    else if (this.configService.nodeEnv === Environment.DEVELOPMENT)
+      await this.mailerService.sendMailDev(emailData);
+
+    const userUpdated = Object.assign(userFound, { verificationCode });
+
+    await this.userService.updateUser(userUpdated);
+
+    return { message: 'Verification email successfully resent' };
+  }
+
+  async verify(code: string) {
+    const [iv, encryptedData] = code.split('.');
+
+    const decrypted = await this.credentialsService.decrypt({ iv, encryptedData });
+    const verificationCode = decrypted.toString();
+
     const valid32HexCode = /^[a-f0-9]{64}$/i;
 
     if (!valid32HexCode.test(verificationCode))
-      throw new NotAcceptableException('invalid 32-digit code');
+      throw new NotAcceptableException(ErrorMessage.INVALID_CODE);
 
     const userFound = await this.userService.getUser({ verificationCode });
 
@@ -184,6 +143,8 @@ export class AuthService {
     const userFound = await this.userService.getUser({ email });
 
     if (!userFound) throw new NotFoundException(ErrorMessage.USER_NOT_FOUND);
+
+    if (!userFound.password) throw new UnauthorizedException(ErrorMessage.INVALID_CREDENTIALS);
 
     const isMatch = await bcrypt.compare(password, userFound.password);
 
@@ -205,8 +166,8 @@ export class AuthService {
     if (isMatch && userFound.blocked) throw new ForbiddenException(ErrorMessage.USER_BLOCKED);
 
     const [accessToken, refreshToken] = await Promise.all([
-      this.accessToken({ id: userFound.id }),
-      this.refreshToken({ id: userFound.id }),
+      this.credentialsService.accessToken({ id: userFound.id }),
+      this.credentialsService.refreshToken({ id: userFound.id }),
     ]);
 
     const userAgent = req.headers['user-agent'] ?? 'testing';
@@ -216,7 +177,7 @@ export class AuthService {
     const userUpdated = Object.assign(userFound, { attempts: 0 });
     await this.userService.updateUser(userUpdated);
 
-    await this.setCookie(res, refreshToken);
+    await this.credentialsService.setCookie(res, refreshToken);
 
     return { accessToken };
   }
@@ -225,11 +186,11 @@ export class AuthService {
     const refreshToken = req.headers.cookie?.split('=')[1];
     const userAgent = req.headers['user-agent'] ?? 'testing';
 
-    const { id } = await this.decodeToken({ refreshToken });
+    const { id } = await this.credentialsService.verifyRefreshToken(refreshToken);
 
     const [accessToken, newRefreshToken] = await Promise.all([
-      this.accessToken({ id }),
-      this.refreshToken({ id }),
+      this.credentialsService.accessToken({ id }),
+      this.credentialsService.refreshToken({ id }),
     ]);
 
     const authList = await this.prisma.auth.findMany({ where: { userId: id } });
@@ -249,8 +210,8 @@ export class AuthService {
         },
       });
 
-    await this.removeCookie(res);
-    await this.setCookie(res, newRefreshToken);
+    await this.credentialsService.removeCookie(res);
+    await this.credentialsService.setCookie(res, newRefreshToken);
 
     return { accessToken };
   }
@@ -277,7 +238,7 @@ export class AuthService {
     return { message: 'password successfully changed' };
   }
 
-  async forgotPassword(body: ForgotPasswordDto) {
+  async forgotPassword(body: SendEmailDto) {
     const { email } = body;
     const userFound = await this.userService.getUser({ email });
 
@@ -285,22 +246,22 @@ export class AuthService {
 
     const expiration = new Date();
     expiration.setMinutes(expiration.getMinutes() + 15);
-
     const resetPasswordCode = crypto.randomBytes(32).toString('hex');
 
-    const query = { resetPasswordCode, exp: new Date(expiration).getTime() };
+    const query = { resetPasswordCode, exp: new Date(expiration).getTime().toString() };
+    const text = Object.values(query).join(';');
+
+    const encrypted = await this.credentialsService.encrypt(text);
+
+    const code = Object.values(encrypted).join('.');
 
     const link = new URL('reset-password', this.configService.frontendUrl);
-
-    Object.entries(query).forEach(([key, value]) => {
-      link.searchParams.set(key, value.toString());
-    });
+    link.searchParams.set('code', code);
 
     const emailData: EmailData = {
       email,
       subject: 'Recuperación de contraseña',
       template: 'password-recovery.hbs',
-      // Frontend example: https://iupi-fintech.frontend/auth/reset-password?code=${code}&exp=${exp}
       variables: { link },
     };
 
@@ -316,9 +277,16 @@ export class AuthService {
     return { message: 'password recovery process initialized' };
   }
 
-  async resetPassword(query: ResetPasswordQueryDto, body: ResetPasswordDto) {
-    const { code: resetPasswordCode, exp } = query;
+  async resetPassword(code: string, body: ResetPasswordDto) {
+    const valid32HexCode = /^[a-f0-9]{64}$/i;
     const { newPassword, confirmPassword } = body;
+    const [iv, encryptedData] = code.split('.');
+
+    const decrypted = await this.credentialsService.decrypt({ iv, encryptedData });
+    const [resetPasswordCode, exp] = decrypted.toString().split(';');
+
+    if (!valid32HexCode.test(resetPasswordCode))
+      throw new NotAcceptableException(ErrorMessage.INVALID_CODE);
 
     const userFound = await this.userService.getUser({ resetPasswordCode });
 
@@ -342,7 +310,7 @@ export class AuthService {
   async logout(req: UserRequest, res: Response) {
     const refreshToken = req.headers.cookie?.split('=')[1];
 
-    await this.removeCookie(res);
+    await this.credentialsService.removeCookie(res);
     const where: Prisma.AuthWhereInput = refreshToken && { refreshToken };
     await this.prisma.auth.deleteMany({ where });
 
