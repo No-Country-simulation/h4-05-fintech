@@ -1,7 +1,8 @@
 export interface IProfileData {
-  id: string;
   name: string | null;
   lastname: string | null;
+  age: number | null
+  occupation: string | null
   image: string | null;
   surveyAnswered: boolean;
   financialProfileResults: string | null;
@@ -12,6 +13,8 @@ export interface IUpdateProfileData {
   name: string;
   lastname: string;
   image: string;
+  age: number | null
+  occupation: string | null
   itemsSaved: string[];
 };
 
@@ -26,8 +29,6 @@ export interface IFinancialSurvey {
   incomeRanges: IncomeRanges;
   expenseRatios: ExpensesRatios;
   investmentPurpose: InvestmentPurpose | null
-  age: number | null
-  occupation: string | null
   savingsPlans: SavingPlans | null
   savingsRanges: SavingsRanges | null
 }

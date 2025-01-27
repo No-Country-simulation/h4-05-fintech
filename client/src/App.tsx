@@ -18,14 +18,16 @@ import RegisterPage from "./components/auth/Register";
 import LoginPage from "./components/auth/Login";
 import RegisteredPage from "./components/auth/Registered";
 import VerifyPage from "./components/auth/Verify";
+import ForgotPasswordPage from "./components/auth/ForgotPassword";
+import ResetPasswordPage from "./components/auth/ResetPassword";
 
 // Dashboard
 import Dashboard from "./components/profile/Dashboard";
-import OnboardingStart from "./components/profile/OnboardingStart";
 import UpdateProfilePage from "./components/profile/UpdateProfile";
-import Nombre from "./components/profile/Nombre";
-import Edad from "./components/profile/Edad";
-import Ocupacion from "./components/profile/Ocupacion";
+import StartPage from "./components/profile/StartPage";
+import NamesPage from "./components/profile/NamesPage";
+import AgePage from "./components/profile/AgePage";
+import OccupationPage from "./components/profile/OccupationPage";
 
 // Survey
 import FinancialSurveyStart from "./components/financial-survey/StartPage";
@@ -39,8 +41,8 @@ import Question7 from "./components/financial-survey/Question7";
 import Question8 from "./components/financial-survey/Question8";
 import Question9 from "./components/financial-survey/Question9";
 import SummaryPage from "./components/financial-survey/SummaryPage";
-import ForgotPasswordPage from "./components/auth/ForgotPassword";
-import ResetPasswordPage from "./components/auth/ResetPassword";
+import SummaryProfilePage from "./components/profile/ProfileSummary";
+
 // import AuthRoutes from "./components/auth/AuthRoutes";
 // import DashboardRoutes from "./components/profile/DashboardRoutes";
 // import FinancialSurveyRoutes from "./components/financial-survey/SurveyRoutes ";
@@ -67,9 +69,6 @@ function App() {
             <Route path="/" element={<Navigate to="/auth" replace />} />
 
             {/* Rutas neutras */}
-            <Route path="/nombre" element={<Nombre />} />
-            <Route path="/edad" element={<Edad />} />
-            <Route path="/ocupacion" element={<Ocupacion />} />
 
             {/* Unprotected routes */}
             <Route element={<Unprotected />}>
@@ -93,8 +92,16 @@ function App() {
               {/* Dashboard routes */}
               <Route path="/dashboard/*">
                 <Route path="" element={<Dashboard />} />
-                <Route path="onboarding-start" element={<OnboardingStart />} />
                 <Route path="update-profile" element={<UpdateProfilePage />} />
+              </Route>
+
+              {/* Profile routes*/}
+              <Route path="/profile/*">
+                <Route path="start" element={<StartPage />} />
+                <Route path="names" element={<NamesPage />} />
+                <Route path="age" element={<AgePage />} />
+                <Route path="occupation" element={<OccupationPage />} />
+                <Route path="summary" element={<SummaryProfilePage />} />
               </Route>
 
               {/* Financial Survey routes */}

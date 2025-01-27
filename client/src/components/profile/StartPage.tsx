@@ -1,8 +1,28 @@
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Card } from "../ui/card";
-import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
+import { IProfileData, IUpdateProfileData } from "@/interfaces/profile.interfaces";
 
-const OnboardingStart = () => {
+const StartPage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const { data } = location.state as { data: IProfileData };
+
+  const defaultValues: IUpdateProfileData = {
+    name: data.name ?? '',
+    lastname: data.lastname ?? '',
+    age: data.age ?? 0,
+    occupation: data.occupation ?? '',
+    image: data.image ?? '',
+    itemsSaved: [],
+  }
+
+  const startProfile = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    navigate('/profile/names', { state: { data: defaultValues, started: true }});
+  }
+
   return (
     <main className="min-h-screen flex flex-col items-center justify-center">
       <div className="w-full max-w-md space-y-6">
@@ -27,8 +47,11 @@ const OnboardingStart = () => {
 
           <div className="mt-[8rem]">
             <Link to="/nombre">
-              <Button className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide">
-                Continuar
+              <Button
+                className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide"
+                onClick={startProfile}
+              >
+                Comencemos
               </Button>
             </Link>
           </div>
@@ -38,4 +61,4 @@ const OnboardingStart = () => {
   )
 }
 
-export default OnboardingStart;
+export default StartPage;

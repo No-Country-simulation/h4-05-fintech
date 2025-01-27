@@ -1,7 +1,7 @@
 import { Route} from "react-router-dom"
 import Protected from "../protected/Protected"
 import Dashboard from "./Dashboard"
-import OnboardingStart from "./OnboardingStart";
+import OnboardingStart from "./StartPage";
 import UpdateProfilePage from "./UpdateProfile";
 
 function DashboardRoutes(): JSX.Element {

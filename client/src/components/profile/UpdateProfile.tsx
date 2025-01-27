@@ -13,7 +13,9 @@ const UpdateProfilePage = () => {
   const defaultValues: IUpdateProfileData = {
     name: data.name ?? '',
     lastname: data.lastname ?? '',
+    age: data.age ?? 0,
     image: data.image ?? '',
+    occupation: data.occupation ?? '',
     itemsSaved: []
   }
 

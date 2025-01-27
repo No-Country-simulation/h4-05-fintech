@@ -1,35 +1,36 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
 import { Card } from "../ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "../ui/button";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import { IUpdateProfileData } from "@/interfaces/profile.interfaces";
 
+const NamesPage = () => {
+  const hasFetched = useRef(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-const Nombre = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    secondname: "",
-  });
+  const { data, started } = location.state as { data: IUpdateProfileData; started: boolean };
 
-  const [_error, setError] = useState<string | null>(null);
+  const [formData, setFormData] = useState<IUpdateProfileData>(data);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(formData);
-    try {
-      const response = await axios.post("http://localhost:4000", formData);
-      console.log(response);
-    } catch (error) {
-      console.log(error);
+  useEffect(() => {
+    if (!hasFetched.current) {
+      hasFetched.current = true;
+      if (!started) navigate('/profile/start')
     }
-  };
+  }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setError(null);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const nextQuestion = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    navigate('/profile/age', { state: { data: formData, prev: true }});
+  }
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center">
@@ -42,10 +43,9 @@ const Nombre = () => {
           />
         </div>
         <div className=" justify-end grid-rows-12">
-          <p className="text-[#88D0EF] text-center">Quien eres?</p>
+          <p className="text-[#88D0EF] text-center">¿Quién eres?</p>
         </div>
         <Card className=" border-none shadow-none">
-          <form onSubmit={handleSubmit} className="space-y-2 mt-[5rem]">
             <div className="rounded-lg space-y-2 bg-[#11668233] p-3">
               <Label htmlFor="name"
                 className="text-[#8BD0EF]"
@@ -56,7 +56,7 @@ const Nombre = () => {
                 id="name"
                 type="text"
                 name="name"
-                value={formData.name}
+                value={formData.name!}
                 onChange={handleChange}
                 placeholder="Ingresa tu nombre"
                 className="bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
@@ -70,10 +70,10 @@ const Nombre = () => {
                 Apellido
               </Label>
               <Input
-                id="secondname"
+                id="lastname"
                 type="text"
-                name="secondname"
-                value={formData.secondname}
+                name="lastname"
+                value={formData.lastname!}
                 onChange={handleChange}
                 placeholder="Ingresa tu apellido"
                 className="bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
@@ -81,15 +81,17 @@ const Nombre = () => {
               />
             </div>
             <Link to='/edad'>
-              <Button type="submit" className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide">
-                Continuar
+              <Button 
+                className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide"
+                onClick={nextQuestion}
+              >
+                Siguiente
               </Button>
             </Link>
-          </form>
         </Card>
       </div>
     </main>
   )
 }
 
-export default Nombre;
+export default NamesPage;
