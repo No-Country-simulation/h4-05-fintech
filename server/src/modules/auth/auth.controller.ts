@@ -33,14 +33,7 @@ import { IsLogin } from '../../common/decorators/is-login.decorator';
 import { JwtGuard, JwtRefreshGuard } from '../../common/guards';
 
 import { AuthService } from './auth.service';
-import {
-  LoginDto,
-  RegistryDto,
-  ResetPasswordQueryDto,
-  ResetPasswordDto,
-  ChangePasswordDto,
-  SendEmailDto,
-} from './dto';
+import { LoginDto, RegistryDto, ResetPasswordDto, SendEmailDto, ChangePasswordDto } from './dto';
 import {
   RegistrySuccess,
   VerifySuccess,
@@ -65,8 +58,8 @@ export class AuthController {
   @ApiConflictResponse({ description: 'User already registered' })
   @ApiCreatedResponse(RegistrySuccess)
   @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
-  async registry(@Body() dto: RegistryDto) {
-    return await this.authService.registry(dto);
+  async registry(@Body() body: RegistryDto) {
+    return await this.authService.registry(body);
   }
 
   @Post('resend-verification')
@@ -107,9 +100,9 @@ export class AuthController {
   async login(
     @Req() req: UserRequest,
     @Res({ passthrough: true }) res: Response,
-    @Body() dto: LoginDto,
+    @Body() body: LoginDto,
   ) {
-    return await this.authService.login(req, res, dto);
+    return await this.authService.login(req, res, body);
   }
 
   @Get('refresh')
@@ -149,14 +142,15 @@ export class AuthController {
 
   @Put('password-reset')
   @ApiOperation({ summary: 'Reset Password' })
+  @ApiQuery({ name: 'code', required: true })
   @ApiBody({ type: ResetPasswordDto, required: true })
   @ApiBadRequestResponse({ description: `Incoming data is invalid, or the passwords don't match` })
   @ApiUnauthorizedResponse({ description: 'Time to reset password expired' })
   @ApiNotFoundResponse({ description: 'User not found' })
   @ApiCreatedResponse(PasswordResetSuccess)
   @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
-  async resetPassword(@Query() query: ResetPasswordQueryDto, @Body() body: ResetPasswordDto) {
-    return await this.authService.resetPassword(query, body);
+  async resetPassword(@Query('code') code: string, @Body() body: ResetPasswordDto) {
+    return await this.authService.resetPassword(code, body);
   }
 
   @Get('logout')

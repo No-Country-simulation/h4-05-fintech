@@ -1,3 +1,5 @@
+import crypto from 'node:crypto';
+
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -13,6 +15,14 @@ export class CredentialsService {
     @Inject(config.KEY) private readonly configService: ConfigType<typeof config>,
     private readonly jwtService: JwtService,
   ) {}
+
+  // Execute crypto.randomBytes(32).toString('hex') to generate a key
+  private encryptKey =
+    this.configService.nodeEnv === Environment.PRODUCTION
+      ? Buffer.from(this.configService.encriptKey, 'hex')
+      : Buffer.from('d109cd4b5dea3329a60cd9b495b6d6a42cb2623cf7a406625481799c0afbe19e', 'hex');
+
+  private iv = crypto.randomBytes(16);
 
   private accessSecret =
     this.configService.nodeEnv === Environment.PRODUCTION
@@ -94,5 +104,21 @@ export class CredentialsService {
       secret: this.refreshSecret,
     });
     return payload;
+  }
+
+  async encrypt(text: string): Promise<{ iv: string; encryptedData: string }> {
+    const cipher = crypto.createCipheriv('aes-256-cbc', this.encryptKey, this.iv);
+    let encrypted = cipher.update(text);
+    encrypted = Buffer.concat([encrypted, cipher.final()]);
+    return { iv: this.iv.toString('hex'), encryptedData: encrypted.toString('hex') };
+  }
+
+  async decrypt(text: { iv: string; encryptedData: string }): Promise<Buffer<ArrayBufferLike>> {
+    const iv = Buffer.from(text.iv, 'hex');
+    const encryptedData = Buffer.from(text.encryptedData, 'hex');
+    const decipher = crypto.createDecipheriv('aes-256-cbc', this.encryptKey, iv);
+    let decrypted = decipher.update(encryptedData);
+    decrypted = Buffer.concat([decrypted, decipher.final()]);
+    return decrypted;
   }
 }

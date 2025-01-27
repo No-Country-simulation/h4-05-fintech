@@ -9,8 +9,8 @@ import { Reflector } from '@nestjs/core';
 import { Prisma } from '@prisma/client';
 import { JsonWebTokenError, TokenExpiredError } from '@nestjs/jwt';
 
-import { GoogleAuthService } from '../../modules/oauth2/google/google.service';
-import { AppleAuthService } from '../../modules/oauth2/apple/apple.service';
+import { GoogleAuthService } from '../../modules/ouath2/google/google.service';
+import { AppleAuthService } from '../../modules/ouath2/apple/apple.service';
 
 import { UserRequest } from '../interfaces';
 import { ErrorMessage } from '../enums';

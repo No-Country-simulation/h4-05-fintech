@@ -7,6 +7,7 @@ export default registerAs('config', () => {
     frontendUrl: process.env.FRONTEND_URL,
     backendUrl: process.env.BACKEND_URL,
     dataModelUrl: process.env.DATA_MODEL_URL,
+    encriptKey: process.env.ENCRYPT_KEY,
     jwt: {
       accessSecret: process.env.JWT_ACCESS_SECRET,
       accessExpiration: process.env.JWT_ACCESS_EXPIRATION,
