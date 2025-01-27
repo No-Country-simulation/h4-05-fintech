@@ -1,20 +1,25 @@
 import { useState } from "react";
 import { Card } from "../ui/card";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "../ui/button";
+import Select from "../ui/select";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
 
 const Nombre = () => {
   const [formData, setFormData] = useState({
-    name: "",
-    secondname: "",
+    ocupacion: "",
   });
 
+  const [selectedValue, setSelectedValue] = useState<string>('')
   const [error, setError] = useState<string | null>(null);
 
+  const options = [
+    { value: 'Arquitecto', label: 'Arquitecto' },
+    { value: 'Ingeniero', label: 'Ingeniero' },
+    { value: 'Abogado', label: 'Abogado' },
+  ]
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(formData);
@@ -42,7 +47,7 @@ const Nombre = () => {
           />
         </div>
         <div className=" justify-end grid-rows-12">
-          <p className="text-[#88D0EF] text-center">Quien eres?</p>
+          <p className="text-[#88D0EF] text-center">Cual es tu ocupación?</p>
         </div>
         <Card className=" border-none shadow-none">
           <form onSubmit={handleSubmit} className="space-y-2 mt-[5rem]">
@@ -50,37 +55,17 @@ const Nombre = () => {
               <Label htmlFor="name"
                 className="text-[#8BD0EF]"
               >
-                Nombre
+                Ocupación:
               </Label>
-              <Input
-                id="name"
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="Ingresa tu nombre"
-                className="bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
-                required
+              <Select
+                options={options}
+                onChange={setSelectedValue}
+                value={selectedValue}
+                className="w-full h-[52px] bg-[#11668233] text-[#8BD0EF] text-base font-normal tracking-wide px-2 mx-2"
               />
+              <p className="text-center font-semibold text-indigo-200">Selected Value: {selectedValue}</p>
             </div>
-            <div className="rounded-lg space-y-2 bg-[#11668233] p-3">
-              <Label htmlFor="apellido"
-                className="text-[#8BD0EF]"
-              >
-                Apellido
-              </Label>
-              <Input
-                id="secondname"
-                type="text"
-                name="secondname"
-                value={formData.secondname}
-                onChange={handleChange}
-                placeholder="Ingresa tu apellido"
-                className="bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
-                required
-              />
-            </div>
-            <Link to='/edad'>
+            <Link to="/ocupacion" >
               <Button type="submit" className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide">
                 Continuar
               </Button>

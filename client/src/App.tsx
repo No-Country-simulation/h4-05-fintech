@@ -10,6 +10,8 @@ import { AuthProvider } from "./context/AuthContext";
 import Unprotected from "./components/protected/Unprotetcted";
 import InicioOnbording from "./components/profile/InicioOnboarding";
 import Nombre from "./components/profile/Nombre";
+import Edad from "./components/profile/Edad";
+import Ocupacion from "./components/profile/Ocupacion";
 
 function App() {
   return (
@@ -24,7 +26,8 @@ function App() {
             {/* Rutas neutras */}
             <Route path="/perfil" element={<InicioOnbording />} />
             <Route path="/nombre" element={<Nombre />} />
-
+            <Route path="/edad" element={<Edad />} />
+            <Route path="/ocupacion" element={<Ocupacion />} />
 
             {/* Rutas no-protegidas */}
             <Route element={<Unprotected />}>

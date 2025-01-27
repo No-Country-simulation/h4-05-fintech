@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card } from "../ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,8 +10,7 @@ import axios from "axios";
 
 const Nombre = () => {
   const [formData, setFormData] = useState({
-    name: "",
-    secondname: "",
+    edad: "",
   });
 
   const [error, setError] = useState<string | null>(null);
@@ -42,7 +42,7 @@ const Nombre = () => {
           />
         </div>
         <div className=" justify-end grid-rows-12">
-          <p className="text-[#88D0EF] text-center">Quien eres?</p>
+          <p className="text-[#88D0EF] text-center">Quien edad tienes?</p>
         </div>
         <Card className=" border-none shadow-none">
           <form onSubmit={handleSubmit} className="space-y-2 mt-[5rem]">
@@ -50,37 +50,20 @@ const Nombre = () => {
               <Label htmlFor="name"
                 className="text-[#8BD0EF]"
               >
-                Nombre
+                Edad
               </Label>
               <Input
-                id="name"
+                id="edad"
                 type="text"
-                name="name"
-                value={formData.name}
+                name="edad"
+                value={formData.edad}
                 onChange={handleChange}
-                placeholder="Ingresa tu nombre"
+                placeholder="Ingresa tu edad"
                 className="bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
                 required
               />
             </div>
-            <div className="rounded-lg space-y-2 bg-[#11668233] p-3">
-              <Label htmlFor="apellido"
-                className="text-[#8BD0EF]"
-              >
-                Apellido
-              </Label>
-              <Input
-                id="secondname"
-                type="text"
-                name="secondname"
-                value={formData.secondname}
-                onChange={handleChange}
-                placeholder="Ingresa tu apellido"
-                className="bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
-                required
-              />
-            </div>
-            <Link to='/edad'>
+            <Link to="/ocupacion" >
               <Button type="submit" className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide">
                 Continuar
               </Button>
