@@ -44,6 +44,8 @@ model UserProfile {
   userId                    String              @unique @map("user_id")
   name                      String?
   lastname                  String?
+  age                       Int?
+  occupation                String?
   image                     String?
   surveyAnswered            Boolean             @default(false) @map("survey_answered")
   financialProfileResults   String?             @map("financial_profile")
@@ -70,8 +72,6 @@ model FinancialProfile {
   expenseRatios                   String                @map("expense_ratios")
   // PREGUNTAS SECUNDARIAS
   investmentPurpose               String?               @map("investment_purpose")
-  age                             Int?
-  occupation                      String?
   savingsPlans                    String?               @map("savings_plans")
   savingsRanges                   String?               @map("savings_ranges")
   // monthlyContribution          String?               @map("monthly_contribution")
