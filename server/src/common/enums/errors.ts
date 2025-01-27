@@ -11,7 +11,7 @@ export enum ErrorMessage {
   PROFILE_CREATED = 'profile created',
   EXPIRED_TIME = 'expired time',
   USER_BLOCKED = 'user blocked',
-  INVALID_CODE = 'invalid 32-digit code',
+  INVALID_CODE = 'invalid code',
   EQUAL_PASSWORDS = 'passwords are equal',
   FINANCIAL_PROFILE_NOT_FOUND = 'financial profile not found',
   USER_PROFILE_NOT_FOUND = 'user profile not found',

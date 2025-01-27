@@ -25,14 +25,7 @@ import { CredentialsService } from '../../common/modules/credentials/credentials
 import { UserService } from '../user/user.service';
 import { ProfileService } from '../profile/profile.service';
 
-import {
-  LoginDto,
-  RegistryDto,
-  ResetPasswordDto,
-  ResetPasswordQueryDto,
-  ChangePasswordDto,
-  SendEmailDto,
-} from './dto';
+import { LoginDto, RegistryDto, ResetPasswordDto, ChangePasswordDto, SendEmailDto } from './dto';
 
 import config from '../../config';
 
@@ -63,14 +56,17 @@ export class AuthService {
     const hashed = await bcrypt.hash(password, 10);
     const verificationCode = crypto.randomBytes(32).toString('hex');
 
+    const encrypted = await this.credentialsService.encrypt(verificationCode);
+
+    const code = Object.values(encrypted).join('.');
+
     const link = new URL('verify', this.baseUrl);
-    link.searchParams.set('code', verificationCode);
+    link.searchParams.set('code', code);
 
     const emailData: EmailData = {
       email,
       subject: 'Bienvenido a iUPI',
       template: 'verify.hbs',
-      // Frontend example: https://iupi-fintech.frontend/auth/verify?code=${code}
       variables: { link },
     };
 
@@ -90,18 +86,21 @@ export class AuthService {
 
     if (!userFound) throw new NotFoundException(ErrorMessage.USER_NOT_FOUND);
 
-    if (userFound.verified) throw new BadRequestException(ErrorMessage.USER_NOT_VERIFIED);
+    if (userFound.verified) throw new BadRequestException(ErrorMessage.USER_VERIFIED);
 
     const verificationCode = crypto.randomBytes(32).toString('hex');
 
+    const encrypted = await this.credentialsService.encrypt(verificationCode);
+
+    const code = Object.values(encrypted).join('.');
+
     const link = new URL('verify', this.baseUrl);
-    link.searchParams.set('code', verificationCode);
+    link.searchParams.set('code', code);
 
     const emailData: EmailData = {
       email,
       subject: 'Bienvenido a iUPI',
       template: 'verify.hbs',
-      // Frontend example: https://iupi-fintech.frontend/auth/verify?code=${code}
       variables: { link },
     };
 
@@ -117,11 +116,16 @@ export class AuthService {
     return { message: 'Verification email successfully resent' };
   }
 
-  async verify(verificationCode: string) {
+  async verify(code: string) {
+    const [iv, encryptedData] = code.split('.');
+
+    const decrypted = await this.credentialsService.decrypt({ iv, encryptedData });
+    const verificationCode = decrypted.toString();
+
     const valid32HexCode = /^[a-f0-9]{64}$/i;
 
     if (!valid32HexCode.test(verificationCode))
-      throw new NotAcceptableException('invalid 32-digit code');
+      throw new NotAcceptableException(ErrorMessage.INVALID_CODE);
 
     const userFound = await this.userService.getUser({ verificationCode });
 
@@ -241,22 +245,22 @@ export class AuthService {
 
     const expiration = new Date();
     expiration.setMinutes(expiration.getMinutes() + 15);
-
     const resetPasswordCode = crypto.randomBytes(32).toString('hex');
 
-    const query = { resetPasswordCode, exp: new Date(expiration).getTime() };
+    const query = { resetPasswordCode, exp: new Date(expiration).getTime().toString() };
+    const text = Object.values(query).join(';');
+
+    const encrypted = await this.credentialsService.encrypt(text);
+
+    const code = Object.values(encrypted).join('.');
 
     const link = new URL('reset-password', this.configService.frontendUrl);
-
-    Object.entries(query).forEach(([key, value]) => {
-      link.searchParams.set(key, value.toString());
-    });
+    link.searchParams.set('code', code);
 
     const emailData: EmailData = {
       email,
       subject: 'Recuperación de contraseña',
       template: 'password-recovery.hbs',
-      // Frontend example: https://iupi-fintech.frontend/auth/reset-password?code=${code}&exp=${exp}
       variables: { link },
     };
 
@@ -272,9 +276,16 @@ export class AuthService {
     return { message: 'password recovery process initialized' };
   }
 
-  async resetPassword(query: ResetPasswordQueryDto, body: ResetPasswordDto) {
-    const { code: resetPasswordCode, exp } = query;
+  async resetPassword(code: string, body: ResetPasswordDto) {
+    const valid32HexCode = /^[a-f0-9]{64}$/i;
     const { newPassword, confirmPassword } = body;
+    const [iv, encryptedData] = code.split('.');
+
+    const decrypted = await this.credentialsService.decrypt({ iv, encryptedData });
+    const [resetPasswordCode, exp] = decrypted.toString().split(';');
+
+    if (!valid32HexCode.test(resetPasswordCode))
+      throw new NotAcceptableException(ErrorMessage.INVALID_CODE);
 
     const userFound = await this.userService.getUser({ resetPasswordCode });
 

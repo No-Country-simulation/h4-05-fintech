@@ -33,14 +33,7 @@ import { IsLogin } from '../../common/decorators/is-login.decorator';
 import { JwtGuard, JwtRefreshGuard } from '../../common/guards';
 
 import { AuthService } from './auth.service';
-import {
-  LoginDto,
-  RegistryDto,
-  ResetPasswordQueryDto,
-  ResetPasswordDto,
-  SendEmailDto,
-  ChangePasswordDto,
-} from './dto';
+import { LoginDto, RegistryDto, ResetPasswordDto, SendEmailDto, ChangePasswordDto } from './dto';
 import {
   RegistrySuccess,
   VerifySuccess,
@@ -149,14 +142,15 @@ export class AuthController {
 
   @Put('password-reset')
   @ApiOperation({ summary: 'Reset Password' })
+  @ApiQuery({ name: 'code', required: true })
   @ApiBody({ type: ResetPasswordDto, required: true })
   @ApiBadRequestResponse({ description: `Incoming data is invalid, or the passwords don't match` })
   @ApiUnauthorizedResponse({ description: 'Time to reset password expired' })
   @ApiNotFoundResponse({ description: 'User not found' })
   @ApiCreatedResponse(PasswordResetSuccess)
   @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
-  async resetPassword(@Query() query: ResetPasswordQueryDto, @Body() body: ResetPasswordDto) {
-    return await this.authService.resetPassword(query, body);
+  async resetPassword(@Query('code') code: string, @Body() body: ResetPasswordDto) {
+    return await this.authService.resetPassword(code, body);
   }
 
   @Get('logout')
