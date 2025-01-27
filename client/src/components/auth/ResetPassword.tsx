@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { IResetPassword, IResetPasswordQuery } from "@/interfaces/auth,interfaces";
+import { IResetPassword } from "@/interfaces/auth,interfaces";
 import { resetPassword } from "@/api/auth.routes";
 
 const initilValues: IResetPassword = {
@@ -21,10 +21,7 @@ const ResetPasswordPage = () => {
   const location = useLocation();
 
   const searchParams = new URLSearchParams(location.search);
-  const query: IResetPasswordQuery = {
-    code: searchParams.get('code'),
-    exp: searchParams.get('exp'),
-  }
+  const code = searchParams.get('code');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError(null);
@@ -35,7 +32,7 @@ const ResetPasswordPage = () => {
     e.preventDefault();
     setLoading(true);
 
-    const response = resetPassword(query, formData);
+    const response = resetPassword(code, formData);
 
     response
       .then(() => console.log('Password successfully reset'))

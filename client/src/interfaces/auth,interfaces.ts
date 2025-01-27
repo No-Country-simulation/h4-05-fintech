@@ -9,11 +9,6 @@ export interface IRegister {
   confirmPassword: string;
 }
 
-export interface IResetPasswordQuery {
-  code: string | null;
-  exp: string | null;
-}
-
 export interface IResetPassword {
   newPassword: string;
   confirmPassword: string;

@@ -1,4 +1,4 @@
-import { ILogin, IRegister, IResetPassword, IResetPasswordQuery } from "@/interfaces/auth,interfaces";
+import { ILogin, IRegister, IResetPassword } from "@/interfaces/auth,interfaces";
 import { apiRoutes } from "./axios";
 import { AxiosResponse } from "axios";
 
@@ -72,12 +72,11 @@ export const forgotPassword = (email: string): Promise<AxiosResponse> => {
 }
 
 export const resetPassword = (
-  query: IResetPasswordQuery, 
+  code: string | null, 
   formData: IResetPassword
 ): Promise<AxiosResponse> => {
-  const { code, exp } = query;
   return apiRoutes.put(
-    `/auth/password-reset?code=${code}&exp=${exp}`, 
+    `/auth/password-reset?code=${code}`, 
     formData, 
     {
       signal: controller.signal,
