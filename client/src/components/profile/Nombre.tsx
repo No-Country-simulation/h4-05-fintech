@@ -13,7 +13,7 @@ const Nombre = () => {
     secondname: "",
   });
 
-  const [error, setError] = useState<string | null>(null);
+  const [_error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

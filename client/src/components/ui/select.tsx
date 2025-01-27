@@ -4,11 +4,13 @@ interface SelectProps {
   options: { value: string; label: string }[];
   onChange: (value: string) => void;
   value: string;
+  className: string;
 }
 
-const Select: React.FC<SelectProps> = ({ options, onChange, value }) => {
+const Select: React.FC<SelectProps> = ({ className, options, onChange, value }) => {
   return (
     <select
+      className={className}
       value={value}
       onChange={(e) => onChange(e.target.value)}>
       {options.map((option) => (

@@ -8,12 +8,12 @@ import axios from "axios";
 
 
 const Nombre = () => {
-  const [formData, setFormData] = useState({
+  const [formData, _setFormData] = useState({
     ocupacion: "",
   });
 
   const [selectedValue, setSelectedValue] = useState<string>('')
-  const [error, setError] = useState<string | null>(null);
+  const [_error, _setError] = useState<string | null>(null);
 
   const options = [
     { value: 'Arquitecto', label: 'Arquitecto' },
@@ -31,10 +31,10 @@ const Nombre = () => {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setError(null);
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  //const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //  setError(null);
+  //  setFormData({ ...formData, [e.target.name]: e.target.value });
+  //};
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center">

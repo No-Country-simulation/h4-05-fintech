@@ -21,7 +21,7 @@ const defaultValues: IProfileData = {
 
 const Dashboard = () => {
   const { accessToken } = useContext(AuthContext);
-  const [profileData, setProfileData] = useState<IProfileData>(defaultValues);
+  const [_profileData, setProfileData] = useState<IProfileData>(defaultValues);
 
   const hasFetched = useRef(false);
   const navigate = useNavigate();
