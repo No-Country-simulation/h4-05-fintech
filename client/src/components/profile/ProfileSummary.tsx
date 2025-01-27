@@ -29,7 +29,8 @@ const SummaryProfilePage = () => {
     e.preventDefault();
     setRequest(true);
 
-    const response = apiProtectedRoutes.put('/profile/data', data);
+    const updatedProfuke: IUpdateProfileData = {...data, age: +data.age }
+    const response = apiProtectedRoutes.put('/profile/data', updatedProfuke);
 
     response
       .then(() => console.log('Perfil actualizado con éxito'))

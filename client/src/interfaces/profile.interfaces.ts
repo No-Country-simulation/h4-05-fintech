@@ -12,9 +12,9 @@ export interface IProfileData {
 export interface IUpdateProfileData {
   name: string;
   lastname: string;
-  image: string;
-  age: number | null
-  occupation: string | null
+  image: string ;
+  age: number
+  occupation: string
   itemsSaved: string[];
 };
 
