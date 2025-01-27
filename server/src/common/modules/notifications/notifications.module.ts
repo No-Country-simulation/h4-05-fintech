@@ -1,9 +1,8 @@
 import { Module, Global } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { NotificationsGateway } from './notificattion.gateway';
 
 @Global()
 @Module({
-  providers: [NotificationsGateway, JwtService],
+  providers: [NotificationsGateway],
 })
 export class GatewaysModule {}

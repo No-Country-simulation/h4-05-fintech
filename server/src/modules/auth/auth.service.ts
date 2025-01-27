@@ -40,7 +40,6 @@ export class AuthService {
     private readonly profileService: ProfileService,
   ) {}
 
-  // https://iupi-fintech.frontend/auth/verify?code=${code}
   private baseUrl = new URL('/auth/', this.configService.frontendUrl);
 
   async registry(body: RegistryDto) {
@@ -144,6 +143,8 @@ export class AuthService {
     const userFound = await this.userService.getUser({ email });
 
     if (!userFound) throw new NotFoundException(ErrorMessage.USER_NOT_FOUND);
+
+    if (!userFound.password) throw new UnauthorizedException(ErrorMessage.INVALID_CREDENTIALS);
 
     const isMatch = await bcrypt.compare(password, userFound.password);
 
