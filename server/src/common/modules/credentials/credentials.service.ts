@@ -3,6 +3,7 @@ import crypto from 'node:crypto';
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { Socket } from 'socket.io';
 
 import config from '../../../config';
 import { Environment } from '../../enums';
@@ -57,6 +58,11 @@ export class CredentialsService {
   async extractJwtFromBearerHeader(req: UserRequest): Promise<string | undefined> {
     const [type, token] = req.headers.authorization?.split(' ') ?? [];
     return type === 'Bearer' ? token : undefined;
+  }
+
+  async extractTokenFromClientHeader(client: Socket): Promise<string | undefined> {
+    const { authorization } = client.handshake.headers;
+    return authorization as string;
   }
 
   async accessToken(payload: JwtPayload): Promise<string> {
