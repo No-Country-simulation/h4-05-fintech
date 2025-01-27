@@ -23,6 +23,9 @@ import VerifyPage from "./components/auth/Verify";
 import Dashboard from "./components/profile/Dashboard";
 import OnboardingStart from "./components/profile/OnboardingStart";
 import UpdateProfilePage from "./components/profile/UpdateProfile";
+import Nombre from "./components/profile/Nombre";
+import Edad from "./components/profile/Edad";
+import Ocupacion from "./components/profile/Ocupacion";
 
 // Survey
 import FinancialSurveyStart from "./components/financial-survey/StartPage";
@@ -59,6 +62,14 @@ function App() {
       <AuthProvider>
         <MainLayout>
           <Routes>
+
+            {/* Redirige la raíz ("/") a "/auth" */}
+            <Route path="/" element={<Navigate to="/auth" replace />} />
+
+            {/* Rutas neutras */}
+            <Route path="/nombre" element={<Nombre />} />
+            <Route path="/edad" element={<Edad />} />
+            <Route path="/ocupacion" element={<Ocupacion />} />
 
             {/* Unprotected routes */}
             <Route element={<Unprotected />}>

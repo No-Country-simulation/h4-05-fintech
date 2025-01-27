@@ -84,7 +84,9 @@ const LoginPage = () => {
             className="space-y-2 mt-[10rem]"
           >
             <div className="rounded-lg space-y-2 bg-[#11668233] p-3">
-              <Label htmlFor="email" className="text-[#8BD0EF]">
+              <Label htmlFor="email"
+                className="text-[#8BD0EF]"
+              >
                 Correo electrónico
               </Label>
               <Input
@@ -121,7 +123,7 @@ const LoginPage = () => {
                 <p className="text-xs text-[#8BD0EF] font-medium">Recuperar Contraseña</p>
               </Link>
             </div>
-            {loading 
+            {loading
               ? <Button type="submit" className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide" disabled={true}>
                   Procesando...
                 </Button>
