@@ -1,18 +1,17 @@
-<<<<<<< HEAD
-# upi
-
-=======
-
-hackathon-readme-enero-2025
-# Readme-Hackathon-2
-hackathon-readme-2025
->>>>>>> 2fd8ae0d353c5f7a2476d2a565e2d862c8a473fb
+<div align="center" style="font-family: 'Fira Code', monospace; font-size: 2rem;">
+    <h4>======== Hackathon-Readme-Enero-2025 ========</h4>
+</div>
+<h1 align="center" style="color: #007bff; font-size: 3rem;"> 
+<a href="https://iupi-fintech-nine.vercel.app/auth">· iupi </a> ·</h1>
+<div align="center">  </div>
 <!-- HEADER -->
 <div align="center" width="100">
   <img src="https://github.com/No-Country-simulation/h4-05-fintech/blob/70ea30f0b72cd56b4107086613e518a59149a384/img/portada.png"
   alt="header"/>
 </div>
 
+<h2 align="center" style="color: #007bff;">- Ahorro e inversiones</h1><div align="center">
+<br />
 
 
 
