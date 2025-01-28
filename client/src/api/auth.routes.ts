@@ -42,7 +42,7 @@ export const loginWithApple = (): Promise<AxiosResponse<{ url: string }>> => {
 }
 
 export const refreshSession = (): Promise<AxiosResponse<{ accessToken: string }>> => {
-  return apiRoutes.get('/auth/refresh',
+  return apiRoutes.get<{ accessToken: string }>('/auth/refresh',
     {
       withCredentials: true,
       headers: {

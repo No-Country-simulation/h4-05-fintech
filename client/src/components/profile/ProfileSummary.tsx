@@ -14,7 +14,10 @@ const SummaryProfilePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { data, prev } = location.state as { data: IUpdateProfileData, prev: boolean };
+  const prev = location.state as boolean;
+  const session = sessionStorage.getItem('profile') as string;
+
+  const data = JSON.parse(session) as IUpdateProfileData;
 
   const { apiProtectedRoutes, setRequest } = useProtectedRoutes();
 
@@ -25,7 +28,7 @@ const SummaryProfilePage = () => {
     }
   }, [])
   
-  const handleSubmitAnswers = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmitProfile = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setRequest(true);
 
@@ -33,7 +36,10 @@ const SummaryProfilePage = () => {
     const response = apiProtectedRoutes.put('/profile/data', updatedProfuke);
 
     response
-      .then(() => console.log('Perfil actualizado con éxito'))
+      .then(() => {
+        sessionStorage.removeItem('profile');
+        navigate('/financial-survey')
+      })
       .catch((error: AxiosError) => {
         const errorMessage: IApiError = error.response?.data as IApiError;
         console.error(errorMessage.message);
@@ -42,23 +48,31 @@ const SummaryProfilePage = () => {
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center">
-      <Card>
-      {Object.values(data).map((value, index) => {
-        if (value instanceof Array) return <p 
-          key={index} 
-          className="text-lightBlue font-medium mt-5 mb-4 text-base"
-        >
-          {value.join(', ')}
-        </p>;
-        else return <p 
-          key={index} 
-          className="text-lightBlue font-medium mt-5 mb-4 text-base"
-        >
-          {value}
-        </p>
-      })}
+      <h1 className="text-lightBlue font-medium mt-5 mb-4 text-base">
+        Resumen del perfil
+      </h1>
+      <Card className="shadow-none border-none">
+        <div className="flex justify-between items-center space-x-6">
+          <p className="text-lightBlue font-medium mt-5 mb-4 text-base">Nombre:</p>
+          <p className="text-lightBlue font-medium mt-5 mb-4 text-base">{data.name}</p>
+        </div>
+        <div className="flex justify-between items-center space-x-6">
+          <p className="text-lightBlue font-medium mt-5 mb-4 text-base">Apellido:</p>
+          <p className="text-lightBlue font-medium mt-5 mb-4 text-base">{data.lastname}</p>
+        </div>
+        <div className="flex justify-between items-center space-x-6">
+          <p className="text-lightBlue font-medium mt-5 mb-4 text-base">Edad:</p>
+          <p className="text-lightBlue font-medium mt-5 mb-4 text-base">{data.age}</p>
+        </div>
+        <div className="flex justify-between items-center space-x-6">
+          <p className="text-lightBlue font-medium mt-5 mb-4 text-base">Ocupación:</p>
+          <p className="text-lightBlue font-medium mt-5 mb-4 text-base">{data.occupation}</p>
+        </div>
       </Card>
-      <Button onClick={handleSubmitAnswers}>
+      <Button 
+        className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide" 
+        onClick={handleSubmitProfile}
+      >
         Actualizar datos
       </Button>
     </main>

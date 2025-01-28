@@ -1,21 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router";
-import { FinancialGoals, IFinancialSurvey } from "@/interfaces/profile.interfaces";
+import { FinancialGoals } from "@/interfaces/profile.interfaces";
 import { Button } from "../ui/button";
 
 const Question1 = () => {
-  const [formData, setFormData] = useState<IFinancialSurvey | null>(null);
-
   const hasFetched = useRef(false);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { data, started } = location.state as { data: IFinancialSurvey, started: boolean };
+  const started = location.state as boolean;
 
   useEffect(() => {
     if (!hasFetched.current) {
       hasFetched.current = true;
-      setFormData({ ...data, financialGoals: FinancialGoals.LIBERTAD_FINANCIERA });
       if (!started) navigate('/financial-survey')
     }
   }, [])
@@ -26,7 +23,8 @@ const Question1 = () => {
   
   const handleNextQuestion = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    navigate('/financial-survey/2', { state: { data: formData, prev: true } });
+    sessionStorage.setItem('survey', JSON.stringify({ financialGoals: FinancialGoals.LIBERTAD_FINANCIERA }));
+    navigate('/financial-survey/2', { state: { prev: true } });
   }
 
   return (

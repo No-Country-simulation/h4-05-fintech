@@ -30,10 +30,11 @@ const Dashboard = () => {
       const response = apiProtectedRoutes.get<IProfileData>('/profile/data');
     
       response.then(({ data }) => {
+        setLoadingDashboard(false);
         setProfileData(data)
         if (!data.surveyAnswered) {
-          setLoadingDashboard(false);
-          navigate('/profile/start', { state: { data } })
+          sessionStorage.setItem('profile', JSON.stringify(data));
+          navigate('/profile/start', { state: { started: true }})
         }
       });
     }

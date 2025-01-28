@@ -1,13 +1,12 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
-import { IProfileData, IUpdateProfileData } from "@/interfaces/profile.interfaces";
+import { IUpdateProfileData } from "@/interfaces/profile.interfaces";
 
 const StartPage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
 
-  const { data } = location.state as { data: IProfileData };
+  const data = sessionStorage.getItem('profile') as unknown as IUpdateProfileData;
 
   const defaultValues: IUpdateProfileData = {
     name: data.name ?? '',

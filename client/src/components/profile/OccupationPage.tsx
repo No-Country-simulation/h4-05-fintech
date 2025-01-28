@@ -12,9 +12,12 @@ const OccupationPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { data, prev } = location.state as { data: IUpdateProfileData; prev: boolean };
+  const prev = location.state as boolean;
+  const session = sessionStorage.getItem('profile') as string;
 
-  const [formData, setFormData] = useState<IUpdateProfileData>(data);
+  const data = JSON.parse(session) as IUpdateProfileData;
+
+  const [formData, setFormData] = useState<IUpdateProfileData>({ ...data, occupation: ' ' });
 
   useEffect(() => {
     if (!hasFetched.current) {
@@ -29,7 +32,8 @@ const OccupationPage = () => {
 
   const finishProfile = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    navigate('/profile/summary', { state: { data: formData, prev: true }});
+    sessionStorage.setItem('profile', JSON.stringify(formData));
+    navigate('/profile/summary', { state: { prev: true }});
   }
 
   const options = [

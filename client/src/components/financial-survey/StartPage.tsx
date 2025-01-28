@@ -1,17 +1,12 @@
-import { useState } from "react";
 import { useNavigate } from "react-router";
 import { Button } from "../ui/button";
-import { IFinancialSurvey } from "@/interfaces/profile.interfaces";
 
 const FinancialSurveyStart = () => {
-  const [formData, setFormData] = useState<IFinancialSurvey | null>(null);
-
   const navigate = useNavigate();
 
   const handleStartSurvey = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setFormData(null);
-    navigate('/financial-survey/1', { state: { data: formData, started: true }});
+    navigate('/financial-survey/1', { state: { started: true }});
   }
 
   return (

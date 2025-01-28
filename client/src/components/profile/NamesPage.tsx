@@ -12,7 +12,10 @@ const NamesPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { data, started } = location.state as { data: IUpdateProfileData; started: boolean };
+  const started = location.state as boolean;
+  const session = sessionStorage.getItem('profile') as string;
+
+  const data = JSON.parse(session) as IUpdateProfileData;
 
   const [formData, setFormData] = useState<IUpdateProfileData>(data);
 
@@ -29,7 +32,8 @@ const NamesPage = () => {
 
   const nextQuestion = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    navigate('/profile/age', { state: { data: formData, prev: true }});
+    sessionStorage.setItem('profile', JSON.stringify(formData));
+    navigate('/profile/age', { state: { prev: true }});
   }
 
   return (
@@ -56,7 +60,7 @@ const NamesPage = () => {
                 id="name"
                 type="text"
                 name="name"
-                value={formData.name!}
+                value={formData.name}
                 onChange={handleChange}
                 placeholder="Ingresa tu nombre"
                 className="bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"

@@ -4,13 +4,16 @@ import { IFinancialSurvey, IncomeSources } from "@/interfaces/profile.interfaces
 import { Button } from "../ui/button";
 
 const Question7 = () => {
-  const [formData, setFormData] = useState<IFinancialSurvey | null>(null);
-
   const hasFetched = useRef(false);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { data, prev } = location.state as { data: IFinancialSurvey, prev: boolean };
+  const prev = location.state as boolean;
+  const session = sessionStorage.getItem('survey') as string;
+  
+  const data = JSON.parse(session) as IFinancialSurvey;
+  
+  const [formData, setFormData] = useState<IFinancialSurvey>(data);
   
   useEffect(() => {
     if (!hasFetched.current) {
@@ -19,14 +22,11 @@ const Question7 = () => {
       if (!prev) navigate('/financial-survey')
     }
   }, [])
-  
-  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //  setFormData({ ...formData!, [e.target.name]: e.target.value });
-  // }
     
   const handleNextQuestion = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    navigate('/financial-survey/8', { state: { data: formData, prev: true } });
+    sessionStorage.setItem('survey', JSON.stringify(formData));
+    navigate('/financial-survey/8', { state: { prev: true } });
   }
 
   return (

@@ -14,7 +14,10 @@ const SummaryPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { data, prev } = location.state as { data: IFinancialSurvey, prev: boolean };
+  const prev = location.state as boolean;
+  const session = sessionStorage.getItem('survey') as string;
+    
+  const data = JSON.parse(session) as IFinancialSurvey;
 
   const { apiProtectedRoutes, setRequest } = useProtectedRoutes();
 
@@ -32,7 +35,10 @@ const SummaryPage = () => {
     const response = apiProtectedRoutes.post('/profile/financial', data);
 
     response
-      .then(() => console.log('Perfil actualizado con éxito'))
+      .then(() => {
+        console.log('Perfil actualizado con éxito');
+        sessionStorage.removeItem('survey');
+      })
       .catch((error: AxiosError) => {
         const errorMessage: IApiError = error.response?.data as IApiError;
         console.error(errorMessage.message);
