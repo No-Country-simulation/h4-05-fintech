@@ -39,7 +39,7 @@ const StartPage = () => {
             className="w-[341px] h-[49px]"
           />
         </div>
-        <Card className= " flex flex-col shadow-none border-none">
+        <Card className= "flex flex-col shadow-none border-none">
           <div className=" justify-end grid-rows-12">
             <p className="text-[#88D0EF] text-center">Para ofrecerte un servicio bien personalizado y que te sirva de verdad, nos gustaría saber un poco más sobre vos. ¿Qué te parece si arrancamos con algunas preguntas?</p>
           </div>

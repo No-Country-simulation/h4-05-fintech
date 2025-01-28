@@ -1,13 +1,13 @@
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router";
-import { Button } from "../ui/button";
-import { Card } from "../ui/card";
 
-const FinancialSurveyStart = () => {
+const FinancialKnowledge = () => {
   const navigate = useNavigate();
 
   const handleStartSurvey = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    navigate('/financial-survey/financial-goals', { state: { started: true }});
+    navigate('/financial-survey/financial-knowledge/1', { state: { started: true }});
   }
 
   return (
@@ -23,7 +23,7 @@ const FinancialSurveyStart = () => {
       <Card className= "flex flex-col shadow-none border-none">
         <div>
           <p className="text-lightBlue font-medium mt-5 mb-4 text-base text-center">
-            Felicidades cada vez estamos mas cerca de ofrecerte un servicio mas personalizado acorde a tu perfil y tu tolerancia al riesgo,
+          ¡Perfecto! Ahora que te conocemos mejor, nos gustaría entender tu nivel de conocimiento sobre inversiones. ¿Podrías contarnos sobre tu experiencia previa?
           </p>
         </div>
         <div className="w-full space-y-4">
@@ -42,4 +42,4 @@ const FinancialSurveyStart = () => {
   )
 }
 
-export default FinancialSurveyStart;
+export default FinancialKnowledge;

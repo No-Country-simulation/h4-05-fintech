@@ -31,17 +31,23 @@ import OccupationPage from "./components/profile/OccupationPage";
 
 // Survey
 import FinancialSurveyStart from "./components/financial-survey/StartPage";
-import Question1 from "./components/financial-survey/Question1";
-import Question2 from "./components/financial-survey/Question2";
-import Question3 from "./components/financial-survey/Question3";
-import Question4 from "./components/financial-survey/Question4";
-import Question5 from "./components/financial-survey/Question5";
-import Question6 from "./components/financial-survey/Question6";
-import Question7 from "./components/financial-survey/Question7";
-import Question8 from "./components/financial-survey/Question8";
-import Question9 from "./components/financial-survey/Question9";
 import SummaryPage from "./components/financial-survey/SummaryPage";
 import SummaryProfilePage from "./components/profile/ProfileSummary";
+import FinancialGoals from "./components/financial-survey/financial-goals/FinancialGoals";
+import FinancialKnowledge from "./components/financial-survey/financial-knowledge/FinancialKnowledge";
+import FinancialStatus from "./components/financial-survey/financial-status/FinancialStatus";
+
+// Questions
+import Question1 from "./components/financial-survey/financial-goals/Question1";
+import Question2 from "./components/financial-survey/financial-knowledge/Question2";
+import Question3 from "./components/financial-survey/financial-knowledge/Question3";
+import Question4 from "./components/financial-survey/financial-knowledge/Question4";
+import Question5 from "./components/financial-survey/financial-status/Question5";
+import Question6 from "./components/financial-survey/financial-status/Question6";
+import Question7 from "./components/financial-survey/financial-status/Question7";
+import Question8 from "./components/financial-survey/financial-status/Question8";
+import Question9 from "./components/financial-survey/financial-status/Question9";
+import Question10 from "./components/financial-survey/financial-status/Question10";
 
 // import AuthRoutes from "./components/auth/AuthRoutes";
 // import DashboardRoutes from "./components/profile/DashboardRoutes";
@@ -107,15 +113,25 @@ function App() {
               {/* Financial Survey routes */}
               <Route path="/financial-survey/*">
                 <Route path="" element={<FinancialSurveyStart/>} />
-                <Route path="1" element={<Question1 />} />
-                <Route path="2" element={<Question2 />} />
-                <Route path="3" element={<Question3 />} />
-                <Route path="4" element={<Question4 />} />
-                <Route path="5" element={<Question5 />} />
-                <Route path="6" element={<Question6 />} />
-                <Route path="7" element={<Question7 />} />
-                <Route path="8" element={<Question8 />} />
-                <Route path="9" element={<Question9 />} />
+                <Route path="financial-goals/*">
+                  <Route path="" element={<FinancialGoals />} />
+                  <Route path="1" element={<Question1 />} />
+                </Route>
+                <Route path="financial-knowledge/*">
+                  <Route path="" element={<FinancialKnowledge />} />
+                  <Route path="1" element={<Question2 />} />
+                  <Route path="2" element={<Question3 />} />
+                  <Route path="3" element={<Question4 />} />
+                </Route>
+                <Route path="financial-status/*">
+                  <Route path="" element={<FinancialStatus />} />
+                  <Route path="1" element={<Question5 />} />
+                  <Route path="2" element={<Question6 />} />
+                  <Route path="3" element={<Question7 />} />
+                  <Route path="4" element={<Question8 />} />
+                  <Route path="5" element={<Question9 />} />
+                  <Route path="6" element={<Question10 />} />
+                </Route>
                 <Route path="summary" element={<SummaryPage />} />
               </Route>
             </Route>

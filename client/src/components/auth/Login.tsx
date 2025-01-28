@@ -77,7 +77,7 @@ const LoginPage = () => {
             Inicio de Sesión
           </h1>
         </div>
-        <Card className=" border-none shadow-none">
+        <Card className="border-none shadow-none">
           <form
             data-cy="login-form"
             onSubmit={handleSubmit} 

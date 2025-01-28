@@ -44,7 +44,7 @@ const OccupationPage = () => {
     response
       .then(() => {
         sessionStorage.removeItem('profile');
-        navigate('/financial-survey')
+        navigate('/financial-survey/financial-goals')
       })
       .catch((error: AxiosError) => {
         const errorMessage: IApiError = error.response?.data as IApiError;
