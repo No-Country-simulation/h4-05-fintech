@@ -101,7 +101,7 @@ export class ProfileService {
         const { prediccion } = response.data;
 
         const userProfileUpdated = Object.assign(userProfileFound, {
-          surveyAnswered: false,
+          surveyAnswered: true,
           updatedAt: new Date(),
           financialProfileResults: prediccion,
         });
@@ -113,7 +113,7 @@ export class ProfileService {
       }
 
       const userProfileUpdated = Object.assign(userProfileFound, {
-        surveyAnswered: false,
+        surveyAnswered: true,
         updatedAt: new Date(),
       });
 
