@@ -1,3 +1,29 @@
+<<<<<<< HEAD
+# upi
+
+=======
+
+hackathon-readme-enero-2025
+# Readme-Hackathon-2
+hackathon-readme-2025
+>>>>>>> 2fd8ae0d353c5f7a2476d2a565e2d862c8a473fb
+<!-- HEADER -->
+<div align="center" width="100">
+  <img src="https://github.com/No-Country-simulation/h4-05-fintech/blob/70ea30f0b72cd56b4107086613e518a59149a384/img/portada.png"
+  alt="header"/>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
 [![server](https://github.com/No-Country-simulation/h4-05-fintech/actions/workflows/server.yml/badge.svg)](https://github.com/No-Country-simulation/h4-05-fintech/actions/workflows/server.yml)
 [![iUPi-.fintech](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/simple/pdsjfm&style=flat&logo=cypress)](https://cloud.cypress.io/projects/pdsjfm/runs)
 
