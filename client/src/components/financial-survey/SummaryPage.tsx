@@ -35,8 +35,8 @@ const SummaryPage = () => {
     const response = apiProtectedRoutes.post('/profile/financial', data);
 
     response
-      .then(() => {
-        console.log('Perfil actualizado con éxito');
+      .then(({ data }) => {
+        console.log(data);
         sessionStorage.removeItem('survey');
       })
       .catch((error: AxiosError) => {

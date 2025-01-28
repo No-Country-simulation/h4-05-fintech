@@ -11,9 +11,8 @@ export const useProtectedRoutes = () => {
   const { setRefresh } = useRefresh({})
 
   useEffect(() => {
-    if (!hasFetched.current || request) {
+    if (!hasFetched.current || !request) {
       hasFetched.current = true
-      setRequest(false);
 
       const requestIntercept = apiProtectedRoutes.interceptors.request.use(
         (config) => {

@@ -6,6 +6,9 @@ import { Label } from "@/components/ui/label";
 import { Button } from "../ui/button";
 import Select from "../ui/select";
 import { IUpdateProfileData } from "@/interfaces/profile.interfaces";
+import useProtectedRoutes from "@/hooks/useInterceptors";
+import { AxiosError } from "axios";
+import { IApiError } from "@/api/api-errors";
 
 const OccupationPage = () => {
   const hasFetched = useRef(false);
@@ -18,6 +21,7 @@ const OccupationPage = () => {
   const data = JSON.parse(session) as IUpdateProfileData;
 
   const [formData, setFormData] = useState<IUpdateProfileData>({ ...data, occupation: ' ' });
+  const { apiProtectedRoutes, setRequest } = useProtectedRoutes();
 
   useEffect(() => {
     if (!hasFetched.current) {
@@ -32,8 +36,20 @@ const OccupationPage = () => {
 
   const finishProfile = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    sessionStorage.setItem('profile', JSON.stringify(formData));
-    navigate('/profile/summary', { state: { prev: true }});
+    setRequest(true);
+
+    const updatedProfuke: IUpdateProfileData = {...formData, age: +formData.age }
+    const response = apiProtectedRoutes.put('/profile/data', updatedProfuke);
+    
+    response
+      .then(() => {
+        sessionStorage.removeItem('profile');
+        navigate('/financial-survey')
+      })
+      .catch((error: AxiosError) => {
+        const errorMessage: IApiError = error.response?.data as IApiError;
+        console.error(errorMessage.message);
+      })
   }
 
   const options = [

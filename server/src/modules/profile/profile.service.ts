@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 
 import {
+  BadRequestException,
   ConflictException,
   Inject,
   Injectable,
@@ -19,7 +20,7 @@ import { Environment, ErrorMessage } from '../../common/enums';
 
 import config from '../../config';
 import { FinancialProfileDto, UpdateProfileDto } from './dto';
-import { ICreateProfile } from './profile.interface';
+import { ICreateProfile, SendProfileToModel } from './profile.interface';
 
 @Injectable()
 export class ProfileService {
@@ -62,33 +63,69 @@ export class ProfileService {
   };
 
   async createFinancialProfile(req: UserRequest, dto: FinancialProfileDto) {
-    const userProfileFound = await this.getUserProfile(req);
+    let prediction: string;
+    try {
+      const userProfileFound = await this.getUserProfile(req);
 
-    if (userProfileFound.surveyAnswered) throw new ConflictException(ErrorMessage.PROFILE_CREATED);
+      if (userProfileFound.surveyAnswered)
+        throw new ConflictException(ErrorMessage.PROFILE_CREATED);
 
-    const userProfileUpdated = Object.assign(userProfileFound, {
-      surveyAnswered: true,
-      updatedAt: new Date(),
-    });
+      const { id: userProfileId } = userProfileFound;
+      const where: Prisma.UserProfileWhereUniqueInput = { id: userProfileFound.id };
 
-    const { id: userProfileId } = userProfileFound;
+      if (this.configService.nodeEnv === Environment.DEVELOPMENT) {
+        const sendData: SendProfileToModel = {
+          objetivo_financiero: dto.financialGoals,
+          horizonte_tiempo: dto.investmentTimeframes,
+          conocimiento_inversiones: dto.investmentKnowledge,
+          formacion: dto.financialEducation,
+          instrumentos_invertidos: dto.investmentExperience,
+          reaccion_perdida: dto.riskReactions,
+          fuente_ingresos: dto.incomeSources,
+          ingresos_mensuales: dto.incomeRanges,
+          gastos_mensuales: dto.expenseRatios,
+          rango_ahorros: 'Entre 0% y 30%',
+        };
 
-    await this.prisma.financialProfile.create({ data: { userProfileId, ...dto } });
+        const response = await firstValueFrom(
+          this.httpService.post<{ prediccion: string }>(
+            `${this.configService.dataModelUrl}/predict`,
+            sendData,
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            },
+          ),
+        );
 
-    const where: Prisma.UserProfileWhereUniqueInput = { id: userProfileFound.id };
-    const data: Prisma.UserProfileUpdateInput = { ...userProfileUpdated };
-    await this.prisma.userProfile.update({ where, data });
+        const { prediccion } = response.data;
+        prediction = prediccion;
 
-    // Cuando data ya tenga su modelo funcionando, implementará esta lógica
+        const userProfileUpdated = Object.assign(userProfileFound, {
+          surveyAnswered: false,
+          updatedAt: new Date(),
+          financialProfileResults: prediccion,
+        });
 
-    // if (this.configService.nodeEnv === Environment.PRODUCTION)
-    //   return await this.getFinancialProfileFromData(this.configService.dataModelUrl, dto);
-    // else if (this.configService.nodeEnv === Environment.DEVELOPMENT)
-    //   return await this.getFinancialProfileFromData(this.configService.dataModelUrl, dto);
-    // else return { message: 'financial profile successfully created' };
+        const data: Prisma.UserProfileUpdateInput = { ...userProfileUpdated };
+        await this.prisma.userProfile.update({ where, data });
+      }
 
-    // En el mientras tanto...
-    return { message: 'financial profile successfully created' };
+      const userProfileUpdated = Object.assign(userProfileFound, {
+        surveyAnswered: false,
+        updatedAt: new Date(),
+      });
+
+      const data: Prisma.UserProfileUpdateInput = { ...userProfileUpdated };
+      await this.prisma.userProfile.update({ where, data });
+
+      await this.prisma.financialProfile.create({ data: { userProfileId, ...dto } });
+
+      return { message: `Tu perfil financiero es ${prediction}` };
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
   }
 
   async createUserProfile(userId: string, body?: ICreateProfile) {
