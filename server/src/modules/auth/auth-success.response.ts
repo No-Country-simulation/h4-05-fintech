@@ -66,6 +66,11 @@ export const PasswordRecoveryInitialized = {
   schema: successMessage('password recovery process initialized'),
 };
 
+export const ResetPasswordCodeVerified: ApiResponseNoStatusOptions = {
+  description: 'User successfully verified',
+  schema: successMessage('Reset password code successfully verified'),
+};
+
 export const PasswordResetSuccess = {
   description: 'Password reset success',
   schema: successMessage('password successfully reset'),

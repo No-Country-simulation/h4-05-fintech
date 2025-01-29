@@ -49,6 +49,7 @@ import Question8 from "./components/financial-survey/financial-status/Question8"
 import Question9 from "./components/financial-survey/financial-status/Question9";
 import Question10 from "./components/financial-survey/financial-status/Question10";
 import PendingFinancialSurvey from "./components/financial-survey/PendingSurvey";
+import ResetPasswordSuccess from "./components/auth/ResetPasswordSuccess";
 
 // import AuthRoutes from "./components/auth/AuthRoutes";
 // import DashboardRoutes from "./components/profile/DashboardRoutes";
@@ -88,7 +89,10 @@ function App() {
                 <Route path="registered" element={< RegisteredPage />} />
                 <Route path="verify" element={<VerifyPage />} />
                 <Route path="forgot-password" element={<ForgotPasswordPage />} />
-                <Route path="reset-password" element={<ResetPasswordPage />} />
+                <Route path="reset-password/*">
+                  <Route path="" element={<ResetPasswordPage />} />
+                  <Route path="success" element={<ResetPasswordSuccess />} />
+                </Route>
               </Route>
               
             </Route>

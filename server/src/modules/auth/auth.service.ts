@@ -255,7 +255,7 @@ export class AuthService {
 
     const code = Object.values(encrypted).join('.');
 
-    const link = new URL('reset-password', this.configService.frontendUrl);
+    const link = new URL('reset-password', this.baseUrl);
     link.searchParams.set('code', code);
 
     const emailData: EmailData = {
@@ -275,6 +275,26 @@ export class AuthService {
     await this.userService.updateUser(userUpdated);
 
     return { message: 'password recovery process initialized' };
+  }
+
+  async verifyResetPasswordCode(code: string) {
+    const valid32HexCode = /^[a-f0-9]{64}$/i;
+    const [iv, encryptedData] = code.split('.');
+
+    const decrypted = await this.credentialsService.decrypt({ iv, encryptedData });
+    const [resetPasswordCode, exp] = decrypted.toString().split(';');
+
+    if (!valid32HexCode.test(resetPasswordCode))
+      throw new NotAcceptableException(ErrorMessage.INVALID_CODE);
+
+    const userFound = await this.userService.getUser({ resetPasswordCode });
+
+    if (!userFound) throw new NotFoundException(ErrorMessage.USER_NOT_FOUND);
+
+    if (parseInt(exp) <= new Date().getTime())
+      throw new UnauthorizedException(ErrorMessage.EXPIRED_TIME);
+
+    return { message: 'Reset password code successfully verified' };
   }
 
   async resetPassword(code: string, body: ResetPasswordDto) {

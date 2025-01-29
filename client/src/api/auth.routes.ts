@@ -71,6 +71,10 @@ export const forgotPassword = (email: string): Promise<AxiosResponse> => {
   });
 }
 
+export const verifyResetPasswordCode = (code: string | null): Promise<AxiosResponse> => {
+  return apiRoutes.get(`/auth/password-reset?code=${code}`);;
+}
+
 export const resetPassword = (
   code: string | null, 
   formData: IResetPassword
