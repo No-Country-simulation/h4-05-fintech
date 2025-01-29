@@ -255,7 +255,7 @@ export class AuthService {
 
     const code = Object.values(encrypted).join('.');
 
-    const link = new URL('reset-password', this.configService.frontendUrl);
+    const link = new URL('reset-password', this.baseUrl);
     link.searchParams.set('code', code);
 
     const emailData: EmailData = {
