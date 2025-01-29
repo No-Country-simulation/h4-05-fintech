@@ -1,9 +1,14 @@
 from fastapi import FastAPI, HTTPException # type: ignore
 from pydantic import BaseModel # type: ignore
 import joblib
+from pathlib import Path
+from recommendation import get_recommendations
 
 # Cargar el modelo entrenado
-model = joblib.load('C:\\Users\\castr\\OneDrive\\Desktop\\Programming-projects\\iupi\\data\\notebooks\\modeling\\modelo_riesgo.pkl')
+cwd = Path.cwd()
+path = (cwd / ".." / "notebooks" / "modeling" / "modelo_riesgo.pkl").resolve()
+
+model = joblib.load(str(path))
 
 # Diccionarios de mapeo (texto -> número)
 mapeo_objetivo_financiero = {
@@ -71,11 +76,14 @@ mapeo_gastos_mensuales = {
     "Mas del 60% de tus ingresos": 2
 }
 
+
+'''
 mapeo_rango_ahorros = {
     "Entre 0% y 30%": 0,
     "Entre 30% y 60%": 1,
     "Mas del 60%": 2
 }
+'''
 
 # Definir la estructura de los datos de entrada
 class UserData(BaseModel):
@@ -89,6 +97,12 @@ class UserData(BaseModel):
     ingresos_mensuales: str
     gastos_mensuales: str
     rango_ahorros: str
+
+class UserDataForRecommendatios(BaseModel):
+    income_source: str
+    target_period: str
+    expenses_average: str
+    risk_tolerance: str
 
 # Crear la aplicación FastAPI
 app = FastAPI()
@@ -111,7 +125,7 @@ def predict(data: UserData):
         fuente_ingresos = mapeo_fuente_ingresos[data.fuente_ingresos]
         ingresos_mensuales = mapeo_ingresos_mensuales[data.ingresos_mensuales]
         gastos_mensuales = mapeo_gastos_mensuales[data.gastos_mensuales]
-        rango_ahorros = mapeo_rango_ahorros[data.rango_ahorros]
+        # rango_ahorros = mapeo_rango_ahorros[data.rango_ahorros]
         
         # Convertir la lista de instrumentos invertidos
         instrumentos_invertidos = [mapeo_instrumentos[inst] for inst in data.instrumentos_invertidos]
@@ -127,7 +141,7 @@ def predict(data: UserData):
             fuente_ingresos,
             ingresos_mensuales,
             gastos_mensuales,
-            rango_ahorros
+            # rango_ahorros
         ]
         
         # Hacer la predicción
