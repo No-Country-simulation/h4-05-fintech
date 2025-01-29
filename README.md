@@ -17,6 +17,27 @@
 <br />
 </div>
 
+<!-- Sección de enlaces destacados y recursos visuales -->
+<br />
+<a href="https://drive.google.com/drive/folders/1-dWnkU2_lItQym67uMMjzyHib0sHOiKL"><strong>Explore the docs »</strong></a>
+<br />
+<br />
+<a href="https://drive.google.com/drive/folders/1-dWnkU2_lItQym67uMMjzyHib0sHOiKL">Demo Video</a>
+·
+<a href="https://iupi-fintech-nine.vercel.app/auth">Deploy</a>
+·
+<a href="https://drive.google.com/drive/folders/1-dWnkU2_lItQym67uMMjzyHib0sHOiKL">Demo Day</a>
+</p>
+</div>
+
+<div align="center">
+  <p style="color: #007bff; font-weight: bold; font-size: 24px;">
+  <!-- Imagen destacada o representativa del proyecto -->
+  <p align="center">
+    <img src="https://github.com/No-Country-simulation/h4-05-fintech/blob/ee3d416d29ad343a50605e62f852adf61538d726/img/logo-iupi.png" />
+  </p>
+</div>
+
 
 
 
