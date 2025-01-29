@@ -72,7 +72,7 @@ const OccupationPage = () => {
         <div className=" justify-end grid-rows-12">
           <p className="text-[#88D0EF] text-center">Cual es tu ocupación?</p>
         </div>
-        <Card className=" border-none shadow-none">
+        <Card className="border-none shadow-none">
           <div className="rounded-lg space-y-2 bg-[#11668233] px-2 py-2 mb-3">
             <Label htmlFor="occupation"
               className="text-[#8BD0EF]"

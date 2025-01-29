@@ -35,6 +35,7 @@ const Dashboard = () => {
         setLoadingDashboard(false);
         setProfileData(data)
         if (!data.surveyAnswered && !skipped) {
+          sessionStorage.setItem('profile', JSON.stringify(data))
           navigate('/profile/start', { state: { started: true }})
         } else if (!data.surveyAnswered && skipped.time <= new Date().getTime()) {
           navigate('/financial-survey/pending', { state: { started: true }})
