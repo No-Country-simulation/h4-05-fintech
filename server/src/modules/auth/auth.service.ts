@@ -277,6 +277,26 @@ export class AuthService {
     return { message: 'password recovery process initialized' };
   }
 
+  async verifyResetPasswordCode(code: string) {
+    const valid32HexCode = /^[a-f0-9]{64}$/i;
+    const [iv, encryptedData] = code.split('.');
+
+    const decrypted = await this.credentialsService.decrypt({ iv, encryptedData });
+    const [resetPasswordCode, exp] = decrypted.toString().split(';');
+
+    if (!valid32HexCode.test(resetPasswordCode))
+      throw new NotAcceptableException(ErrorMessage.INVALID_CODE);
+
+    const userFound = await this.userService.getUser({ resetPasswordCode });
+
+    if (!userFound) throw new NotFoundException(ErrorMessage.USER_NOT_FOUND);
+
+    if (parseInt(exp) <= new Date().getTime())
+      throw new UnauthorizedException(ErrorMessage.EXPIRED_TIME);
+
+    return { message: 'Reset password code successfully verified' };
+  }
+
   async resetPassword(code: string, body: ResetPasswordDto) {
     const valid32HexCode = /^[a-f0-9]{64}$/i;
     const { newPassword, confirmPassword } = body;

@@ -44,6 +44,7 @@ import {
   PasswordChangeSuccess,
   PasswordResetSuccess,
   VerificationResendSuccess,
+  ResetPasswordCodeVerified,
 } from './auth-success.response';
 
 @ApiTags('Auth')
@@ -138,6 +139,17 @@ export class AuthController {
   @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
   async forgotPassword(@Body() body: SendEmailDto) {
     return await this.authService.forgotPassword(body);
+  }
+
+  @Get('password-reset')
+  @ApiOperation({ summary: 'Verify reset password code' })
+  @ApiQuery({ name: 'code', required: true })
+  @ApiNotFoundResponse({ description: 'User not found' })
+  @ApiNotAcceptableResponse({ description: 'Invalid 32-digit hex code' })
+  @ApiOkResponse(ResetPasswordCodeVerified)
+  @ApiInternalServerErrorResponse({ description: 'Unexpected server error' })
+  async verifyResetPasswordCode(@Query('code') code: string) {
+    return await this.authService.verifyResetPasswordCode(code);
   }
 
   @Put('password-reset')
