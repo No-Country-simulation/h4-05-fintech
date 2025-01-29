@@ -97,4 +97,9 @@ export class ProfileController {
   ) {
     return await this.profileService.updateUserProfile(req, { ...changes, image });
   }
+
+  @Get('recommendations')
+  async getRecommendations() {
+    return await this.profileService.getRecommendations();
+  }
 }

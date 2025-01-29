@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException # type: ignore
 from pydantic import BaseModel # type: ignore
 import joblib
 from pathlib import Path
-from recommendation import get_recommendations
+from recommendation import get_recommendations, ForRecommendations
 
 # Cargar el modelo entrenado
 cwd = Path.cwd()
@@ -83,6 +83,12 @@ mapeo_rango_ahorros = {
     "Entre 30% y 60%": 1,
     "Mas del 60%": 2
 }
+user_data = {
+    "income_source": "SALARIO",
+    "target_period": "Largo plazo",
+    "expenses_average": "<30%",
+    "risk_tolerance": "Moderado"  # Resultado del modelo ML
+}
 '''
 
 # Definir la estructura de los datos de entrada
@@ -96,13 +102,6 @@ class UserData(BaseModel):
     fuente_ingresos: str
     ingresos_mensuales: str
     gastos_mensuales: str
-    rango_ahorros: str
-
-class UserDataForRecommendatios(BaseModel):
-    income_source: str
-    target_period: str
-    expenses_average: str
-    risk_tolerance: str
 
 # Crear la aplicación FastAPI
 app = FastAPI()
@@ -150,6 +149,18 @@ def predict(data: UserData):
         # Devolver la predicción como respuesta
         return {'prediccion': prediction[0]}
     
+    except KeyError as e:
+        raise HTTPException(status_code=400, detail=f"Opción no válida: {str(e)}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+@app.post('/recommendations')
+def recommend(data: ForRecommendations):
+    try:
+        recommendations = get_recommendations(data)
+
+        return recommendations
+
     except KeyError as e:
         raise HTTPException(status_code=400, detail=f"Opción no válida: {str(e)}")
     except Exception as e:

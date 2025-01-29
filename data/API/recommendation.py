@@ -1,9 +1,10 @@
-user_data = {
-    "income_source": "SALARIO",
-    "target_period": "Largo plazo",
-    "expenses_average": "<30%",
-    "risk_tolerance": "Moderado"  # Resultado del modelo ML
-}
+from pydantic import BaseModel # type: ignore
+
+class ForRecommendations(BaseModel):
+    income_source: str
+    target_period: str
+    expenses_average: str
+    risk_tolerance: str
 
 investment_options = {
     "CDEARS": {"income_source": ["SALARIO", "Ambos"], "target_period": ["Corto plazo"], "expenses_average": ["<30%", "30%-60%"], "risk_tolerance": ["Conservador", "Moderado"]},
@@ -13,25 +14,18 @@ investment_options = {
     "Fondos Diversificados": {"income_source": ["Ambos", "Trabajo fijo"], "target_period": ["Mediano plazo", "Largo plazo"], "expenses_average": ["30%-60%"], "risk_tolerance": ["Moderado"]}
 }
 
-def get_recommendations(user_data, investment_options):
+def get_recommendations(user_data: ForRecommendations):
     recommendations = []
     
+    print(user_data)
+    
     for option, criteria in investment_options.items():
-        # Verificar si los datos del usuario cumplen con todos los criterios
         if (
-            user_data["income_source"] in criteria["income_source"] and
-            user_data["target_period"] in criteria["target_period"] and
-            user_data["expenses_average"] in criteria["expenses_average"] and
-            user_data["risk_tolerance"] in criteria["risk_tolerance"]
+            user_data.income_source in criteria["income_source"] and
+            user_data.target_period in criteria["target_period"] and
+            user_data.expenses_average in criteria["expenses_average"] and
+            user_data.risk_tolerance in criteria["risk_tolerance"]
         ):
             recommendations.append(option)
     
     return recommendations
-
-# Obtener recomendaciones para el usuario
-recommendations = get_recommendations(user_data, investment_options)
-
-# Mostrar resultados
-print("Recomendaciones basadas en su perfil:")
-for rec in recommendations:
-    print(f"- {rec}")

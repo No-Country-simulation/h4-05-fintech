@@ -74,38 +74,12 @@ export class ProfileService {
       const where: Prisma.UserProfileWhereUniqueInput = { id: userProfileFound.id };
 
       if (this.configService.nodeEnv === Environment.DEVELOPMENT) {
-        const sendData: SendProfileToModel = {
-          objetivo_financiero: dto.financialGoals,
-          horizonte_tiempo: dto.investmentTimeframes,
-          conocimiento_inversiones: dto.investmentKnowledge,
-          formacion: dto.financialEducation,
-          instrumentos_invertidos: dto.investmentExperience,
-          reaccion_perdida: dto.riskReactions,
-          fuente_ingresos: dto.incomeSources,
-          ingresos_mensuales: dto.incomeRanges,
-          gastos_mensuales: dto.expenseRatios,
-          rango_ahorros: 'Entre 0% y 30%',
-        };
-
-        const response = await firstValueFrom(
-          this.httpService.post<{ prediccion: string }>(
-            `${this.configService.dataModelUrl}/predict`,
-            sendData,
-            {
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            },
-          ),
-        );
-
-        const { prediccion } = response.data;
-        prediction = prediccion;
+        prediction = await this.getPrediction(userProfileFound, dto);
 
         const userProfileUpdated = Object.assign(userProfileFound, {
           surveyAnswered: false,
           updatedAt: new Date(),
-          financialProfileResults: prediccion,
+          financialProfileResults: prediction,
         });
 
         const data: Prisma.UserProfileUpdateInput = { ...userProfileUpdated };
@@ -165,5 +139,60 @@ export class ProfileService {
       await this.prisma.userProfile.update({ where, data });
     }
     return { message: 'User profile successfully updated' };
+  }
+
+  async getPrediction(userProfile: UserProfile, dto: FinancialProfileDto) {
+    try {
+      const sendData: SendProfileToModel = {
+        objetivo_financiero: dto.financialGoals,
+        horizonte_tiempo: dto.investmentTimeframes,
+        conocimiento_inversiones: dto.investmentKnowledge,
+        formacion: dto.financialEducation,
+        instrumentos_invertidos: dto.investmentExperience,
+        reaccion_perdida: dto.riskReactions,
+        fuente_ingresos: dto.incomeSources,
+        ingresos_mensuales: dto.incomeRanges,
+        gastos_mensuales: dto.expenseRatios,
+      };
+
+      const response = await firstValueFrom(
+        this.httpService.post<{ prediccion: string }>(
+          `${this.configService.dataModelUrl}/predict`,
+          sendData,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        ),
+      );
+
+      const { prediccion } = response.data;
+      return prediccion;
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }
+
+  async getRecommendations() {
+    const data = {
+      income_source: 'SALARIO',
+      target_period: 'Largo plazo',
+      expenses_average: '<30%',
+      risk_tolerance: 'Moderado',
+    };
+
+    try {
+      const response = await firstValueFrom(
+        this.httpService.post(`${this.configService.dataModelUrl}/recommendations`, data, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }),
+      );
+      return response.data;
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 }

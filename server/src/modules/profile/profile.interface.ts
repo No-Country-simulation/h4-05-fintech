@@ -14,5 +14,4 @@ export interface SendProfileToModel {
   fuente_ingresos: string;
   ingresos_mensuales: string;
   gastos_mensuales: string;
-  rango_ahorros: string;
 }
