@@ -10,3 +10,29 @@ input:-webkit-autofill:active {
     -webkit-text-fill-color: #BDE9FF;
     -webkit-box-shadow: 0 0 0px 1000px transparent inset;
 }
+
+
+.progressBar {
+  appearance: none;
+  height: 5px;
+  border-radius: 100px;
+      
+  /* Chrome and Safari */
+  &::-webkit-progress-bar {
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 100px;
+  }
+  
+  &::-webkit-progress-value {
+    background-color: orangered;
+    border-top-left-radius: 100px;
+    border-bottom-left-radius: 100px;
+  }
+  
+    /* Firefox */
+  &::-moz-progress-bar {
+    background-color: rgba(0, 0, 0, 0.8);
+    border-top-left-radius: 100px;
+    border-bottom-left-radius: 100px;
+  }
+}

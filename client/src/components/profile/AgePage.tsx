@@ -46,10 +46,10 @@ const AgePage = () => {
             className="w-[341px] h-[49px]"
           />
         </div>
-        <div className=" justify-end grid-rows-12">
+        <div className="justify-end grid-rows-12">
           <p className="text-[#88D0EF] text-center">¿Qué edad tienes?</p>
         </div>
-        <Card className=" border-none shadow-none">
+        <Card className="border-none shadow-none">
           <div className="rounded-lg space-y-2 bg-[#11668233] p-3">
             <Label htmlFor="name"
               className="text-[#8BD0EF]"
@@ -58,8 +58,9 @@ const AgePage = () => {
             </Label>
             <Input
               id="age"
-              type="text"
+              type="number"
               name="age"
+              min={0}
               value={formData.age}
               onChange={handleChange}
               placeholder="Ingresa tu edad"

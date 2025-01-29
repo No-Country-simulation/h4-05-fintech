@@ -8,7 +8,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 const InputRadioCheckbox = React.forwardRef<HTMLInputElement, InputProps>(
   ({ name, type, onChange, label, ...props }, ref) => {
     return (
-      <div className="w-[342px] h-9 flex-col justify-start items-start gap-2 inline-flex">
+      <div className="w-full h-9 flex-col justify-start items-start gap-2 inline-flex">
         <div className="self-stretch p-2 bg-[#116682]/20 rounded-lg border-gray-200 justify-between items-center inline-flex">
           <div className="justify-start items-center gap-4 flex">
             <div className="w-4 h-4 bg-black/0 border-gray-200 justify-center items-center flex">

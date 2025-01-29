@@ -44,7 +44,7 @@ const OccupationPage = () => {
     response
       .then(() => {
         sessionStorage.removeItem('profile');
-        navigate('/financial-survey/financial-goals')
+        navigate('/financial-survey')
       })
       .catch((error: AxiosError) => {
         const errorMessage: IApiError = error.response?.data as IApiError;
@@ -73,8 +73,8 @@ const OccupationPage = () => {
           <p className="text-[#88D0EF] text-center">Cual es tu ocupación?</p>
         </div>
         <Card className=" border-none shadow-none">
-          <div className="rounded-lg space-y-2 bg-[#11668233] p-3">
-            <Label htmlFor="name"
+          <div className="rounded-lg space-y-2 bg-[#11668233] px-2 py-2 mb-3">
+            <Label htmlFor="occupation"
               className="text-[#8BD0EF]"
             >
               Ocupación:
@@ -84,7 +84,7 @@ const OccupationPage = () => {
               options={options}
               onChange={handleChange}
               value={formData.occupation!}
-              className="w-full h-[52px] bg-[#11668233] text-[#8BD0EF] text-base font-normal tracking-wide px-2 mx-2"
+              className="w-full h-[52px] bg-[#11668233] text-[#8BD0EF] text-base font-normal tracking-wide px-3"
             />
           </div>
           <Button

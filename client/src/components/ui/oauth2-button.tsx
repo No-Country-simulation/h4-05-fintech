@@ -53,6 +53,7 @@ const OAuth2Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     )
   }
 )
-OAuth2Button.displayName = "Button"
+
+OAuth2Button.displayName = "OAuth2Button"
 
 export { OAuth2Button }

@@ -1,14 +1,22 @@
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router";
+import { Button } from "../ui/button";
+import { Card } from "../ui/card";
 
-
-const FinancialGoals = () => {
+const PendingFinancialSurvey = () => {
   const navigate = useNavigate();
 
   const handleStartSurvey = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    navigate('/financial-survey/financial-goals/1', { state: { started: true }});
+    navigate('/financial-survey/financial-goals', { state: { started: true }});
+  }
+
+  const handleSkipSurvey = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const date = new Date();
+    date.setHours(date.getHours() + 24);
+    const time = new Date(date).getTime();
+    localStorage.setItem('skipped', JSON.stringify({ time }));
+    navigate('/dashboard');
   }
 
   return (
@@ -21,18 +29,24 @@ const FinancialGoals = () => {
           height={50}
         />
       </div>
-      <Card className= "flex flex-col shadow-none border-none">
+      <Card className="flex flex-col shadow-none border-none">
         <div>
           <p className="text-lightBlue font-medium mt-5 mb-4 text-base text-center">
-            Super iUPi, para que podamos ofrecerte las mejores recomendaciones de inversión, necesitamos conocer tus aspiraciones financieras. ¿Nos contás un poco más?
+            Recuerda completar tu perfil para poder ofrecerte un servicio más personalizado.
           </p>
         </div>
         <div className="w-full space-y-4">
+          <Button 
+            className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide"
+            onClick={handleSkipSurvey}
+          >
+            Saltar por ahora
+          </Button>
           <Button
             className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide"
             onClick={handleStartSurvey}
           >
-            Completar
+            Seguir completando
           </Button>
         </div>
       </Card>
@@ -40,4 +54,4 @@ const FinancialGoals = () => {
   )
 }
 
-export default FinancialGoals;
+export default PendingFinancialSurvey;

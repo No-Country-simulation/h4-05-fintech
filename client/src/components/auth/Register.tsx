@@ -122,7 +122,7 @@ const RegisterPage = () => {
                 required
               />
               <p className="text-xs text-[#8BD0EF] font-medium">
-                Minimo 8 caracteres
+                Minimo 8 caracteres,, una mayúscula y un número
               </p>
             </div>
             <div className="rounded-lg space-y-2 bg-[#11668233] p-3">
@@ -141,7 +141,7 @@ const RegisterPage = () => {
                 required
               />
               <p className="text-xs text-[#8BD0EF] font-medium">
-                Minimo 8 caracteres
+                Minimo 8 caracteres,, una mayúscula y un número
               </p>
             </div>
             {loading 

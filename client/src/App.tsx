@@ -48,6 +48,7 @@ import Question7 from "./components/financial-survey/financial-status/Question7"
 import Question8 from "./components/financial-survey/financial-status/Question8";
 import Question9 from "./components/financial-survey/financial-status/Question9";
 import Question10 from "./components/financial-survey/financial-status/Question10";
+import PendingFinancialSurvey from "./components/financial-survey/PendingSurvey";
 
 // import AuthRoutes from "./components/auth/AuthRoutes";
 // import DashboardRoutes from "./components/profile/DashboardRoutes";
@@ -113,6 +114,7 @@ function App() {
               {/* Financial Survey routes */}
               <Route path="/financial-survey/*">
                 <Route path="" element={<FinancialSurveyStart/>} />
+                <Route path="pending" element={< PendingFinancialSurvey />} />
                 <Route path="financial-goals/*">
                   <Route path="" element={<FinancialGoals />} />
                   <Route path="1" element={<Question1 />} />

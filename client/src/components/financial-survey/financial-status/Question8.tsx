@@ -35,39 +35,49 @@ const Question8 = () => {
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center">
-      <div className="flex flex-col items-center">
-        <img
-          src="https://res.cloudinary.com/di0cvbfdb/image/upload/v1736977179/fintech/yzuwrtmgdvqbqjvgplcw.svg"
-          alt="Logo"
-          className="w-[342px] h-[50px]"
-        />
-      </div>
-      <Card className= "flex flex-col shadow-none border-none">
-        <div className="mt-8 space-y-4 mb-4">
-          <h1 className="text-lightBlue font-bold text-center text-base">
-            Ahorros
-          </h1>
-          <p className="text-lightBlue font-medium mt-5 mb-4 text-center">
-            ¿Tienes un plan de ahorro?
-          </p>
+    <main>
+      <header className="py-3 -mb-4">
+        <div className="flex justify-between items-center">
+          <label className="text-lightBlue" htmlFor="progress-bar">Cuestionario</label>
+          <progress className="progressBar" value={7} max={10}>{7}%</progress>
         </div>
-        <div className="justify-end space-y-6 grid-rows-12 mt-5">
-          <div className="space-y-3">
-            <InputRadioCheckbox type="radio" name="savingsPlans" label='Sí' onChange={handleChange} value={SavingPlans.YES} />
-            <InputRadioCheckbox type="radio" name="savingsPlans" label='No' onChange={handleChange} value={SavingPlans.NO} />
+      </header>
+      <section className="min-h-screen flex flex-col items-center justify-center">
+        <div className="w-full max-w-md space-y-6">
+          <div className="flex flex-col items-center">
+            <img
+              src="https://res.cloudinary.com/di0cvbfdb/image/upload/v1736977179/fintech/yzuwrtmgdvqbqjvgplcw.svg"
+              alt="Logo"
+              className="w-[342px] h-[50px]"
+            />
           </div>
-          <div>
-          <Button
-            className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide"
-            onClick={handleNextQuestion}
-            disabled={!formData?.savingsPlans ? true : false }
-          >
-            Siguiente pregunta
-          </Button>
-          </div>
+          <Card className= "flex flex-col shadow-none border-none">
+            <div className="mt-8 space-y-4 mb-4">
+              <h1 className="text-lightBlue font-bold text-center text-base">
+                Ahorros
+              </h1>
+              <p className="text-lightBlue font-medium mt-5 mb-4 text-center">
+                ¿Tienes un plan de ahorro?
+              </p>
+            </div>
+            <div className="justify-end space-y-6 grid-rows-12 mt-5">
+              <div className="space-y-2">
+                <InputRadioCheckbox type="radio" name="savingsPlans" label='Sí' onChange={handleChange} value={SavingPlans.YES} />
+                <InputRadioCheckbox type="radio" name="savingsPlans" label='No' onChange={handleChange} value={SavingPlans.NO} />
+              </div>
+              <div>
+                <Button
+                  className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide"
+                  onClick={handleNextQuestion}
+                  disabled={!formData?.savingsPlans ? true : false }
+                >
+                  Siguiente pregunta
+                </Button>
+              </div>
+            </div>
+          </Card>
         </div>
-      </Card>
+      </section>
     </main>
   )
 }

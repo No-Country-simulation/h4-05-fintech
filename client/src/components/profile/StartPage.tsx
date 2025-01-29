@@ -27,9 +27,9 @@ const StartPage = () => {
       <div className="w-full max-w-md space-y-6">
         <div className="justify-items-center grid-rows-12 mt-[1rem] ">
           <img 
-          src="https://res.cloudinary.com/dm20y1ica/image/upload/v1737673944/bank2_1_rhi4ww.svg"
-          alt="bank"
-          className="w-[244px] h-[244px]"
+            src="https://res.cloudinary.com/dm20y1ica/image/upload/v1737673944/bank2_1_rhi4ww.svg"
+            alt="bank"
+            className="w-[244px] h-[244px]"
           />
         </div>
         <div className="flex flex-col items-center">

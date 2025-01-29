@@ -35,40 +35,50 @@ const Question7 = () => {
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center">
-      <div className="flex flex-col items-center">
-        <img
-          src="https://res.cloudinary.com/di0cvbfdb/image/upload/v1736977179/fintech/yzuwrtmgdvqbqjvgplcw.svg"
-          alt="Logo"
-          className="w-[342px] h-[50px]"
-        />
-      </div>
-      <Card className= "flex flex-col shadow-none border-none">
-        <div className="mt-8 space-y-4 mb-4">
-          <h1 className="text-lightBlue font-bold text-center text-base">
-            Ingresos
-          </h1>
-          <p className="text-lightBlue font-medium mt-5 mb-4 text-center">
-            Que te parece si nos contas en que rango se encuentra tus niveles de ingreso mensual
-          </p>
+    <main>
+      <header className="py-3 -mb-4">
+        <div className="flex justify-between items-center">
+          <label className="text-lightBlue" htmlFor="progress-bar">Cuestionario</label>
+          <progress className="progressBar" value={6} max={10}>{6}%</progress>
         </div>
-        <div className="justify-end space-y-6 grid-rows-12 mt-5">
-          <div className="space-y-3">
-            <InputRadioCheckbox type="radio" name="expenseRatios" label='< 279.718 (salario mínimo)' onChange={handleChange} value={ExpensesRatios.OPTION_ONE} />
-            <InputRadioCheckbox type="radio" name="expenseRatios" label='entre 280.000 - 1.400.000' onChange={handleChange} value={ExpensesRatios.OPTION_TWO} />
-            <InputRadioCheckbox type="radio" name="expenseRatios" label='> 1.400.000' onChange={handleChange} value={ExpensesRatios.OPTION_THREE} />
+      </header>
+      <section className="min-h-screen flex flex-col items-center justify-center">
+        <div className="w-full max-w-md space-y-6">
+          <div className="flex flex-col items-center">
+            <img
+              src="https://res.cloudinary.com/di0cvbfdb/image/upload/v1736977179/fintech/yzuwrtmgdvqbqjvgplcw.svg"
+              alt="Logo"
+              className="w-[342px] h-[50px]"
+            />
           </div>
-          <div>
-          <Button
-            className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide"
-            onClick={handleNextQuestion}
-            disabled={!formData?.expenseRatios ? true : false }
-          >
-            Siguiente pregunta
-          </Button>
-          </div>
+          <Card className= "flex flex-col shadow-none border-none">
+            <div className="mt-8 space-y-4 mb-4">
+              <h1 className="text-lightBlue font-bold text-center text-base">
+                Gastos
+              </h1>
+              <p className="text-lightBlue font-medium mt-5 mb-4 text-center">
+                ¿En qué porcentaje se encuentran tus gastos?
+              </p>
+            </div>
+            <div className="justify-end space-y-6 grid-rows-12 mt-5">
+              <div className="space-y-2">
+                <InputRadioCheckbox type="radio" name="expenseRatios" label='Menos de 279.718 (salario mínimo)' onChange={handleChange} value={ExpensesRatios.OPTION_ONE} />
+                <InputRadioCheckbox type="radio" name="expenseRatios" label='Entre 280.000 - 1.400.000' onChange={handleChange} value={ExpensesRatios.OPTION_TWO} />
+                <InputRadioCheckbox type="radio" name="expenseRatios" label='Más de 1.400.000' onChange={handleChange} value={ExpensesRatios.OPTION_THREE} />
+              </div>
+              <div>
+              <Button
+                className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide"
+                onClick={handleNextQuestion}
+                disabled={!formData?.expenseRatios ? true : false }
+              >
+                Siguiente pregunta
+              </Button>
+              </div>
+            </div>
+          </Card>
         </div>
-      </Card>
+      </section>
     </main>
   )
 }
