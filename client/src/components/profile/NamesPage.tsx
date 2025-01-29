@@ -17,7 +17,11 @@ const NamesPage = () => {
 
   const data = JSON.parse(session) as IUpdateProfileData;
 
-  const [formData, setFormData] = useState<IUpdateProfileData>(data);
+  const [formData, setFormData] = useState<IUpdateProfileData>({ 
+    ...data, 
+    name: data.name ?? '', 
+    lastname: data.lastname ?? '' 
+  });
 
   useEffect(() => {
     if (!hasFetched.current) {
@@ -50,7 +54,7 @@ const NamesPage = () => {
           <p className="text-[#88D0EF] text-center">¿Quién eres?</p>
         </div>
         <Card className=" border-none shadow-none">
-          <div className="rounded-lg space-y-2 bg-[#11668233] p-3">
+          <div className="rounded-lg space-y-2 bg-[#11668233] px-2 py-2 mb-3">
             <Label htmlFor="name"
               className="text-[#8BD0EF]"
             >
@@ -67,7 +71,7 @@ const NamesPage = () => {
               required
             />
           </div>
-          <div className="rounded-lg space-y-2 bg-[#11668233] p-3">
+          <div className="rounded-lg space-y-2 bg-[#11668233] mb-3 px-2 py-2">
             <Label htmlFor="apellido"
               className="text-[#8BD0EF]"
             >

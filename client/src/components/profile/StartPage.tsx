@@ -9,11 +9,11 @@ const StartPage = () => {
   const data = sessionStorage.getItem('profile') as unknown as IUpdateProfileData;
 
   const defaultValues: IUpdateProfileData = {
-    name: data.name ?? '',
-    lastname: data.lastname ?? '',
+    name: data.name ?? ' ',
+    lastname: data.lastname ?? ' ',
     age: data.age ?? 0,
-    occupation: data.occupation ?? '',
-    image: data.image ?? '',
+    occupation: data.occupation ?? ' ',
+    image: data.image ?? ' ',
     itemsSaved: [],
   }
 

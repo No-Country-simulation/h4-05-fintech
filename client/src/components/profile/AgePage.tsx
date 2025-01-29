@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { Card } from "../ui/card";
 import { Input } from "@/components/ui/input";
@@ -17,7 +17,7 @@ const AgePage = () => {
 
   const data = JSON.parse(session) as IUpdateProfileData;
 
-  const [formData, setFormData] = useState<IUpdateProfileData>({ ...data, age: 0});
+  const [formData, setFormData] = useState<IUpdateProfileData>({ ...data, age: 0 });
 
   useEffect(() => {
     if (!hasFetched.current) {
@@ -50,7 +50,7 @@ const AgePage = () => {
           <p className="text-[#88D0EF] text-center">¿Qué edad tienes?</p>
         </div>
         <Card className="border-none shadow-none">
-          <div className="rounded-lg space-y-2 bg-[#11668233] p-3">
+          <div className="rounded-lg space-y-2 bg-[#11668233] px-2 py-2 mb-3">
             <Label htmlFor="name"
               className="text-[#8BD0EF]"
             >
@@ -68,14 +68,12 @@ const AgePage = () => {
               required
             />
           </div>
-          <Link to="/ocupacion" >
             <Button 
               className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide"
               onClick={nextQuestion}
             >
               Continuar
             </Button>
-          </Link>
         </Card>
       </div>
     </main>
