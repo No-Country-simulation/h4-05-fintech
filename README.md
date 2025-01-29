@@ -42,7 +42,11 @@
          style="max-width: 100%; border-radius: 10px;">
   </p>
 </div>
-
+🎥 Vista Previa del Proyecto
+  </p>
+  
+  ![Vista Previa del Video](https://github.com/No-Country-simulation/s18-22-t-java-react/blob/e643a2591b0f7e1ad3cedb17d7926a3f44124974/PM/reserva_turno-ezgif.com-effects.gif)
+</div>
 
 
 
