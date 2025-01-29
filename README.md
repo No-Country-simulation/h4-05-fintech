@@ -42,11 +42,129 @@
          style="max-width: 100%; border-radius: 10px;">
   </p>
 </div>
-🎥 Vista Previa del Proyecto
+<div align="center">
+  <p style="color: #007bff; font-weight: bold; font-size: 24px;">
+  <!-- Imagen destacada o representativa del proyecto -->
+  <p align="center">
+    <img src="https://github.com/No-Country-simulation/h4-05-fintech/blob/ee3d416d29ad343a50605e62f852adf61538d726/img/logo-iupi.png" />
   </p>
-  
-  ![Vista Previa del Video](https://github.com/No-Country-simulation/s18-22-t-java-react/blob/e643a2591b0f7e1ad3cedb17d7926a3f44124974/PM/reserva_turno-ezgif.com-effects.gif)
 </div>
+
+<!-- Sección de presentación en video del proyecto -->
+<div>
+  <!-- Título de la sección con un icono representativo -->
+  <h2>🎬 Presentación del Proyecto</h2>
+
+  <p>
+    <!-- Descripción breve o introducción opcional -->
+    Vista Previa del Proyecto
+  </p>
+
+  <!-- Imagen/GIF que muestra una vista previa del video -->
+  <img src="https://github.com/No-Country-simulation/h3-09-klowhub/blob/69353e68157afdb82db467f47ae80327990859d5/pm_imagen/Presentacion_h3-09-klowhub-demo-day.gif" 
+       alt="Vista Previa del Video" 
+       style="max-width: 100%; border-radius: 10px;">
+</div>
+
+<!-- PARTE 4 -->                        
+
+<!-- Sección: Descripción del Proyecto -->
+<div align="center">
+  
+  <!-- Estilos personalizados -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;700&display=swap');
+
+    .android-text {
+      font-family: 'Google Sans', sans-serif;
+      font-weight: ;
+      color: #3DDC84;
+      max-width: 800px;
+      text-align: justify;
+    }
+  </style>
+
+  <!-- Título de la sección -->
+  <h3 align="center">Descripción del Proyecto</h3>
+
+  <!-- Párrafo con la descripción del proyecto -->
+  <p class="android-text">
+    iUpi es la solución financiera diseñada para transformar la manera en que gestionas y haces crecer tu patrimonio. Con un enfoque centrado en tus metas, iUpi te permite establecer objetivos personales como unas vacaciones soñadas, la compra de un automóvil o un departamento, o incluso financiar proyectos ambiciosos a largo plazo.
+
+    La plataforma analiza tus aspiraciones y construye un portafolio de inversiones personalizado, adaptado a tu perfil financiero y a las dinámicas cambiantes del mercado. Además, gracias a su tecnología avanzada de aprendizaje, iUpi evoluciona contigo: detecta tus patrones, entiende tus prioridades y te ofrece recomendaciones de inversión cada vez más precisas y alineadas con tus sueños.
+
+    Con iUpi, no solo administras tu dinero, lo haces trabajar por ti, asegurando que cada paso financiero que des esté diseñado para acercarte más a lo que realmente importa.
+  </p>
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Tabla de Perfiles: Muestra avatares, nombres y enlaces a GitHub y LinkedIn de los usuarios -->
+<table>
+  <!-- Encabezado de la tabla -->
+  <thead>
+    <tr>
+      <!-- Imagen 1 del avatar para el primer usuario -->
+      <th align="center">
+        <img src="https://avatars.githubusercontent.com/u/77815088?v=4" width="50" style="width: 120px; border-radius: 50%;">
+      </th>
+      <!-- Imagen 2 del avatar para el segundo usuario -->
+      <th align="center">
+        <img src="https://media.licdn.com/dms/image/v2/D4D35AQHyuUYC98fFjA/profile-framedphoto-shrink_800_800/profile-framedphoto-shrink_800_800/0/1714351837610?e=1738634400&v=beta&t=femcoeZhqSI1adaMKwSfYZI8Ahhphvr42QweT1LerMQ" style="width: 120px; border-radius: 50%;">
+      </th>
+      <!-- Imagen 3 del  avatar para el tercer usuario -->
+      <th align="center">
+        <img src="" style="width: 120px; border-radius: 50%;">
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Fila de los nombres de los usuarios -->
+    <tr>
+      <td align="center"><strong>Alex Marin Mendez</strong></td>
+      <td align="center"><strong>Facundo Castro</strong></td>
+      <td align="center"><strong>ejemplo</strong></td>
+    </tr>
+    <!-- Fila de los enlaces a GitHub y LinkedIn -->
+    <tr>
+      <td align="center">
+        <!-- Enlace al perfil 1 de GitHub -->
+        <a href="https://github.com/alexmarinmendez">
+          <img src="https://raw.githubusercontent.com/LionelStaricoff/c16-84-ft-java/615dd2bb3247fd67184c5c9a3c0ff80d58c8da9f/proyecto/github.svg" " style="max-width: 100%; border-radius: 10px;">
+        </a>
+        <!-- Enlace al perfil 1 de LinkedIn -->
+        <a href="https://www.linkedin.com/in/alexmarinmendez/" rel="nofollow">
+          <img src="https://raw.githubusercontent.com/LionelStaricoff/c16-84-ft-java/615dd2bb3247fd67184c5c9a3c0ff80d58c8da9f/proyecto/linkedin.svg" style="max-width: 100%; border-radius: 10px;">
+      </td>
+      <td align="center">
+        <!-- Enlace al perfil 2 de GitHub -->
+        <a href="https://github.com/schweigenderFlugel">
+          <img src="https://raw.githubusercontent.com/LionelStaricoff/c16-84-ft-java/615dd2bb3247fd67184c5c9a3c0ff80d58c8da9f/proyecto/github.svg" style="max-width: 100%; border-radius: 10px;">
+        </a>
+        <!-- Enlace al perfil 2 de LinkedIn -->
+        <a href="https://www.linkedin.com/in/facundo-castro-87b864234" rel="nofollow">
+          <img src="https://raw.githubusercontent.com/LionelStaricoff/c16-84-ft-java/615dd2bb3247fd67184c5c9a3c0ff80d58c8da9f/proyecto/linkedin.svg" style="max-width: 100%; border-radius: 10px;">
+      </td>
+      <td align="center">
+        <!-- Enlace al perfil 3 de GitHub -->
+        <a href="ejemplo aqui">
+          <img src="https://raw.githubusercontent.com/LionelStaricoff/c16-84-ft-java/615dd2bb3247fd67184c5c9a3c0ff80d58c8da9f/proyecto/github.svg" style="max-width: 100%; border-radius: 10px;">
+        </a>
+        <!-- Enlace al perfil 3 de LinkedIn -->
+        <a href="ejemplo aqui" rel="nofollow">
+          <img src="https://raw.githubusercontent.com/LionelStaricoff/c16-84-ft-java/615dd2bb3247fd67184c5c9a3c0ff80d58c8da9f/proyecto/linkedin.svg" style="max-width: 100%; border-radius: 10px;">
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 
 
