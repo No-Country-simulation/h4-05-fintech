@@ -51,7 +51,7 @@ const ResetPasswordPage = () => {
             height={50}
           />
           <h1 className="text-lightBlue font-medium mt-5 -mb-4 text-base">
-            Inicio de Sesión
+            Recuperación de contraseña
           </h1>
         </div>
         <Card className=" border-none shadow-none">
@@ -81,7 +81,7 @@ const ResetPasswordPage = () => {
             </div>
             <div className="rounded-lg space-y-2 bg-[#11668233] p-3">
               <Label htmlFor="password" className="text-[#8BD0EF]">
-                Contraseña
+                Confirmar Contraseña
               </Label>
               <Input
                 data-cy="confirm-password-input"
@@ -106,7 +106,7 @@ const ResetPasswordPage = () => {
                   type="submit" 
                   className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide"
                 >
-                  Iniciar sesión
+                  Cambiar contraseña
                 </Button>
             }
           </form>
