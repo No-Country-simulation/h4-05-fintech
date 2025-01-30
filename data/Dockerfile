@@ -30,7 +30,5 @@ COPY API ./
 COPY notebooks ./
 COPY data ./
 
-ENTRYPOINT [ "/source/API", "models_app.py" ]
-
-CMD ["cd", "API/", "&&" "uvicorn", "models_app:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "models_app:app", "--host", "0.0.0.0", "--port", "8000"]
 

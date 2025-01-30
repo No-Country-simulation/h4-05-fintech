@@ -5,8 +5,8 @@ from pathlib import Path
 from recommendation import get_recommendations, ForRecommendations
 
 # Cargar el modelo entrenado
-cwd = Path.cwd()
-path = (cwd / ".." / "notebooks" / "modeling" / "modelo_riesgo.pkl").resolve()
+base_url = Path(__file__).resolve(strict=True).parent
+path = (base_url / "modelo_riesgo.pkl").resolve()
 
 model = joblib.load(str(path))
 

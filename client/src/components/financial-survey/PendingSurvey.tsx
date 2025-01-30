@@ -16,7 +16,7 @@ const PendingFinancialSurvey = () => {
     date.setHours(date.getHours() + 24);
     const time = new Date(date).getTime();
     localStorage.setItem('skipped', JSON.stringify({ time }));
-    navigate('/dashboard');
+    navigate('/dashboard/home');
   }
 
   return (
