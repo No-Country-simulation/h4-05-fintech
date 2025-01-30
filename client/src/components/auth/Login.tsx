@@ -22,7 +22,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   const { setLogin, loading } = useLogin({
-    onSuccess: () => navigate('/dashboard'),
+    onSuccess: () => navigate('/dashboard/home'),
     onReject: ({ response }) => {
       const errorMessage: IApiError = response?.data as IApiError;
       switch (errorMessage.message) {

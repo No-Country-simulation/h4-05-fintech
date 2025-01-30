@@ -42,7 +42,7 @@ const Question10 = () => {
       .then(() => {
         sessionStorage.removeItem('survey');
         localStorage.removeItem('skipped');
-        navigate('/dashboard');
+        navigate('/dashboard/profile');
       })
       .catch((error: AxiosError) => {
         const errorMessage: IApiError = error.response?.data as IApiError;

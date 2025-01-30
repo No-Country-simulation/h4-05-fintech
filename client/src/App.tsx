@@ -22,7 +22,8 @@ import ForgotPasswordPage from "./components/auth/ForgotPassword";
 import ResetPasswordPage from "./components/auth/ResetPassword";
 
 // Dashboard
-import Dashboard from "./components/profile/Dashboard";
+import ProfilePage from "./components/profile/ProfilePage";
+import CustomHome from "./components/profile/CustomHome";
 import UpdateProfilePage from "./components/profile/UpdateProfile";
 import StartPage from "./components/profile/StartPage";
 import NamesPage from "./components/profile/NamesPage";
@@ -102,7 +103,8 @@ function App() {
 
               {/* Dashboard routes */}
               <Route path="/dashboard/*">
-                <Route path="" element={<Dashboard />} />
+                <Route path="profile" element={<ProfilePage />} />
+                <Route path="home" element={<CustomHome />} />
                 <Route path="update-profile" element={<UpdateProfilePage />} />
               </Route>
 

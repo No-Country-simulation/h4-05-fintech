@@ -1,6 +1,6 @@
 import { Route} from "react-router-dom"
 import Protected from "../protected/Protected"
-import Dashboard from "./Dashboard"
+import Dashboard from "./ProfilePage"
 import OnboardingStart from "./StartPage";
 import UpdateProfilePage from "./UpdateProfile";
 

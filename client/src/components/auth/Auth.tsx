@@ -13,7 +13,7 @@ const AuthPage = () => {
             className="w-[342px] h-[50px]"
           />
         </div>
-        <Card className= "flex flex-col shadow-none border-none">
+        <Card className="flex flex-col shadow-none border-none">
           <div className="justify-end space-y-6 grid-rows-12 mt-[20rem]">
             <div>
               <Link to="/auth/login">

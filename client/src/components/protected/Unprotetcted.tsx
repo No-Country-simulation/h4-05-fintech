@@ -21,7 +21,7 @@ const Unprotected = () => {
       </main> 
     : !session
         ? <Outlet />
-        : <Navigate to="/dashboard" state={{ from: location }} replace />;
+        : <Navigate to="/dashboard/home" state={{ from: location }} replace />;
 };
 
 export default Unprotected;

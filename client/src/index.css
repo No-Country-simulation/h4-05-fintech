@@ -16,6 +16,7 @@ input:-webkit-autofill:active {
   appearance: none;
   height: 5px;
   border-radius: 100px;
+  width: 100%;
       
   /* Chrome and Safari */
   &::-webkit-progress-bar {
