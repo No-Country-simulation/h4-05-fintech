@@ -161,6 +161,7 @@ Con iUpi, no solo administras tu dinero, lo haces trabajar por ti, asegurando qu
 
 
 
+
 [![server](https://github.com/No-Country-simulation/h4-05-fintech/actions/workflows/server.yml/badge.svg)](https://github.com/No-Country-simulation/h4-05-fintech/actions/workflows/server.yml)
 [![iUPi-.fintech](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/simple/pdsjfm&style=flat&logo=cypress)](https://cloud.cypress.io/projects/pdsjfm/runs)
 
