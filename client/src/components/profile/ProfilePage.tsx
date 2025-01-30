@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Button } from "../ui/button";
 import useLogout from "@/hooks/useLogout";
 import useProtectedRoutes from "@/hooks/useInterceptors";
@@ -76,7 +76,10 @@ const ProfilePage = () => {
                   : <img src={profileData.image} className="row-span-3 rounded-full w-[80%] mt-1" alt="image" />
                 }
                 <p className="col-span-2 text-lightBlue text-[14px]">{profileData?.name} {profileData?.lastname}</p>
-                <p className="col-span-2 text-lightBlue text-[14px]">Tu perfil inicial</p>
+                {profileData?.financialProfileResults
+                  ? <p className="col-span-2 text-lightBlue text-[14px]">Tu perfil inicial</p>
+                  : <Link className="col-span-2 text-lightBlue text-[14px]" to={'/financial-survey'}>Completar perfil</Link>
+                }
               </div>
             </Card>
             <Card className="w-full rounded-xl bg-[rgba(17,102,130,0.2)] px-3 py-5 border-none">

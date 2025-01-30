@@ -26,7 +26,7 @@ const FinancialSurveyStart = () => {
         if (!data.surveyAnswered && skipped) {
           navigate('/financial-survey/pending', { state: { started: true }})
         } else if (data.surveyAnswered) {
-          navigate('/dashboard', { state: { started: true }})
+          navigate('/dashboard/home', { state: { started: true }})
         }
       });
     }
