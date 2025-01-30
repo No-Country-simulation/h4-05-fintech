@@ -71,29 +71,16 @@
 <!-- Sección: Descripción del Proyecto -->
 <div align="center">
   
-  <!-- Estilos personalizados -->
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;700&display=swap');
-
-    .android-text {
-      font-family: 'Google Sans', sans-serif;
-      font-weight: ;
-      color: #3DDC84;
-      max-width: 800px;
-      text-align: justify;
-    }
-  </style>
-
   <!-- Título de la sección -->
-  <h3 align="center">Descripción del Proyecto</h3>
+  <h3>Descripción del Proyecto</h3>
 
   <!-- Párrafo con la descripción del proyecto -->
-  <p class="android-text">
+  <p style="max-width: 800px; text-align: justify; color: #3DDC84; font-weight: bold;">
     iUpi es la solución financiera diseñada para transformar la manera en que gestionas y haces crecer tu patrimonio. Con un enfoque centrado en tus metas, iUpi te permite establecer objetivos personales como unas vacaciones soñadas, la compra de un automóvil o un departamento, o incluso financiar proyectos ambiciosos a largo plazo.
 
-    La plataforma analiza tus aspiraciones y construye un portafolio de inversiones personalizado, adaptado a tu perfil financiero y a las dinámicas cambiantes del mercado. Además, gracias a su tecnología avanzada de aprendizaje, iUpi evoluciona contigo: detecta tus patrones, entiende tus prioridades y te ofrece recomendaciones de inversión cada vez más precisas y alineadas con tus sueños.
+La plataforma analiza tus aspiraciones y construye un portafolio de inversiones personalizado, adaptado a tu perfil financiero y a las dinámicas cambiantes del mercado. Además, gracias a su tecnología avanzada de aprendizaje, iUpi evoluciona contigo: detecta tus patrones, entiende tus prioridades y te ofrece recomendaciones de inversión cada vez más precisas y alineadas con tus sueños.
 
-    Con iUpi, no solo administras tu dinero, lo haces trabajar por ti, asegurando que cada paso financiero que des esté diseñado para acercarte más a lo que realmente importa.
+Con iUpi, no solo administras tu dinero, lo haces trabajar por ti, asegurando que cada paso financiero que des esté diseñado para acercarte más a lo que realmente importa.
   </p>
 
 </div>
