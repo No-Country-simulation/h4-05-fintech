@@ -2,7 +2,7 @@ name: iupi-fintech-model
   
 services:
   api:
-    image: schweigenderflugel/iupi-fintech-model:1
+    image: schweigenderflugel/iupi-fintech-model:2
     container_name: iupi-fintech-model
     ports:
       - "8000:8000"

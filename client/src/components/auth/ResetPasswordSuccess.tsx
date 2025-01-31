@@ -40,7 +40,7 @@ const ResetPasswordSuccess = ()  => {
                 <div className="justify-end space-y-3 grid-rows-12 mt-[16rem]">
                   <div>
                     <h1 className="text-lightBlue font-medium mt-5 mb-4 text-base">
-                      Ya reestablecido tu contraseña. Intenta ahora iniciar sesión.
+                      Has reestablecido tu contraseña. Ahora intenta iniciar sesión.
                     </h1>
                   </div>
                   <div>

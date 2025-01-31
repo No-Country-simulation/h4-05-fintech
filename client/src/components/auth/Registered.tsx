@@ -66,7 +66,7 @@ const RegisteredPage = () => {
                     data-cy="register-description"
                     className="text-lightBlue text-center"
                   >
-                    Te hemos una confimación de registro a <span className="text-orange-600">{email}</span>
+                    Te hemos enviado una confimación de registro a <span className="text-orange-600">{email}</span>
                   </p>
                 : <p 
                     data-cy="register-description"

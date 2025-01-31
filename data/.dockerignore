@@ -1,7 +1,0 @@
-*
-!/requirements.txt
-!/API/models_app.py
-!/API/recommendation.py
-!/API/modelo_riesgo.pkl
-!/notebooks
-!/data
