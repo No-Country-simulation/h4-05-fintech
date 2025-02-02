@@ -122,12 +122,12 @@ const LoginPage = () => {
               </Link>
             </div>
             {loading
-              ? <Button type="submit" className="rounded-xl w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide" disabled={true}>
+              ? <Button type="submit" className="rounded-xl w-full h-[52px] bg-[rgba(249,115,22,0.2)] text-[rgb(189,233,255)] text-base font-normal tracking-wide" disabled={true}>
                   Procesando...
                 </Button>
               : <Button 
                   type="submit" 
-                  className="rounded-xl w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide"
+                  className="rounded-xl w-full h-[52px] bg-[rgba(249,115,22,0.2)] text-[rgb(189,233,255)] text-base font-normal tracking-wide"
                 >
                   Iniciar sesión
                 </Button>

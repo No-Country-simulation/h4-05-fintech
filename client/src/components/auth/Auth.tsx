@@ -18,7 +18,7 @@ const AuthPage = () => {
             <div>
               <Link to="/auth/login">
                 <Button 
-                  className="w-full h-[52px] rounded-xl bg-[#11668233] text-[#BDE9FF] text-base font-normal tracking-wide"
+                  className="w-full h-[52px] rounded-xl bg-[rgba(17,102,130,0.2)] text-[rgb(189,233,255)] text-base font-normal tracking-wide"
                   data-cy="login"
                 >
                   Iniciar sesión
@@ -28,7 +28,7 @@ const AuthPage = () => {
             <div>
               <Link to="/auth/register">
                 <Button 
-                  className="w-full h-[52px] rounded-xl bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide"
+                  className="w-full h-[52px] rounded-xl bg-[rgba(249,115,22,0.2)] text-[rgb(189,233,255)] text-base font-normal tracking-wide"
                   data-cy="register"
                 >
                   Registrarme
