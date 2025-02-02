@@ -27,6 +27,7 @@ const Ocupacion = () => {
     { value: 'Arquitecto', label: 'Arquitecto' },
     { value: 'Ingeniero', label: 'Ingeniero' },
     { value: 'Abogado', label: 'Abogado' },
+    { value: 'Médico', label: 'Médico' },
   ];
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -50,8 +51,6 @@ const Ocupacion = () => {
       localStorage.setItem("formData", JSON.stringify(newFormData));
     }
   };
-
-
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center">

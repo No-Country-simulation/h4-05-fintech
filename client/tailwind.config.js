@@ -22,7 +22,10 @@ export default {
         sm: 'calc(var(--radius) - 4px)'
       },
       fontFamily: {
-        roboto: ["var(--font-roboto)"],
+        roboto: ['"Roboto"', "sans-serif"],
+        poppins: ['"Poppins"', "sans-serif"],
+        inter: ['"Inter"', "sans-serif"],
+        openSans: ['"Open Sans"', "sans-serif"],
       },
     }
   },
