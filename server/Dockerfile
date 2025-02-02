@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm ci 
+RUN npm ci
 
 # BUILD APPLICATION
 FROM node:22.12.0-alpine AS builder

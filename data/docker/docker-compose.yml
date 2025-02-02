@@ -5,5 +5,5 @@ services:
     image: schweigenderflugel/iupi-fintech-model:2
     container_name: iupi-fintech-model
     ports:
-      - "8000:8000"
+      - "8080:8080"
     restart: on-failure

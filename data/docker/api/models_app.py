@@ -1,7 +1,11 @@
+import os
+import joblib # type: ignore
+from pathlib import Path
+
 from fastapi import FastAPI, HTTPException # type: ignore
 from pydantic import BaseModel # type: ignore
-import joblib
-from pathlib import Path
+import uvicorn # type: ignore
+
 from recommendation import get_recommendations, ForRecommendations
 
 # Cargar el modelo entrenado

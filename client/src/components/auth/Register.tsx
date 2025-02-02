@@ -87,7 +87,7 @@ const RegisterPage = () => {
             onSubmit={handleSubmit} 
             className="space-y-2"
           >
-            <div className="rounded-lg space-y-2 bg-[#11668233] p-3">
+            <div className="rounded-xl space-y-2 bg-[#11668233] p-3">
               <Label htmlFor="email" className="text-[#8BD0EF]">
                 Correo electrónico
               </Label>
@@ -99,45 +99,45 @@ const RegisterPage = () => {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="Ingrese su correo electronico"
-                className="bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
+                className="rounded-xl bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
                 required
               />
               <p className="text-xs text-[#8BD0EF] font-medium">
                 Ingrese una cuenta de correo válida
               </p>
             </div>
-            <div className="rounded-lg space-y-2 bg-[#11668233] p-3">
+            <div className="rounded-xl space-y-2 bg-[#11668233] p-3">
               <Label htmlFor="password" className="text-[#8BD0EF]">
                 Contraseña
               </Label>
               <Input
                 data-cy="password-input"
                 id="password"
-                type="password"
+                isPassword={true}
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="***********"
-                className="bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
+                className="rounded-xl bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
                 required
               />
               <p className="text-xs text-[#8BD0EF] font-medium">
                 Minimo 8 caracteres, una mayúscula y un número
               </p>
             </div>
-            <div className="rounded-lg space-y-2 bg-[#11668233] p-3">
+            <div className="rounded-xl space-y-2 bg-[#11668233] p-3">
               <Label htmlFor="password" className="text-[#8BD0EF]">
                 Confirmar contraseña
               </Label>
               <Input
                 data-cy="confirm-password-input"
                 id="confirmPassword"
-                type="password"
                 name="confirmPassword"
+                isPassword={true}
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 placeholder="***********"
-                className="bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
+                className="rounded-xl bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
                 required
               />
               <p className="text-xs text-[#8BD0EF] font-medium">
@@ -147,13 +147,13 @@ const RegisterPage = () => {
             {loading 
               ? <Button
                   type="submit"
-                  className="w-full h-[52px] bg-[#8D4E2A33] text-[#BDE9FF] text-base font-normal tracking-wide"
+                  className="rounded-xl w-full h-[52px] bg-[#8D4E2A33] text-[#BDE9FF] text-base font-normal tracking-wide"
                 >
                   Procesando...
                 </Button>
               : <Button
                   type="submit"
-                  className="w-full h-[52px] bg-[#8D4E2A33] text-[#BDE9FF] text-base font-normal tracking-wide"
+                  className="rounded-xl w-full h-[52px] bg-[#8D4E2A33] text-[#BDE9FF] text-base font-normal tracking-wide"
                 >
                   Registrarse
                 </Button>

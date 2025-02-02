@@ -11,6 +11,15 @@ input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0px 1000px transparent inset;
 }
 
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* Para Chrome, Safari y Edge */
+}
+
+.scrollbar-hidden {
+  -ms-overflow-style: none;  /* Para IE y Edge */
+  scrollbar-width: none;  /* Para Firefox */
+}
+
 
 .progressBar {
   appearance: none;

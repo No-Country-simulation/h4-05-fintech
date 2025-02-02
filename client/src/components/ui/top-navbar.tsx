@@ -2,10 +2,10 @@ import { IProfileData } from "@/interfaces/profile.interfaces";
 import DefaultProfileImage from "./default-profile-image";
 
 interface NavbarProps {
-  className: string;
-  profileData: IProfileData | null;
-}  
-  
+  className?: string;
+  profileData?: IProfileData | null;
+};
+
 const TopNavbar = ({ className, profileData }: NavbarProps) => {
   return (
     <section className={className}>

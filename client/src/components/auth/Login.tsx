@@ -77,13 +77,13 @@ const LoginPage = () => {
             Inicio de Sesión
           </h1>
         </div>
-        <Card className="border-none shadow-none">
+        <Card className="border-none rounded-xl shadow-none">
           <form
             data-cy="login-form"
             onSubmit={handleSubmit} 
             className="space-y-2 mt-[10rem]"
           >
-            <div className="rounded-lg space-y-2 bg-[#11668233] p-3">
+            <div className="rounded-xl space-y-2 bg-[#11668233] p-3">
               <Label htmlFor="email"
                 className="text-[#8BD0EF]"
               >
@@ -97,39 +97,37 @@ const LoginPage = () => {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="Ingrese su correo electronico"
-                className="bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
+                className="rounded-xl bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
                 required
               />
-              <p className="text-xs text-[#8BD0EF] font-medium">
-                Mínimo 8 caracteres
-              </p>
+              <p className="text-xs mt-2 text-[#8BD0EF] font-medium">Ingresa una cuenta de correo valida</p>
             </div>
-            <div className="rounded-lg space-y-2 bg-[#11668233] p-3">
+            <div className="rounded-xl space-y-2 bg-[#11668233] p-3">
               <Label htmlFor="password" className="text-[#8BD0EF]">
                 Contraseña
               </Label>
               <Input
                 data-cy="password-input"
                 id="password"
-                type="password"
                 name="password"
+                isPassword={true}
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="***********"
-                className="bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
+                className="rounded-xl bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
                 required
               />
               <Link to={"/auth/forgot-password"}>
-                <p className="text-xs text-[#8BD0EF] font-medium">Recuperar Contraseña</p>
+                <p className="text-xs mt-2 text-[#8BD0EF] font-medium">Recuperar Contraseña</p>
               </Link>
             </div>
             {loading
-              ? <Button type="submit" className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide" disabled={true}>
+              ? <Button type="submit" className="rounded-xl w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide" disabled={true}>
                   Procesando...
                 </Button>
               : <Button 
                   type="submit" 
-                  className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide"
+                  className="rounded-xl w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide"
                 >
                   Iniciar sesión
                 </Button>

@@ -24,4 +24,4 @@ COPY --from=build /source ./
 
 COPY api ./
 
-CMD ["./venv/bin/uvicorn", "models_app:app", "--host", "0.0.0.0"]
+CMD ["./venv/bin/uvicorn", "models_app:app", "--host", "0.0.0.0", "--port", "8080"]

@@ -22,8 +22,8 @@ import ForgotPasswordPage from "./components/auth/ForgotPassword";
 import ResetPasswordPage from "./components/auth/ResetPassword";
 
 // Dashboard
-import ProfilePage from "./components/profile/ProfilePage";
-import CustomHome from "./components/profile/CustomHome";
+import ProfilePage from "./components/dashboard/ProfilePage";
+import CustomHome from "./components/dashboard/CustomHome";
 import UpdateProfilePage from "./components/profile/UpdateProfile";
 import StartPage from "./components/profile/StartPage";
 import NamesPage from "./components/profile/NamesPage";
@@ -51,6 +51,10 @@ import Question9 from "./components/financial-survey/financial-status/Question9"
 import Question10 from "./components/financial-survey/financial-status/Question10";
 import PendingFinancialSurvey from "./components/financial-survey/PendingSurvey";
 import ResetPasswordSuccess from "./components/auth/ResetPasswordSuccess";
+import DashboardLayout from "./components/dashboard/DashboardLayout";
+import InversionsLayout from "./components/dashboard/InversionsLayout";
+import SavingsPage from "./components/dashboard/SavingsPage";
+import SharesPage from "./components/dashboard/SharesPage";
 
 // import AuthRoutes from "./components/auth/AuthRoutes";
 // import DashboardRoutes from "./components/profile/DashboardRoutes";
@@ -102,10 +106,14 @@ function App() {
             <Route element={<Protected />}>
 
               {/* Dashboard routes */}
-              <Route path="/dashboard/*">
-                <Route path="profile" element={<ProfilePage />} />
+              <Route path="/dashboard/*" element={<DashboardLayout />} >
                 <Route path="home" element={<CustomHome />} />
+                <Route path="profile" element={<ProfilePage />} />
                 <Route path="update-profile" element={<UpdateProfilePage />} />
+                <Route path="inversions/*" element={<InversionsLayout />} >
+                  <Route path="savings" element={<SavingsPage />} />
+                  <Route path="shares" element={<SharesPage />} />
+                </Route>
               </Route>
 
               {/* Profile routes*/}
