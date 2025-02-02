@@ -70,12 +70,12 @@ const OccupationPage = () => {
           />
         </div>
         <div className=" justify-end grid-rows-12">
-          <p className="text-[#88D0EF] text-center">Cual es tu ocupación?</p>
+          <p className="text-lightBlue text-center">Cual es tu ocupación?</p>
         </div>
         <Card className="border-none shadow-none">
-          <div className="rounded-lg space-y-2 bg-[#11668233] px-2 py-2 mb-3">
+          <div className="rounded-lg space-y-2 bg-darkBlue px-2 py-2 mb-3">
             <Label htmlFor="occupation"
-              className="text-[#8BD0EF]"
+              className="text-lightBlue"
             >
               Ocupación:
             </Label>
@@ -84,12 +84,12 @@ const OccupationPage = () => {
               options={options}
               onChange={handleChange}
               value={formData.occupation!}
-              className="w-full h-[52px] bg-[#11668233] text-[#8BD0EF] text-base font-normal tracking-wide px-3"
+              className="w-full h-[52px] bg-darkBlue text-lightBlue text-base font-normal tracking-wide px-3"
             />
           </div>
           <Button
             onClick={finishProfile}
-            className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide"
+            className="w-full h-[52px] bg-rusty text-lightBlue text-base font-normal tracking-wide"
           >
             Continuar
           </Button>

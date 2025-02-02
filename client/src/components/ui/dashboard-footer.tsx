@@ -7,8 +7,8 @@ interface NavbarProps {
 const DashboardFooter = ({ className }: NavbarProps) => {
   const classNameFunctionNavLink = ({ isActive }: { isActive: boolean }) =>
     isActive
-      ? 'flex flex-col items-center justify-center text-center text-[#ff6d2e]'
-      : 'flex flex-col items-center justify-center text-center text-[#BDE9FF]';
+      ? 'flex flex-col items-center justify-center text-center text-orange-600'
+      : 'flex flex-col items-center justify-center text-center text-lightBlue';
 
   return (
     <section className={className}>

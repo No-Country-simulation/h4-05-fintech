@@ -13,7 +13,7 @@ const TopNavbar = ({ className, profileData }: NavbarProps) => {
         <div className="w-[40%] grid grid-flow-col grid-rows-3 pt-4 -mb-3">
           {!profileData?.image 
             ? <DefaultProfileImage className="row-span-3 w-[60%] pt-2" />
-            : <img src={profileData.image} className="row-span-3 rounded-full w-[70%] mt-1" alt="image" />
+            : <img src={profileData.image} className="row-span-3 rounded-full w-[70%] mt-1"/>
           }
           <p className="col-span-2 text-lightBlue text-[14px]">Hola, {profileData?.name}</p>
           <p className="col-span-2 text-lightBlue text-[14px]">Cuenta normal</p>

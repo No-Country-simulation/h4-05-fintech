@@ -22,6 +22,11 @@ export default {
         teal: "#239BC3",
         shadow: "#0F1417",
         lightBlue: "#8BD0EF",
+        lightOrange: "#ffc3a9",
+        darkBlue: "#11668233",
+        rusty: "#F9731633",
+        customGray: "#BDE9FF33",
+        turqouise: "#082c39",
         // light mode
         tremor: {
           brand: {

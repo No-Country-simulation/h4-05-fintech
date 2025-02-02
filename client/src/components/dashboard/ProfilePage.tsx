@@ -29,18 +29,18 @@ const ProfilePage = () => {
           className="w-[341px] h-[49px]"
         />
       </div>
-      <Card className="w-full rounded-xl bg-[rgba(17,102,130,0.2)] p-6 border-none">
+      <Card className="w-full rounded-xl bg-darkBlue p-6 border-none">
         <div className="flex items-center justify-between space-y-2 mb-4">
           <h1 className="text-lightBlue font-bold">Tu perfil</h1>
             {profileData?.surveyAnswered
-              ? <p className="px-4 py-1 text-[14px] rounded-xl bg-[#124b67] text-[#bde9ff]">Completado</p>
-              : <p className="px-4 py-1 text-[14px] rounded-xl bg-[rgb(143,82,55)] text-[rgb(255,195,169)]">Pendiente</p>
+              ? <p className="px-4 py-1 text-[14px] rounded-xl bg-turqouise text-lightBlue">Completado</p>
+              : <p className="px-4 py-1 text-[14px] rounded-xl bg-rusty text-lightOrange">Pendiente</p>
             }
         </div>
         <div className="w-[50%] grid grid-flow-col grid-rows-3 gap-1">
           {!profileData?.image 
             ? <DefaultProfileImage className="row-span-3 w-[80%]" />
-            : <img src={profileData.image} className="row-span-3 rounded-full w-[80%] mt-1" alt="image" />
+            : <img src={profileData.image} className="row-span-3 rounded-full w-[80%] mt-1" />
           }
           <p className="col-span-2 text-lightBlue text-[14px]">{profileData?.name} {profileData?.lastname}</p>
           {profileData?.financialProfileResults
@@ -49,20 +49,20 @@ const ProfilePage = () => {
           }
         </div>
       </Card>
-      <Card className="w-full rounded-xl bg-[rgba(17,102,130,0.2)] px-3 py-5 border-none">
+      <Card className="w-full rounded-xl bg-darkBlue px-3 py-5 border-none">
         <h1 className="text-lightBlue font-bold">Objetivos financieros</h1>
         <p className="text-lightBlue">Comprar una casa</p>
       </Card>
-      <Card className="w-full rounded-xl bg-[rgba(17,102,130,0.2)] px-3 py-5 border-none">
+      <Card className="w-full rounded-xl bg-darkBlue px-3 py-5 border-none">
         <h1 className="text-lightBlue font-bold">Nivel de conocimiento</h1>
         <progress className="progressBar" value={50} max={10}>{0}%</progress>  
       </Card>
-      <Card className="w-full space-y-3 rounded-xl bg-[rgba(17,102,130,0.2)] px-3 py-5 border-none">
+      <Card className="w-full space-y-3 rounded-xl bg-darkBlue px-3 py-5 border-none">
         <h1 className="text-lightBlue font-bold">Perfil de riesgo</h1>
         <div className="flex justify-between">
           {profileData?.financialProfileResults 
-            ? <p className="px-4 py-1 text-[14px] rounded-xl bg-[rgb(225,123,79)] text-black]">{profileData.financialProfileResults}</p> 
-            : <p className="px-4 py-1 text-[14px] rounded-xl bg-[rgb(162,162,162)] text-black]">Indefinido</p>
+            ? <p className="px-4 py-1 text-[14px] rounded-xl bg-copper text-black]">{profileData.financialProfileResults}</p> 
+            : <p className="px-4 py-1 text-[14px] rounded-xl bg-gray-400 text-black]">Indefinido</p>
           }
           <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g id="Frame">
@@ -72,7 +72,7 @@ const ProfilePage = () => {
           </svg>
         </div>
       </Card>
-      <Card className="w-full rounded-xl bg-[rgba(17,102,130,0.2)] px-3 py-5 border-none">
+      <Card className="w-full rounded-xl bg-darkBlue px-3 py-5 border-none">
         <h1 className="text-lightBlue font-bold mb-5">Recomendaciones</h1>
         <ul className="space-y-6">
           <li className="text-lightBlue">
@@ -88,7 +88,7 @@ const ProfilePage = () => {
       <div className="w-full space-y-3">
         <Button
           data-cy="logout-button"
-          className="w-full px-4 py-3 rounded-xl bg-[#11668233] text-[#BDE9FF] text-base font-normal tracking-wide"
+          className="w-full px-4 py-3 rounded-xl bg-darkBlue text-lightBlue text-base font-normal tracking-wide"
           onClick={handleLogout}
         >
           Cerrar sesión

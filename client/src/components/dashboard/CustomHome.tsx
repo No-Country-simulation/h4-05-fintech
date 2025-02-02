@@ -9,15 +9,15 @@ const CustomHome = () => {
   return (
     <>
       <header className="w-full -ml-4 fixed top-0">
-        <TopNavbar profileData={profileData} className="bg-[#082c39] text-[#BDE9FF] px-3" />
+        <TopNavbar profileData={profileData} className="bg-turqouise text-lightBlue px-3" />
       </header>
       <section className="w-full lg:max-w-md row-span-12 mb-28">
-        <Card className="w-full rounded-xl mt-24 text-[#BDE9FF] bg-[rgba(17,102,130,0.2)] p-3 border-none mb-3">
+        <Card className="w-full rounded-xl mt-24 text-lightBlue bg-darkBlue p-3 border-none mb-3">
           <p className="font-semibold text-center">Balance Total</p>
           <p className="font-bold text-[24px]">$0</p>
         </Card>
         <div className="flex space-x-2 justify-center items-center mb-3">
-          <Card className="w-full rounded-xl bg-[rgba(17,102,130,0.2)] text-[#BDE9FF] p-3 border-none">
+          <Card className="w-full rounded-xl bg-darkBlue text-lightBlue p-3 border-none">
             <div className="flex justify-start items-center space-x-3">
               <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="Frame">
@@ -35,7 +35,7 @@ const CustomHome = () => {
             </div>
             <p className="font-semibold text-[24px]">$0</p>
           </Card>
-          <Card className="w-full rounded-xl bg-[rgba(143,82,55,0.63)] text-[rgb(255,195,169)] p-3 border-none">
+          <Card className="w-full rounded-xl bg-rusty text-lightOrange p-3 border-none">
             <div className="flex justify-start items-center space-x-3">
               <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="Frame">
@@ -54,19 +54,19 @@ const CustomHome = () => {
             <p className="font-semibold text-[24px]">$0</p>
           </Card>
         </div>
-        <Card className="w-full rounded-xl space-y-3 bg-[rgba(17,102,130,0.2)] text-[#BDE9FF] px-3 py-6 border-none mb-3">
+        <Card className="w-full rounded-xl space-y-3 bg-darkBlue text-lightBlue px-3 py-6 border-none mb-3">
           <h1 className="font-bold">Objetivos Financieros</h1>
-          <Card className="bg-[rgba(134,225,255,0.2)] text-[#BDE9FF] p-3 border-none rounded-xl">
+          <Card className="bg-[rgba(134,225,255,0.2)] text-lightBlue p-3 border-none rounded-xl">
             <p>Fondo de emergencia</p>
             <progress className="progressBar" value={75} max={100}>{75}%</progress>
           </Card>
-          <Card className="bg-[rgba(134,225,255,0.2)] text-[#BDE9FF] p-3 border-none rounded-xl">
+          <Card className="bg-[rgba(134,225,255,0.2)] text-lightBlue p-3 border-none rounded-xl">
             <p>Fondo de emergencia</p>
             <progress className="progressBar" value={75} max={100}>{75}%</progress>
           </Card>
         </Card>
-        <Card className="w-full rounded-xl space-y-3 bg-[rgba(17,102,130,0.2)] p-3 border-none mb-3">
-          <Card className="bg-[rgba(134,225,255,0.2)] p-3 border-none rounded-xl">
+        <Card className="w-full rounded-xl space-y-3 bg-darkBlue p-3 border-none mb-3">
+          <Card className="bg-darkBlue p-3 border-none rounded-xl">
             <div className="grid grid-flow-col grid-rows-3 pt-3 -mb-3">
               <div className="row-span-3 size-9 mt-1 ">
                 <svg className="bg-white rounded-full p-2" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -86,7 +86,7 @@ const CustomHome = () => {
               <p className="col-span-2 text-lightBlue text-[14px]">Podrías ahorrar 15% más este mes</p>
             </div>
           </Card>
-          <Card className="bg-[rgba(134,225,255,0.2)] p-3 border-none rounded-xl">
+          <Card className="bg-customGray p-3 border-none rounded-xl">
             <div className="grid grid-flow-col grid-rows-3 pt-3 -mb-3">
               <div className="row-span-3 size-9 mt-1 ">
                 <svg className="bg-white rounded-full p-2" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

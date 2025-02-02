@@ -55,6 +55,7 @@ import DashboardLayout from "./components/dashboard/DashboardLayout";
 import InversionsLayout from "./components/dashboard/InversionsLayout";
 import SavingsPage from "./components/dashboard/SavingsPage";
 import SharesPage from "./components/dashboard/SharesPage";
+import LandingPage from "./LandingPage";
 
 // import AuthRoutes from "./components/auth/AuthRoutes";
 // import DashboardRoutes from "./components/profile/DashboardRoutes";
@@ -78,10 +79,8 @@ function App() {
         <MainLayout>
           <Routes>
 
-            {/* Redirige la raíz ("/") a "/auth" */}
-            <Route path="/" element={<Navigate to="/auth" replace />} />
-
             {/* Rutas neutras */}
+            <Route path="/" element={<LandingPage />} />
 
             {/* Unprotected routes */}
             <Route element={<Unprotected />}>

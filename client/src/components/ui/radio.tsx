@@ -9,7 +9,7 @@ const InputRadioCheckbox = React.forwardRef<HTMLInputElement, InputProps>(
   ({ name, type, onChange, label, ...props }, ref) => {
     return (
       <div className="w-full h-9 flex-col justify-start items-start gap-2 inline-flex">
-        <div className="self-stretch p-2 bg-[#116682]/20 rounded-lg border-gray-200 justify-between items-center inline-flex">
+        <div className="self-stretch p-2 bg.darkBlue rounded-lg border-gray-200 justify-between items-center inline-flex">
           <div className="justify-start items-center gap-4 flex">
             <div className="w-4 h-4 bg-black/0 border-gray-200 justify-center items-center flex">
               <div className="grow shrink basis-0 self-stretch justify-center items-center inline-flex">
@@ -21,7 +21,7 @@ const InputRadioCheckbox = React.forwardRef<HTMLInputElement, InputProps>(
                 </svg>
               </div>
             </div>
-            <div className="w-[267px] h-5 text-[#bde9ff] text-sm font-normal font-['Open Sans'] leading-tight tracking-tight">
+            <div className="w-[267px] h-5 text-lightBlue text-sm font-normal font-['Open Sans'] leading-tight tracking-tight">
                {label}
             </div>
           </div>

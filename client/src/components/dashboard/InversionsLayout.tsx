@@ -3,12 +3,12 @@ import { NavLink, Outlet } from "react-router";
 const InversionsLayout = () => {
   const classNameFunctionNavLink = ({ isActive }: { isActive: boolean }) =>
     isActive
-      ? 'flex flex-col px-12 py-2 rounded-xl items-center justify-center text-center bg-[#F9731633] text-[#BDE9FF]'
-      : 'flex flex-col px-12 py-2 rounded-xl items-center justify-center text-center bg-[#11668233] text-[#BDE9FF]'
+      ? 'flex flex-col px-12 py-2 rounded-xl items-center justify-center text-center bg-rusty text-lightBlue'
+      : 'flex flex-col px-12 py-2 rounded-xl items-center justify-center text-center bg-darkBlue text-lightBlue'
 
   return (
     <>
-      <header className="fixed w-full flex justify-between items-center bg-[#082c39] text-[#BDE9FF] -ml-4 px-6 py-4 mb-6">
+      <header className="fixed w-full flex justify-between items-center bg-turqouise text-lightBlue -ml-4 px-6 py-4 mb-6">
         <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
         </svg>

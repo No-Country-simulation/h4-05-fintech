@@ -88,8 +88,8 @@ const ResetPasswordPage = () => {
                   onSubmit={handleSubmit} 
                   className="space-y-2 mt-[10rem]"
                 >
-                  <div className="rounded-lg space-y-2 bg-[#11668233] p-3">
-                    <Label htmlFor="email" className="text-[#8BD0EF]">
+                  <div className="rounded-lg space-y-2 bg-darkBlue p-3">
+                    <Label htmlFor="email" className="text-lightBlue">
                       Nueva contraseña
                     </Label>
                     <Input
@@ -100,15 +100,15 @@ const ResetPasswordPage = () => {
                       value={formData.newPassword}
                       onChange={handleChange}
                       placeholder="***********"
-                      className="bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
+                      className="bg-customGray text-lightBlue placeholder:text-lightBlue focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
                       required
                     />
                     <p className="text-xs text-[#8BD0EF] font-medium">
                       Minimo 8 caracteres, una mayúscula y un número
                     </p>
                   </div>
-                  <div className="rounded-lg space-y-2 bg-[#11668233] p-3">
-                    <Label htmlFor="password" className="text-[#8BD0EF]">
+                  <div className="rounded-lg space-y-2 bg-darkBlue p-3">
+                    <Label htmlFor="password" className="text-lightBlue">
                       Confirmar Contraseña
                     </Label>
                     <Input
@@ -119,20 +119,20 @@ const ResetPasswordPage = () => {
                       value={formData.confirmPassword}
                       onChange={handleChange}
                       placeholder="***********"
-                      className="bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
+                      className="bg-customGray text-lightBlue placeholder:text-lightBlue focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
                       required
                     />
-                    <p className="text-xs text-[#8BD0EF] font-medium">
+                    <p className="text-xs text-lightBlue font-medium">
                       Minimo 8 caracteres, una mayúscula y un número
                     </p>
                   </div>
                   {loading 
-                    ? <Button type="submit" className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide" disabled={true}>
+                    ? <Button type="submit" className="w-full h-[52px] bg-rusty text-lightBlue text-base font-normal tracking-wide" disabled={true}>
                         Procesando...
                       </Button>
                     : <Button 
                         type="submit" 
-                        className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide"
+                        className="w-full h-[52px] bg-rusty text-lightBlue text-base font-normal tracking-wide"
                       >
                         Cambiar contraseña
                       </Button>

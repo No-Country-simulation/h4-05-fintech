@@ -81,7 +81,7 @@ const RegisteredPage = () => {
               <Link to="/auth/login">
                 <Button
                   data-cy="login-button"
-                  className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide"
+                  className="w-full h-[52px] bg-rusty text-lightBluetext-base font-normal tracking-wide"
                 >
                   {!registered ? "Ya lo confirmé" : "Iniciar sesión"}
                 </Button>
@@ -90,7 +90,7 @@ const RegisteredPage = () => {
             <div>
               <Button
                 data-cy="verification-button"
-                className="w-full h-[52px] bg-[#11668233] text-[#BDE9FF] text-base font-normal tracking-wide"
+                className="w-full h-[52px] bg-darkBlue text-lightBlue text-base font-normal tracking-wide"
                 onClick={handleVerificationResend}
               >
                 Reenviar confirmación

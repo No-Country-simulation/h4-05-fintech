@@ -44,7 +44,7 @@ const DashboardLayout = () => {
             <Outlet context={{ profileData }} />
           </main>
           <footer className="w-full -ml-4 fixed bottom-0">
-            <DashboardFooter className="bg-[#082c39] text-[#BDE9FF]" />
+            <DashboardFooter className="bg-turqouise text-lightBlue" />
           </footer>
         </>
     )

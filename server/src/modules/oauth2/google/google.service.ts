@@ -178,7 +178,7 @@ export class GoogleAuthService {
 
     await this.credentialsService.setCookie(res, refreshToken);
 
-    res.redirect(this.configService.frontendUrl);
+    res.redirect(`${this.configService.frontendUrl}/dashboard/home`);
   }
 
   async verifyRefreshToken() {

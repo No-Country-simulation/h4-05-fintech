@@ -99,7 +99,7 @@ const RegisterPage = () => {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="Ingrese su correo electronico"
-                className="rounded-xl bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
+                className="rounded-xl bg-customGray text-lightBlue placeholder:text-lightBlue focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
                 required
               />
               <p className="text-xs text-[#8BD0EF] font-medium">
@@ -118,7 +118,7 @@ const RegisterPage = () => {
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="***********"
-                className="rounded-xl bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
+                className="rounded-xl bg-customGray text-lightBlue placeholder:text-lightBlue focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
                 required
               />
               <p className="text-xs text-[#8BD0EF] font-medium">
@@ -126,7 +126,7 @@ const RegisterPage = () => {
               </p>
             </div>
             <div className="rounded-xl space-y-2 bg-[#11668233] p-3">
-              <Label htmlFor="password" className="text-[#8BD0EF]">
+              <Label htmlFor="password" className="text-lightBlue">
                 Confirmar contraseña
               </Label>
               <Input
@@ -137,7 +137,7 @@ const RegisterPage = () => {
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 placeholder="***********"
-                className="rounded-xl bg-[#BDE9FF33] text-[#8BD0EF] placeholder:text-[#8BD0EF] focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
+                className="rounded-xl bg-customGray text-lightBlue placeholder:text-lightBlue focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
                 required
               />
               <p className="text-xs text-[#8BD0EF] font-medium">
@@ -147,13 +147,13 @@ const RegisterPage = () => {
             {loading 
               ? <Button
                   type="submit"
-                  className="rounded-xl w-full h-[52px] bg-[#8D4E2A33] text-[#BDE9FF] text-base font-normal tracking-wide"
+                  className="rounded-xl w-full h-[52px] bg-rusty text-lightBlue text-base font-normal tracking-wide"
                 >
                   Procesando...
                 </Button>
               : <Button
                   type="submit"
-                  className="rounded-xl w-full h-[52px] bg-[#8D4E2A33] text-[#BDE9FF] text-base font-normal tracking-wide"
+                  className="rounded-xl w-full h-[52px] bg-rusty text-lightBlue text-base font-normal tracking-wide"
                 >
                   Registrarse
                 </Button>

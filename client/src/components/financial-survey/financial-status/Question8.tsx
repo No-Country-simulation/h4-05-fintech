@@ -67,7 +67,7 @@ const Question8 = () => {
               </div>
               <div>
                 <Button
-                  className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide"
+                  className="w-full h-[52px] bg-rusty text-lightBlue text-base font-normal tracking-wide"
                   onClick={handleNextQuestion}
                   disabled={!formData?.savingsPlans ? true : false }
                 >

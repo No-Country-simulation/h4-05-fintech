@@ -37,13 +37,13 @@ const PendingFinancialSurvey = () => {
         </div>
         <div className="w-full space-y-4">
           <Button 
-            className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide"
+            className="w-full h-[52px] bg-rusty text-lightBlue text-base font-normal tracking-wide"
             onClick={handleSkipSurvey}
           >
             Saltar por ahora
           </Button>
           <Button
-            className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide"
+            className="w-full h-[52px] bg-rusty text-lightBlue text-base font-normal tracking-wide"
             onClick={handleStartSurvey}
           >
             Seguir completando

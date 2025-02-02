@@ -45,13 +45,13 @@ const SavingsPage = () => {
   return (
     <div className="flex flex-col justify-start space-y-4 lg:max-w-md row-span-12 mb-28">
       <div className="flex space-x-2 justify-center items-center mb-3">
-        <Card className="w-full rounded-xl bg-[rgba(17,102,130,0.2)] text-[#BDE9FF] p-3 border-none">
+        <Card className="w-full rounded-xl bg-darkBlue text-lightBlue p-3 border-none">
           <div className="flex justify-start items-center space-x-3">
             <p className="font-semibold">Ingresos</p>
           </div>
           <p className="font-semibold text-[24px]">$0</p>
         </Card>
-        <Card className="w-full rounded-xl bg-[rgba(143,82,55,0.63)] text-[rgb(255,195,169)] p-3 border-none">
+        <Card className="w-full rounded-xl bg-rusty text-lightOrange p-3 border-none">
           <div className="flex justify-start items-center space-x-3">
             <p className="font-semibold">Gastos</p>
           </div>
@@ -59,13 +59,13 @@ const SavingsPage = () => {
         </Card>
       </div>
       <div className="flex space-x-2 justify-center items-center">
-        <Card className="w-full rounded-xl bg-[rgba(17,102,130,0.2)] text-[#BDE9FF] p-3 border-none">
+        <Card className="w-full rounded-xl bg-darkBlue text-lightBlue p-3 border-none">
           <div className="flex justify-start items-center space-x-3">
             <p className="font-semibold">Disponible</p>
           </div>
           <p className="font-semibold text-[24px]">0%</p>
         </Card>
-        <Card className="w-full rounded-xl bg-[rgba(17,102,130,0.2)] text-[#BDE9FF] p-3 border-none">
+        <Card className="w-full rounded-xl bg-darkBlue text-lightBlue p-3 border-none">
           <div className="flex justify-start items-center space-x-3">
             <p className="font-semibold">Ahorros</p>
           </div>
@@ -78,7 +78,7 @@ const SavingsPage = () => {
         chartData={chartData} 
         className="flex flex-col justify-center items-center h-60 -ml-4" 
       />
-      <Button className="w-full px-4 py-3 rounded-xl border-none bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide">
+      <Button className="w-full px-4 py-3 rounded-xl border-none bg-rusty text-lightBlue text-base font-normal tracking-wide">
         Transferir
       </Button>
     </div>

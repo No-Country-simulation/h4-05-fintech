@@ -45,7 +45,7 @@ const ResetPasswordSuccess = ()  => {
                   </div>
                   <div>
                     <Link to="/auth/login">
-                      <Button type="submit" className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide">
+                      <Button type="submit" className="w-full h-[52px] bg-rusty text-lightBlue text-base font-normal tracking-wide">
                         Iniciar sesión
                       </Button>
                     </Link>
