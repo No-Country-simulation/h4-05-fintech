@@ -6,10 +6,13 @@ export interface IProfileData {
   image: string | null;
   surveyAnswered: boolean;
   itemsSaved: string[];
+};
+
+export interface IProfileDataForDashboard extends IProfileData {
   profile: string | null;
   recommendations: string[] | null;
   tips: string[] | null;
-};
+}
 
 export interface IUpdateProfileData {
   name: string;

@@ -1,12 +1,12 @@
 import { Link, useNavigate, useOutletContext } from "react-router";
 import { Button } from "../ui/button";
 import useLogout from "@/hooks/useLogout";
-import { IProfileData } from "@/interfaces/profile.interfaces";
+import { IProfileDataForDashboard } from "@/interfaces/profile.interfaces";
 import { Card } from "../ui/card";
 import DefaultProfileImage from "../ui/default-profile-image";
 
 const ProfilePage = () => {
-  const { profileData } = useOutletContext<{ profileData: IProfileData }>();
+  const { profileData } = useOutletContext<{ profileData: IProfileDataForDashboard}>();
 
   const navigate = useNavigate();
 
