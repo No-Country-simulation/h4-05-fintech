@@ -89,12 +89,12 @@ export class ProfileService {
       gastos_mensuales: dto.expenseRatios,
     };
 
-    const results = await this.getPrediction(sendData);
+    const { perfil_riesgo } = await this.getPrediction(sendData);
 
     const userProfileUpdated = Object.assign(userProfileFound, {
-      surveyAnswered: false,
+      surveyAnswered: true,
       updatedAt: new Date(),
-      financialProfileResults: results.perfil_riesgo,
+      financialProfileResults: perfil_riesgo,
     });
 
     const data: Prisma.UserProfileUpdateInput = { ...userProfileUpdated };
