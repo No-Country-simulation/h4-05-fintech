@@ -19,12 +19,13 @@ const LandingPage = () => {
           <img
             src="https://res.cloudinary.com/di0cvbfdb/image/upload/v1736977179/fintech/yzuwrtmgdvqbqjvgplcw.svg"
             alt="Logo"
-            className=" flex-3/4 w-[300px] h-[49px] ml-3"
+            className=" flex-3/4 w-[285px] h-[49px] ml-1"
           />
           <img
             src={PerfilLanding}
             alt="perfilLanding"
-            className=" flex-1 h-[20px] w-[17.5px] mr-10"
+            className=" flex-1 h-[20px] w-[10px]"
+
           />
         </div>
         <div className="flex items-center justify-items-center">
@@ -125,7 +126,6 @@ const LandingPage = () => {
         <p className="font-poppins text-center text-[#BDE9FF] text-[16px]">Unete a la comunidad de inversores</p>
         <p className="font-inter text-center text-[#BDE9FF] text-[16px]">Aprende y crece junto a otros inversores</p>
         <p className="font-inter text-center text-[#BDE9FF] text-[16px]">Foros Populares</p>
-
         <div className="flex">
           <p className=" flex-1 font-inter text-normal text-[#BDE9FF] text-[14px]">Estrategias de Inversion</p>
           <button className=" w-[85px] h-[24px] text-[#BDE9FF] text-[12px] font-inter bg-[#8BD0EF]/40 px-3 py-1">
@@ -138,8 +138,7 @@ const LandingPage = () => {
             156 posts
           </button>
         </div>
-        <p className=" mt-8 flex-1 font-inter text-normal text-[#BDE9FF] text-[24px]">Lo que dicen nuestros usuarios</p>
-
+        <p className="mt-8 flex-1 font-inter text-normal text-[#BDE9FF] text-[24px]">Lo que dicen nuestros usuarios</p>
         <Card className="  shadow-lg bg-[#8BD0EF]/20 rounded-xl border-[#116682]/20 p-3 border-spacing-4 backdrop-blur-[10px] h-[152px] w-[344px] flex-col justify-start gap-4 inline-flex overflow-hidden group">
           <div className="flex space-y-2 ml-3">
             <img className="h-10 mt-1" src={Ana} alt="ana" />
@@ -151,7 +150,7 @@ const LandingPage = () => {
             </div>
           </div>
           <p className="text-[14px] text-[#BDE9FF] font-inter ml-3">La mejor decision para mis inversiones. Las recomendaciones son precisas y el soporte es excelente </p>
-          <div class="absolute inset-0 border-2 border-transparent group-hover:border-gray-500 transition-all duration-300 animate-pulse"></div>
+          <div className="absolute inset-0 border-2 border-transparent group-hover:border-gray-500 transition-all duration-300 animate-pulse"></div>
         </Card >
         <div className="mt-5">
           <p className="text-[20px] text-[#e3dfff] text-center font-inter">¿Listo para empezar?</p>
@@ -178,8 +177,8 @@ const LandingPage = () => {
         <br />
       </div >
     </main >
-  )
-}
+  );
+};
 
 export default LandingPage;
 

@@ -14,6 +14,7 @@ import Edad from "./components/profile/Edad";
 import Ocupacion from "./components/profile/Ocupacion";
 import ProfileFinancial from "./components/profile/ProfileFinancial.tsx";
 import LandingPage from "./components/profile/LandingPage";
+import Notificaciones from "./components/profile/Notificaciones";
 
 function App() {
   return (
@@ -32,6 +33,8 @@ function App() {
             <Route path="/ocupacion" element={<Ocupacion />} />
             <Route path="/profilefinancial" element={<ProfileFinancial />} />
             <Route path="/landingpage" element={<LandingPage />} />
+            <Route path="/notificaciones" element={<Notificaciones />} />
+
             {/* Rutas no-protegidas */}
             <Route element={<Unprotected />}>
               {/* Ruta principal de autenticación */}
