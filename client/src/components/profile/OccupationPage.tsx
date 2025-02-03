@@ -38,8 +38,8 @@ const OccupationPage = () => {
     e.preventDefault();
     setRequest(true);
 
-    const updatedProfuke: IUpdateProfileData = {...formData, age: +formData.age }
-    const response = apiProtectedRoutes.put('/profile/data', updatedProfuke);
+    const { name, lastname, age, occupation }: IUpdateProfileData = {...formData, age: +formData.age }
+    const response = apiProtectedRoutes.put('/profile/data', { name, lastname, age, occupation });
     
     response
       .then(() => {
