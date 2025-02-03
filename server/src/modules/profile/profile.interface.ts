@@ -14,5 +14,15 @@ export interface SendProfileToModel {
   fuente_ingresos: string;
   ingresos_mensuales: string;
   gastos_mensuales: string;
-  rango_ahorros: string;
+}
+
+export interface RecommendationTypes {
+  tipo: string;
+  assets: string[];
+}
+
+export interface FinancialProfileResults {
+  perfil_riesgo: string;
+  recomendaciones: RecommendationTypes[];
+  tips_ahorro_inversion: string[];
 }

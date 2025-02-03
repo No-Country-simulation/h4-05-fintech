@@ -16,10 +16,6 @@ const successMessage = (message: string): SchemaObject => {
 export const userProfileDataSchema: SchemaObject = {
   type: 'object',
   properties: {
-    id: {
-      type: 'string',
-      example: '669a61d3-5dfc-4cca-9e4b-066124594ea6',
-    },
     name: {
       type: 'string',
       example: 'John',
@@ -32,10 +28,6 @@ export const userProfileDataSchema: SchemaObject = {
       type: 'string',
       example: 'image/669a61d3-5dfc-4cca-9e4b-066124594ea6',
     },
-    financialProfile: {
-      type: 'string',
-      example: 'image/669a61d3-5dfc-4cca-9e4b-066124594ea6',
-    },
     itemsSaved: {
       type: 'array',
       items: {
@@ -43,25 +35,24 @@ export const userProfileDataSchema: SchemaObject = {
         example: ['news', 'url'],
       },
     },
-    updatedAt: {
-      type: 'date',
-      example: new Date(),
+    email: {
+      type: 'string',
+      example: 'johndoe@email.com',
     },
-    user: {
-      type: 'object',
-      properties: {
-        email: {
-          type: 'string',
-          example: 'johndoe@email.com',
-        },
-        createdAt: {
-          type: 'date',
-          example: '2024-12-12 20:37:24',
-        },
-        updatedAt: {
-          type: 'date',
-          example: '2024-12-12 20:56:37',
-        },
+    profile: {
+      type: 'string',
+      example: 'Moderado',
+    },
+    recommendations: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+    },
+    tips: {
+      type: 'array',
+      items: {
+        type: 'string',
       },
     },
   },
