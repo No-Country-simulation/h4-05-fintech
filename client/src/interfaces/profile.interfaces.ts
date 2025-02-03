@@ -5,8 +5,10 @@ export interface IProfileData {
   occupation: string | null
   image: string | null;
   surveyAnswered: boolean;
-  financialProfileResults: string | null;
   itemsSaved: string[];
+  profile: string | null;
+  recommendations: string[] | null;
+  tips: string[] | null;
 };
 
 export interface IUpdateProfileData {

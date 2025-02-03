@@ -43,7 +43,7 @@ const ProfilePage = () => {
             : <img src={profileData.image} className="row-span-3 rounded-full w-[80%] mt-1" />
           }
           <p className="col-span-2 text-lightBlue text-[14px]">{profileData?.name} {profileData?.lastname}</p>
-          {profileData?.financialProfileResults
+          {profileData?.surveyAnswered
             ? <p className="col-span-2 text-lightBlue text-[14px]">Tu perfil inicial</p>
             : <Link className="col-span-2 text-lightBlue text-[14px]" to={'/financial-survey'}>Completar perfil</Link>
           }
@@ -60,8 +60,8 @@ const ProfilePage = () => {
       <Card className="w-full space-y-3 rounded-xl bg-darkBlue px-3 py-5 border-none">
         <h1 className="text-lightBlue font-bold">Perfil de riesgo</h1>
         <div className="flex justify-between">
-          {profileData?.financialProfileResults 
-            ? <p className="px-4 py-1 text-[14px] rounded-xl bg-copper text-black]">{profileData.financialProfileResults}</p> 
+          {profileData?.profile
+            ? <p className="px-4 py-1 text-[14px] rounded-xl bg-copper text-black]">{profileData.profile}</p> 
             : <p className="px-4 py-1 text-[14px] rounded-xl bg-gray-400 text-black]">Indefinido</p>
           }
           <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -74,16 +74,17 @@ const ProfilePage = () => {
       </Card>
       <Card className="w-full rounded-xl bg-darkBlue px-3 py-5 border-none">
         <h1 className="text-lightBlue font-bold mb-5">Recomendaciones</h1>
-        <ul className="space-y-6">
-          <li className="text-lightBlue">
-            <p className="font-medium">Diversifica tu portafolio</p>
-            <p className="text-justify">Considera en invertir en diferentes tipos de activos</p>
-          </li>
-          <li className="text-lightBlue">
-            <p className="font-medium">Protege tus inversiones</p>
-            <p className="text-justify">Mantén un balance entre riesgo y seguridad</p>
-          </li>
-        </ul>
+        <ul className="space-y-6"></ul>
+        {profileData.recommendations?.length 
+          ? profileData.tips?.map((tip, index) => {
+            return (
+              <li key={index} className="text-lightBlue">
+                <p className="text-justify">{tip}</p>
+              </li>
+            )
+          })
+          : <p className="text-justify">No hay recomendaciones</p>
+        }
       </Card>
       <div className="w-full space-y-3">
         <Button

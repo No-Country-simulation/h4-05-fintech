@@ -15,3 +15,14 @@ export interface SendProfileToModel {
   ingresos_mensuales: string;
   gastos_mensuales: string;
 }
+
+export interface RecommendationTypes {
+  tipo: string;
+  assets: string[];
+}
+
+export interface FinancialProfileResults {
+  perfil_riesgo: string;
+  recomendaciones: RecommendationTypes[];
+  tips_ahorro_inversion: string[];
+}
