@@ -50,7 +50,7 @@ const AgePage = () => {
           <p className="text-lightBlue text-center">¿Qué edad tienes?</p>
         </div>
         <Card className="border-none shadow-none">
-          <div className="rounded-lg space-y-2 bg-darkBlue px-2 py-2 mb-3">
+          <div className="rounded-xl space-y-2 bg-darkBlue px-2 py-2 mb-3">
             <Label htmlFor="name"
               className="text-lightBlue"
             >
@@ -64,12 +64,12 @@ const AgePage = () => {
               value={formData.age}
               onChange={handleChange}
               placeholder="Ingresa tu edad"
-              className="bg-customGray text-lightBlue placeholder:text-lightBlue focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
+              className="rounded-xl bg-customGray text-lightBlue placeholder:text-lightBlue border-none"
               required
             />
           </div>
             <Button 
-              className="w-full h-[52px] bg-rusty text-lightBlue text-base font-normal tracking-wide"
+              className="w-full h-[52px] rounded-xl bg-rusty text-lightBlue text-base font-normal tracking-wide"
               onClick={nextQuestion}
             >
               Continuar

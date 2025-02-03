@@ -20,7 +20,12 @@ import { Environment, ErrorMessage } from '../../common/enums';
 
 import config from '../../config';
 import { FinancialProfileDto, UpdateProfileDto } from './dto';
-import { FinancialProfileResults, ICreateProfile, SendProfileToModel } from './profile.interface';
+import {
+  FinancialProfileResults,
+  ICreateProfile,
+  RecommendationTypes,
+  SendProfileToModel,
+} from './profile.interface';
 
 @Injectable()
 export class ProfileService {
@@ -84,12 +89,12 @@ export class ProfileService {
       gastos_mensuales: dto.expenseRatios,
     };
 
-    const results = await this.getPrediction(sendData);
+    const { perfil_riesgo } = await this.getPrediction(sendData);
 
     const userProfileUpdated = Object.assign(userProfileFound, {
       surveyAnswered: false,
       updatedAt: new Date(),
-      financialProfileResults: results.perfil_riesgo,
+      financialProfileResults: perfil_riesgo,
     });
 
     const data: Prisma.UserProfileUpdateInput = { ...userProfileUpdated };
@@ -103,6 +108,10 @@ export class ProfileService {
   }
 
   async getUserProfile(req: UserRequest) {
+    let profile: string | null = null;
+    let recommendations: RecommendationTypes[] | null = null;
+    let tips: string[] | null = null;
+
     const { id: userId } = req.user;
     const userProfileFound = await this.prisma.userProfile.findFirst({
       where: { userId },
@@ -118,22 +127,37 @@ export class ProfileService {
 
     if (!userProfileFound) throw new NotFoundException(ErrorMessage.USER_PROFILE_NOT_FOUND);
 
-    const sendData: SendProfileToModel = {
-      objetivo_financiero: userProfileFound.financialProfileData.financialGoals,
-      horizonte_tiempo: userProfileFound.financialProfileData.investmentTimeframes,
-      conocimiento_inversiones: userProfileFound.financialProfileData.investmentKnowledge,
-      formacion: userProfileFound.financialProfileData.financialEducation,
-      instrumentos_invertidos: userProfileFound.financialProfileData.investmentExperience,
-      reaccion_perdida: userProfileFound.financialProfileData.riskReactions,
-      fuente_ingresos: userProfileFound.financialProfileData.incomeSources,
-      ingresos_mensuales: userProfileFound.financialProfileData.incomeRanges,
-      gastos_mensuales: userProfileFound.financialProfileData.expenseRatios,
-    };
+    const {
+      name,
+      lastname,
+      age,
+      image,
+      occupation,
+      itemsSaved,
+      surveyAnswered,
+      user,
+      financialProfileData,
+    } = userProfileFound;
 
-    const { name, lastname, age, image, occupation, itemsSaved, surveyAnswered, user } =
-      userProfileFound;
-    const { perfil_riesgo, recomendaciones, tips_ahorro_inversion } =
-      await this.getPrediction(sendData);
+    if (financialProfileData) {
+      const sendData: SendProfileToModel = {
+        objetivo_financiero: financialProfileData.financialGoals,
+        horizonte_tiempo: financialProfileData.investmentTimeframes,
+        conocimiento_inversiones: financialProfileData.investmentKnowledge,
+        formacion: financialProfileData.financialEducation,
+        instrumentos_invertidos: financialProfileData.investmentExperience,
+        reaccion_perdida: financialProfileData.riskReactions,
+        fuente_ingresos: financialProfileData.incomeSources,
+        ingresos_mensuales: financialProfileData.incomeRanges,
+        gastos_mensuales: financialProfileData.expenseRatios,
+      };
+      const { perfil_riesgo, recomendaciones, tips_ahorro_inversion } =
+        await this.getPrediction(sendData);
+
+      profile = perfil_riesgo;
+      recommendations = recomendaciones;
+      tips = tips_ahorro_inversion;
+    }
 
     const response = {
       name,
@@ -144,17 +168,18 @@ export class ProfileService {
       itemsSaved,
       email: user.email,
       surveyAnswered,
-      profile: perfil_riesgo,
-      recommendations: recomendaciones,
-      tips: tips_ahorro_inversion,
+      profile,
+      recommendations,
+      tips,
     };
 
     return response;
   }
 
   async updateUserProfile(req: UserRequest, body: UpdateProfileDto) {
+    const { id: userId } = req.user;
     const userProfileFound = await this.prisma.userProfile.findFirst({
-      where: { userId: req.user.id },
+      where: { userId },
     });
 
     if (body.image) {

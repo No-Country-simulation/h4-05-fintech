@@ -44,6 +44,8 @@ model UserProfile {
   userId                    String              @unique @map("user_id")
   name                      String?
   lastname                  String?
+  age                       Int?
+  occupation                String?
   image                     String?
   surveyAnswered            Boolean             @default(false) @map("survey_answered")
   financialProfileResults   String?             @map("financial_profile")
@@ -56,8 +58,8 @@ model UserProfile {
 
 model FinancialProfile {
   id                              String                @id @default(uuid())
-  userProfile                     UserProfile?          @relation(fields: [userProfileId], references: [id])
-  userProfileId                   String?               @unique @map("user_profile_id")
+  userProfile                     UserProfile           @relation(fields: [userProfileId], references: [id])
+  userProfileId                   String                @unique @map("user_profile_id")
   // PREGUNTAS PRIORITARIAS
   financialGoals                  String                @map("financial_goals")
   investmentKnowledge             String                @map("investment_knowledge")
@@ -70,8 +72,6 @@ model FinancialProfile {
   expenseRatios                   String                @map("expense_ratios")
   // PREGUNTAS SECUNDARIAS
   investmentPurpose               String?               @map("investment_purpose")
-  age                             Int?
-  occupation                      String?
   savingsPlans                    String?               @map("savings_plans")
   savingsRanges                   String?               @map("savings_ranges")
   // monthlyContribution          String?               @map("monthly_contribution")
@@ -85,4 +85,45 @@ model FinancialData {
   expenses            Int               @default(0)
   targetPeriod        DateTime          @map("target_period") @default(now())
   financialTarget     String?           @map("financial_target")
+}
+
+model Assets {
+  id                  String            @id @default(uuid())
+  name                String
+  category            AssetsCategory
+  date                DateTime
+  open                Float
+  close               Float
+  high                Float
+  low                 Float
+  volume              Int
+  dividends           Float?
+  stokesSplit         Float?            @map("stokes_split")
+  capitalGains        Float?            @map("capital_gains")
+  dailyReturn         Float?            @map("daily_return")
+  volatility          String?
+  timestamp           DateTime?
+  portfolio           Portfolio?
+}
+
+model Portfolio {
+  id                    String            @id @default(uuid())  
+  assets                Assets            @relation(fields: [assetsId], references: [id])
+  assetsId              String            @unique @map("assets_name")
+  category              AssetsCategory
+  currentPrice          Float             @map("current_price")
+  anualReturn           Float             @map("anual_return")
+  anualVolatility       Float             @map("anual_volatility")
+  sharpRatio            Float             @map("sharp_ratio")
+  maxDrawdown           Float             @map("max_drawdown")
+  marketCap             Float             @map("market_cap")
+  beta                  Float
+  sector                String       
+}
+
+enum AssetsCategory {
+  CDEARS // Los cedear no tienen capital gains
+  ACCIONES
+  BONOS // Bonos es el único que tiene timestamp, no tiene volatitity ni capitalgains, ni devidendos, stokesSplit
+  ETFS
 }

@@ -20,7 +20,6 @@ input:-webkit-autofill:active {
   scrollbar-width: none;  /* Para Firefox */
 }
 
-
 .progressBar {
   appearance: none;
   height: 5px;
@@ -45,4 +44,23 @@ input:-webkit-autofill:active {
     border-top-left-radius: 100px;
     border-bottom-left-radius: 100px;
   }
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  appearance: none; /* Oculta las flechas predeterminadas */
+  background: #64676c; /* Color de fondo de las flechas */
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+
+}
+
+input[type="number"]::-webkit-inner-spin-button:hover {
+  background: #4b5563;
+}
+
+/* Para Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }

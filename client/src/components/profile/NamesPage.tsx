@@ -50,11 +50,11 @@ const NamesPage = () => {
             className="w-[341px] h-[49px]"
           />
         </div>
-        <div className=" justify-end grid-rows-12">
+        <div className="justify-end grid-rows-12">
           <p className="text-lightBlue text-center">¿Quién eres?</p>
         </div>
-        <Card className=" border-none shadow-none">
-          <div className="rounded-lg space-y-2 bg-[#11668233] px-2 py-2 mb-3">
+        <Card className="border-none shadow-none">
+          <div className="rounded-xl space-y-2 bg-[#11668233] px-2 py-2 mb-3">
             <Label htmlFor="name"
               className="text-lightBlue"
             >
@@ -67,11 +67,11 @@ const NamesPage = () => {
               value={formData.name}
               onChange={handleChange}
               placeholder="Ingresa tu nombre"
-              className="bg-customGray text-lightBlue placeholder:text-lightBlue focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
+              className="rounded-xl bg-customGray text-lightBlue placeholder:text-lightBlue focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
               required
             />
           </div>
-          <div className="rounded-lg space-y-2 bg-[#11668233] mb-3 px-2 py-2">
+          <div className="rounded-xl space-y-2 bg-[#11668233] mb-3 px-2 py-2">
             <Label htmlFor="apellido"
               className="text-[#8BD0EF]"
             >
@@ -84,12 +84,12 @@ const NamesPage = () => {
               value={formData.lastname!}
               onChange={handleChange}
               placeholder="Ingresa tu apellido"
-              className="bg-customGray text-lightBlue placeholder:text-lightBlue focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
+              className="rounded-xl bg-customGray text-lightBlue placeholder:text-lightBlue focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
               required
             />
           </div>
           <Button 
-            className="w-full h-[52px] bg-rusty text-lightBlue text-base font-normal tracking-wide"
+            className="w-full rounded-xl h-[52px] bg-rusty text-lightBlue text-base font-normal tracking-wide"
             onClick={nextQuestion}
           >
             Siguiente

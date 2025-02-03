@@ -34,9 +34,14 @@ const Question1 = () => {
   return (
     <main>
       <header className="py-3 -mb-4">
-        <div className="flex justify-between items-center">
-          <label className="text-lightBlue" htmlFor="progress-bar">Cuestionario</label>
-          <progress className="progressBar" value={0} max={10}>{0}%</progress>
+        <div className="flex justify-between items-center space-x-3">
+          <label className="text-lightBlue flex justify-center items-center space-x-3">
+            <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+            </svg>
+            <p className="text-lightBlue">Cuestionario</p>
+          </label>
+          <progress className="progressBar" value={1} max={10}>{1}%</progress>
         </div>
       </header>
       <section className="min-h-screen flex flex-col items-center justify-center">
@@ -69,7 +74,7 @@ const Question1 = () => {
             </div>
             <div>
               <Button
-                className="w-full h-[52px] bg-rusty text-lightBlue text-base font-normal tracking-wide"
+                className="w-full h-[52px] rounded-xl bg-rusty text-lightBlue text-base font-normal tracking-wide"
                 onClick={handleNextQuestion}
                 disabled={!formData?.financialGoals ? true : false }
               >

@@ -90,7 +90,7 @@ const RegisteredPage = () => {
             <div>
               <Button
                 data-cy="verification-button"
-                className="w-full h-[52px] bg-darkBlue text-lightBlue text-base font-normal tracking-wide"
+                className="w-full h-[52px] rounded-xl bg-darkBlue text-lightBlue text-base font-normal tracking-wide"
                 onClick={handleVerificationResend}
               >
                 Reenviar confirmación

@@ -344,7 +344,6 @@ describe('Profile', () => {
         expect(header['content-type']).toContain('application/json');
         expect(body.message).toContain('User profile successfully updated');
       } catch (error) {
-        console.log(error);
         fail(`Validation should not throw an error for valid data: ${error}`);
       }
     });

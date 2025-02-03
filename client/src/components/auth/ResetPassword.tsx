@@ -132,7 +132,7 @@ const ResetPasswordPage = () => {
                       </Button>
                     : <Button 
                         type="submit" 
-                        className="w-full h-[52px] bg-rusty text-lightBlue text-base font-normal tracking-wide"
+                        className="w-full h-[52px] rounded-xl bg-rusty text-lightBlue text-base font-normal tracking-wide"
                       >
                         Cambiar contraseña
                       </Button>

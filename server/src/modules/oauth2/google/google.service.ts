@@ -3,7 +3,6 @@ import crypto from 'node:crypto';
 import { Injectable, Inject, BadRequestException, NotFoundException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigType } from '@nestjs/config';
-import { User } from '@prisma/client';
 import { firstValueFrom } from 'rxjs';
 import { Response } from 'express';
 
@@ -127,13 +126,11 @@ export class GoogleAuthService {
       family_name: lastname,
     } = data;
 
-    let user: User;
-
-    user = await this.userService.getUser({ email });
+    const user = await this.userService.getUser({ email });
 
     if (!user) {
-      user = await this.userService.createUser({ email, verified });
-      await this.profileService.createUserProfile(user.id, { image, name, lastname });
+      const { id } = await this.userService.createUser({ email, verified });
+      await this.profileService.createUserProfile(id, { image, name, lastname });
     }
 
     return user;

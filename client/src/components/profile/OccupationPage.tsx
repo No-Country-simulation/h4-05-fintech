@@ -4,11 +4,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Card } from "../ui/card";
 import { Label } from "@/components/ui/label";
 import { Button } from "../ui/button";
-import Select from "../ui/select";
 import { IUpdateProfileData } from "@/interfaces/profile.interfaces";
 import useProtectedRoutes from "@/hooks/useInterceptors";
 import { AxiosError } from "axios";
 import { IApiError } from "@/api/api-errors";
+import { Input } from "../ui/input";
 
 const OccupationPage = () => {
   const hasFetched = useRef(false);
@@ -30,7 +30,7 @@ const OccupationPage = () => {
     }
   }, [])
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -52,13 +52,6 @@ const OccupationPage = () => {
       })
   }
 
-  const options = [
-    { value: '', label: 'Seleccionar', disabled: true },
-    { value: 'Arquitecto', label: 'Arquitecto' },
-    { value: 'Ingeniero', label: 'Ingeniero' },
-    { value: 'Abogado', label: 'Abogado' },
-  ]
-
   return (
     <main className="min-h-screen flex flex-col items-center justify-center">
       <div className="w-full max-w-md space-y-6">
@@ -73,23 +66,24 @@ const OccupationPage = () => {
           <p className="text-lightBlue text-center">Cual es tu ocupación?</p>
         </div>
         <Card className="border-none shadow-none">
-          <div className="rounded-lg space-y-2 bg-darkBlue px-2 py-2 mb-3">
+          <div className="rounded-xl space-y-2 bg-darkBlue px-2 py-2 mb-3">
             <Label htmlFor="occupation"
               className="text-lightBlue"
             >
               Ocupación:
             </Label>
-            <Select
+            <Input
               name='occupation'
-              options={options}
+              type="text"
               onChange={handleChange}
               value={formData.occupation!}
-              className="w-full h-[52px] bg-darkBlue text-lightBlue text-base font-normal tracking-wide px-3"
+              placeholder="Escribe tu ocupaciòn"
+              className="w-full h-[52px] rounded-xl bg-darkBlue text-lightBlue text-base font-normal tracking-wide px-3"
             />
           </div>
           <Button
             onClick={finishProfile}
-            className="w-full h-[52px] bg-rusty text-lightBlue text-base font-normal tracking-wide"
+            className="w-full h-[52px] rounded-xl bg-rusty text-lightBlue text-base font-normal tracking-wide"
           >
             Continuar
           </Button>

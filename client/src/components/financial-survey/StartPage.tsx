@@ -68,13 +68,13 @@ const FinancialSurveyStart = () => {
             </div>
             <div className="w-full space-y-4">
               <Button 
-                className="w-full h-[52px] bg-rusty text-lightBlue text-base font-normal tracking-wide"
+                className="w-full h-[52px] rounded-xl bg-rusty text-lightBlue text-base font-normal tracking-wide"
                 onClick={handleSkipSurvey}
               >
                 Saltar por ahora
               </Button>
               <Button
-                className="w-full h-[52px] bg-rusty text-lightBlue text-base font-normal tracking-wide"
+                className="w-full rounded-xl h-[52px] bg-rusty text-lightBlue text-base font-normal tracking-wide"
                 onClick={handleStartSurvey}
               >
                 Completar

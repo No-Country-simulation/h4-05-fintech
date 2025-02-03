@@ -1,4 +1,4 @@
-import { IsOptional, IsString, MaxLength, Matches, IsArray } from 'class-validator';
+import { IsOptional, IsString, MaxLength, Matches, IsArray, IsInt } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateProfileDto {
@@ -31,6 +31,26 @@ export class UpdateProfileDto {
     message: 'the lastname should not contain any number or special character',
   })
   lastname: string;
+
+  @ApiProperty({
+    type: Number,
+    maxLength: 20,
+    example: 18,
+    required: false,
+  })
+  @IsOptional()
+  @IsInt()
+  age: number;
+
+  @ApiProperty({
+    type: String,
+    maxLength: 20,
+    example: 'Arquitecto',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  occupation: string;
 
   @ApiProperty({
     type: String,
