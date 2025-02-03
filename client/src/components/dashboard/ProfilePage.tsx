@@ -83,7 +83,7 @@ const ProfilePage = () => {
               </li>
             )
           })
-          : <p className="text-justify">No hay recomendaciones</p>
+          : <p className="text-lightBlue text-justify">No hay recomendaciones</p>
         }
       </Card>
       <div className="w-full space-y-3">
