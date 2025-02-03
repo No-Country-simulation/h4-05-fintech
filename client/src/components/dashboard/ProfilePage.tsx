@@ -6,7 +6,7 @@ import { Card } from "../ui/card";
 import DefaultProfileImage from "../ui/default-profile-image";
 
 const ProfilePage = () => {
-  const { profileData } = useOutletContext<{ profileData: IProfileDataForDashboard}>();
+  const { profileData } = useOutletContext<{ profileData: IProfileDataForDashboard }>();
 
   const navigate = useNavigate();
 

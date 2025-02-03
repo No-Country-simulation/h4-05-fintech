@@ -17,8 +17,10 @@ export interface IProfileDataForDashboard extends IProfileData {
 export interface IUpdateProfileData {
   name: string;
   lastname: string;
+  image: string ;
   age: number
   occupation: string
+  itemsSaved: string[];
 };
 
 export interface IFinancialSurvey {      

@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import DashboardFooter from "../ui/dashboard-footer"
 import { Outlet, useNavigate } from "react-router";
 import useProtectedRoutes from "@/hooks/useInterceptors";
-import { IProfileDataForDashboard } from "@/interfaces/profile.interfaces";
+import { IProfileData } from "@/interfaces/profile.interfaces";
 
 const DashboardLayout = () => {
-  const [profileData, setProfileData] = useState<IProfileDataForDashboard | null>(null);
+  const [profileData, setProfileData] = useState<IProfileData | null>(null);
   const [loadingDashboard, setLoadingDashboard] = useState<boolean>(true);
 
   const hasFetched = useRef(false);
@@ -17,7 +17,7 @@ const DashboardLayout = () => {
     if (!hasFetched.current) {
       hasFetched.current = true;
 
-      const response = apiProtectedRoutes.get<IProfileDataForDashboard>('/profile/data');
+      const response = apiProtectedRoutes.get<IProfileData>('/profile/data');
       const localData = localStorage.getItem('skipped') as string;
       const skipped = JSON.parse(localData) as { time: number };
     
