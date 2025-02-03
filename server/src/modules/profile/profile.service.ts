@@ -177,8 +177,9 @@ export class ProfileService {
   }
 
   async updateUserProfile(req: UserRequest, body: UpdateProfileDto) {
+    const { id: userId } = req.user;
     const userProfileFound = await this.prisma.userProfile.findFirst({
-      where: { userId: req.user.id },
+      where: { userId },
     });
 
     if (body.image) {
