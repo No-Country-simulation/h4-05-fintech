@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "../ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,18 +8,25 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 
-const Nombre = () => {
+const Edad = () => {
   const [formData, setFormData] = useState({
     edad: "",
   });
 
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    const storedFormData = localStorage.getItem("formData");
+    if (storedFormData) {
+      setFormData(JSON.parse(storedFormData));
+    }
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(formData);
     try {
-      const response = await axios.post("http://localhost:4000", formData);
+      const response = await axios.post("http://localhost:3000", formData);
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -28,7 +35,9 @@ const Nombre = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError(null);
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const newFormData = { ...formData, [e.target.name]: e.target.value };
+    setFormData(newFormData);
+    localStorage.setItem("formData", JSON.stringify(newFormData));
   };
 
   return (
@@ -64,7 +73,10 @@ const Nombre = () => {
               />
             </div>
             <Link to="/ocupacion" >
-              <Button type="submit" className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide">
+              <Button
+                type="submit"
+                className="w-full h-[52px] bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide"
+              >
                 Continuar
               </Button>
             </Link>
@@ -75,4 +87,4 @@ const Nombre = () => {
   )
 }
 
-export default Nombre;
+export default Edad;
