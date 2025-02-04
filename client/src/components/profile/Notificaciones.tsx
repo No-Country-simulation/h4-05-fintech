@@ -1,6 +1,6 @@
 import { Card, CardDescription, CardTitle } from "../ui/card";
 import Interrogacion from "../../assets/interrogacion.svg"
-import Relevante from "../../assets/relevante.svg"
+import Relevante from "../../assets/relevantes.svg"
 import Aporte from "../../assets/aporte.svg"
 import Rendimiento from "../../assets/rendimiento.svg"
 
@@ -12,7 +12,7 @@ const Notificaciones = () => {
         <div className="grid-rows-12">
           <p className="text-[20px] text-[#BDE9FF] font-roboto">Notificaciones</p>
         </div>
-        <Card className=" border-gray-600 shadow-none font-roboto text-[#BDE9FF] h-[68px] w-[336] ">
+        <Card className="border-[#004D64]/20 border-b-[#BDE9FF] rounded-[8px] shadow-none font-roboto text-[#BDE9FF] h-[68px] w-[336] bg-[#004D64]/20 ">
           <div className="flex mt-2">
             <div className="flex-1/3 ml-3 mt-2">
               <img src={Interrogacion} alt="precio" className="w-[32px] h-[31px]" />
@@ -28,7 +28,7 @@ const Notificaciones = () => {
             </div>
           </div>
         </Card>
-        <Card className=" border-gray-600 shadow-none font-roboto text-[#BDE9FF] h-[68px] w-[336] ">
+        <Card className="border-[#004D64]/20 border-b-[#BDE9FF] rounded-[8px] shadow-none font-roboto text-[#BDE9FF] h-[68px] w-[336] bg-[#004D64]/20">
           <div className="flex mt-2">
             <div className="flex-1/3 ml-3 mt-2">
               <img src={Relevante} alt="releante" className="w-[32px] h-[32px]" />
@@ -43,7 +43,7 @@ const Notificaciones = () => {
             </div>
           </div>
         </Card>
-        <Card className=" border-gray-600 shadow-none font-roboto text-[#BDE9FF] h-[68px] w-[336] ">
+        <Card className=" border-[#004D64]/20 border-b-[#BDE9FF] rounded-[8px] shadow-none font-roboto text-[#BDE9FF] h-[68px] w-[336] bg-[#004D64]/20">
           <div className="flex mt-2">
             <div className="flex-1/3 ml-3 mt-2">
               <img src={Aporte} alt="releante" className="w-[32px] h-[32px]" />
@@ -58,7 +58,7 @@ const Notificaciones = () => {
             </div>
           </div>
         </Card>
-        <Card className=" border-gray-600 shadow-none font-roboto text-[#BDE9FF] h-[68px] w-[336] ">
+        <Card className=" border-[#004D64]/20 border-b-[#BDE9FF] rounded-[8px] shadow-none font-roboto text-[#BDE9FF] h-[68px] w-[336] bg-[#004D64]/20">
           <div className="flex mt-2">
             <div className="flex-1/3 ml-3 mt-2">
               <img src={Rendimiento} alt="rendimiento" className="w-[32px] h-[32px]" />
