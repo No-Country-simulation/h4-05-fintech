@@ -58,8 +58,8 @@ model UserProfile {
 
 model FinancialProfile {
   id                              String                @id @default(uuid())
-  userProfile                     UserProfile           @relation(fields: [userProfileId], references: [id])
-  userProfileId                   String                @unique @map("user_profile_id")
+  userProfile                     UserProfile?          @relation(fields: [userProfileId], references: [id])
+  userProfileId                   String?               @unique @map("user_profile_id")
   // PREGUNTAS PRIORITARIAS
   financialGoals                  String                @map("financial_goals")
   investmentKnowledge             String                @map("investment_knowledge")
