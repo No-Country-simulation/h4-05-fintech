@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: #BDE9FF;
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* Para Chrome, Safari y Edge */
+}
+
+.scrollbar-hidden {
+  -ms-overflow-style: none;  /* Para IE y Edge */
+  scrollbar-width: none;  /* Para Firefox */
+}
+
+.progressBar {
+  appearance: none;
+  height: 5px;
+  border-radius: 100px;
+  width: 100%;
+      
+  /* Chrome and Safari */
+  &::-webkit-progress-bar {
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 100px;
+  }
+  
+  &::-webkit-progress-value {
+    background-color: orangered;
+    border-top-left-radius: 100px;
+    border-bottom-left-radius: 100px;
+  }
+  
+    /* Firefox */
+  &::-moz-progress-bar {
+    background-color: rgba(0, 0, 0, 0.8);
+    border-top-left-radius: 100px;
+    border-bottom-left-radius: 100px;
+  }
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  appearance: none; /* Oculta las flechas predeterminadas */
+  background: #64676c; /* Color de fondo de las flechas */
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+
+}
+
+input[type="number"]::-webkit-inner-spin-button:hover {
+  background: #4b5563;
+}
+
+/* Para Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}

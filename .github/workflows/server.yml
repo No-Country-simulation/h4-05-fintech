@@ -14,6 +14,22 @@ on:
 jobs:
   Testing:
     runs-on: ubuntu-20.04
+
+    services:
+      postgres:
+        image: postgres:15-alpine3.20
+        env:
+          POSTGRES_USER: 'iupi-fintech-test'
+          POSTGRES_PASSWORD: '1cf4eb8f04a84637'
+          POSTGRES_DB: 'iupi-fintech-test-db'
+        ports:
+          - 5432:5432
+        options: >- 
+          --health-cmd pg_isready 
+          --health-interval 10s 
+          --health-timeout 5s 
+          --health-retries 5
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,3 +40,29 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node: 18
+    
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./server
+      
+      - name: Lint
+        run: npm run lint
+        working-directory: ./server
+
+      - name: Tests end-to-end
+        run: npm run test:e2e
+        env:
+          FRONTEND_URL: 'http://localhost:3000'
+          DATABASE_URL: 'postgres://iupi-fintech-test:1cf4eb8f04a84637@localhost:5432/iupi-fintech-test-db'
+        working-directory: ./server
+
+      # - name: Coverage Tests
+      #   run: npm run test:cov
+      #   env:
+      #     DATABASE_URL: 'postgres://iupi-fintech-test:1cf4eb8f04a84637@localhost:5432/iupi-fintech-test-db'
+      #   working-directory: ./server
+
+      # - name: Coveralls
+      #   uses: coverallsapp/github-action@master
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}

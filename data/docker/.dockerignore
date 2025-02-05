@@ -1,0 +1,5 @@
+*
+!/requirements.txt
+!/api/models_app.py
+!/api/recommendation.py
+!/api/modelo_riesgo.pkl
