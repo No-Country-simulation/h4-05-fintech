@@ -1,85 +1,117 @@
-import { Button } from "@tremor/react";
-import { Card } from "../ui/card";
-import HistoryGraph from "../ui/line-chart"
-
-const chartData = [
-  {
-    date: 'Ene',
-    Ahorro: 10,
-    Objetivo: 120
-  },
-  {
-    date: 'Feb',
-    Ahorro: 100,
-    Objetivo: 100
-  },
-  {
-    date: 'Mar',
-    Ahorro: 120,
-    Objetivo: 50
-  },
-  {
-    date: 'Abr',
-    Ahorro: 50,
-    Objetivo: 60
-  },
-  {
-    date: 'May',
-    Ahorro: 200,
-    Objetivo: 300
-  },
-  {
-    date: 'Jun',
-    Ahorro: 100,
-    Objetivo: 175
-  },
-];
+import { Button, Card } from "@tremor/react";
+import { Input } from "../ui/input";
+import { useState } from "react";
+import { Modal } from "../ui/modal";
 
 const SharesPage = () => {
+  const [_searchItem, setSearchItem] = useState<string>("")
+  const [showDescriptionModal, setShowDescriptionModal] = useState<boolean>(false);
+  const [showRiskModal, setShowRiskModal] = useState<boolean>(false);
+  const [showRequirementsModal, setShowRequirementsModal] = useState<boolean>(false);
+
+  const handleSearchItem = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setSearchItem(e.target.value);
+  }
+
+  const handleShowDescriptionModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setShowDescriptionModal(true);
+  }
+
+  const handleShowRiskModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setShowRiskModal(true);
+  }
+
+  const handleShowRequirementsModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setShowRequirementsModal(true);
+  }
+
   return (
-    <div className="flex flex-col justify-start space-y-4 lg:max-w-md row-span-12 mb-28">
-      <Card className="w-full rounded-xl bg-[rgba(143,82,55,0.63)] text-[rgb(255,195,169)] p-3 border-none mb-3">
-        <p className="font-semibold text-center">Ahorros disponibles</p>
-        <p className="font-bold text-[24px]">0%</p>
-      </Card>
-      <div className="flex space-x-2 justify-center items-center mb-3">
-        <Card className="w-full rounded-xl bg-[rgba(143,82,55,0.63)] text-[rgb(255,195,169)] p-3 border-none">
-          <div className="flex justify-start items-center space-x-3">
-            <p className="font-semibold">Acciones</p>
+    <>
+      <div className="flex flex-col justify-start space-y-4 lg:max-w-md row-span-12 mb-28">
+        <Input
+          id="search"
+          onChange={handleSearchItem}
+          placeholder="Buscar acción"
+          isSearchItem={true}
+          className="rounded-xl bg-customGray text-lightBlue placeholder:text-lightBlue focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:ring-offset-0 border-none"
+        />
+        <Card className="w-full flex flex-col justify-center items-start space-y-5 bg-darkBlue font-semibold text-lightBlue">
+          <h1>Información detallada</h1>
+          <div className="flex flex-col space-y-3 justify-center items-start">
+            <Button 
+              className="inline-flex justify-center items-center bg-transparent focus:bg-transparent text-lightBlue border-none -mx-4"
+              onClick={handleShowDescriptionModal}
+            >
+              <p className="font-semibold">Descripción</p>
+            </Button>
+            <Button 
+              className="inline-flex justify-center items-center bg-transparent focus:bg-transparent text-lightBlue border-none -mx-4"
+              onClick={handleShowRiskModal}
+            >
+              <p className="font-semibold">Riesgos asociados</p>
+            </Button>
+            <Button 
+              className="inline-flex justify-center items-center bg-transparent focus:bg-transparent text-lightBlue border-none -mx-4"
+              onClick={handleShowRequirementsModal}
+            >
+              <p className="font-semibold">Requisitos para invertir</p>
+            </Button>
+            <Button className="inline-flex justify-center items-center bg-transparent text-lightBlue border-none -mx-4">
+              <p className="font-semibold">Recomendaciones</p>
+            </Button>
           </div>
-          <p className="font-semibold text-[24px]">0%</p>
-        </Card>
-        <Card className="w-full rounded-xl bg-[rgba(17,102,130,0.2)] text-[#BDE9FF] p-3 border-none">
-          <div className="flex justify-start items-center space-x-3">
-            <p className="font-semibold">Bonos</p>
-          </div>
-          <p className="font-semibold text-[24px]">0%</p>
         </Card>
       </div>
-      <div className="flex space-x-2 justify-center items-center">
-        <Card className="w-full rounded-xl bg-[rgba(17,102,130,0.2)] text-[#BDE9FF] p-3 border-none">
-          <div className="flex justify-start items-center space-x-3">
-            <p className="font-semibold">Cedears</p>
-          </div>
-          <p className="font-semibold text-[24px]">0%</p>
-        </Card>
-        <Card className="w-full rounded-xl bg-[rgba(17,102,130,0.2)] text-[#BDE9FF] p-3 border-none">
-          <div className="flex justify-start items-center space-x-3">
-            <p className="font-semibold">ETFs</p>
-          </div>
-          <p className="font-semibold text-[24px]">0%</p>
-        </Card>
-      </div>
-      <HistoryGraph
-        categories={['Objetivo', 'Ahorro']}
-        colors={['sky-200', 'orange']}
-        chartData={chartData} 
-        className="flex flex-col justify-center items-center h-60 -ml-4" 
-      />
-      <Button className="w-full px-4 py-3 rounded-xl border-none bg-[#F9731633] text-[#BDE9FF] text-base font-normal tracking-wide">
-        Depositar
-      </Button>
-    </div>
+
+      <Modal className="flex justify-center items-end" showModal={showDescriptionModal} onCloseModal={() => setShowDescriptionModal(false)}>
+        <div className="w-[350px] bg-darkBlue rounded-xl flex flex-col justify-start space-y-4 lg:max-w-md row-span-12 px-4 py-6">
+          <h1 className="text-lightBlue text-center font-semibold">Portafolio de inversión</h1>
+          <h1 className="text-lightBlue font-semibold">Información detallada</h1>
+          <ul className="text-lightBlue text-justify space-y-2 ml-4 list-disc">
+            <li>
+              Las acciones representan una parte del capital social de una empresa. Al comprar acciones, te conviertes en accionista y tienes derecho a una parte de las ganancias y activos de la empresa. El valor de las acciones puede subir o bajar según la situación de la empresa y las condiciones del mercado.
+            </li>
+            <li>
+              Ejemplo: Comprar acciones de una empresa tecnológica como Apple te convierte en accionista de esa empresa. Si Apple tiene éxito y sus acciones suben de valor, tus acciones también aumentarán de valor.
+            </li>
+          </ul>
+        </div>
+      </Modal>
+
+      <Modal className="flex justify-center items-end" showModal={showRiskModal} onCloseModal={() => setShowRiskModal(false)}>
+        <div className="w-[350px] bg-darkBlue rounded-xl flex flex-col justify-start space-y-4 lg:max-w-md row-span-12 px-4 py-6">
+          <h1 className="text-lightBlue text-center font-semibold">Riesgos asociados</h1>
+          <h1 className="text-lightBlue font-semibold">Información detallada</h1>
+          <ul className="text-lightBlue text-justify space-y-2 ml-4 list-disc">
+            <li>
+              Nivel de riesgo: Las acciones se consideran una inversión de riesgo moderado a alto.
+            </li>
+            <li>
+              Consideraciones: El precio de las acciones puede ser volátil y puedes perder parte o la totalidad de tu inversión. Sin embargo, a largo plazo, las acciones también tienen el potencial de ofrecer mayores rendimientos que otras inversiones más conservadoras.
+            </li>
+          </ul>
+        </div>
+      </Modal>
+
+      <Modal className="flex justify-center items-end" showModal={showRequirementsModal} onCloseModal={() => setShowRequirementsModal(false)}>
+        <div className="w-[350px] bg-darkBlue rounded-xl flex flex-col justify-start space-y-4 lg:max-w-md row-span-12 px-4 py-6">
+          <h1 className="text-lightBlue text-center font-semibold">Requisitos para invertir</h1>
+          <h1 className="text-lightBlue font-semibold">Información detallada</h1>
+          <ul className="text-lightBlue text-justify space-y-2 ml-4 list-disc">
+            <li>
+              Condiciones: Necesitas una cuenta en un bróker o una sociedad de bolsa habilitada para operar en el mercado de valores.
+            </li>
+            <li>
+              Cantidades mínimas: La cantidad mínima para invertir en acciones varía según el bróker y la acción específica. Algunas acciones pueden ser muy accesibles, mientras que otras requieren una inversión mayor.
+            </li>
+          </ul>
+        </div>
+      </Modal>
+    </>
   )
 }
 

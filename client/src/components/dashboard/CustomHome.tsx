@@ -86,7 +86,7 @@ const CustomHome = () => {
               <p className="col-span-2 text-lightBlue text-[14px]">Podrías ahorrar 15% más este mes</p>
             </div>
           </Card>
-          <Card className="bg-customGray p-3 border-none rounded-xl">
+          <Card className="bg-darkBlue p-3 border-none rounded-xl">
             <div className="grid grid-flow-col grid-rows-3 pt-3 -mb-3">
               <div className="row-span-3 size-9 mt-1 ">
                 <svg className="bg-white rounded-full p-2" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

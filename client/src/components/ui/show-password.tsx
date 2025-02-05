@@ -1,7 +1,7 @@
 import { MouseEventHandler } from "react";
 
 interface PasswordViewProps {
-  className: string;
+  className?: string;
   showPassword: boolean;
   onClick: MouseEventHandler<HTMLSpanElement>;
 }

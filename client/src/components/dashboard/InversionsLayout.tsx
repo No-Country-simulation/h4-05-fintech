@@ -22,8 +22,9 @@ const InversionsLayout = () => {
           <div className="inline-flex space-x-3 justify-center">
             <NavLink to={'/dashboard/inversions/savings'} className={classNameFunctionNavLink}>Ahorro</NavLink>
             <NavLink to={'/dashboard/inversions/shares'} className={classNameFunctionNavLink}>Acciones</NavLink>
-            <NavLink to={'/dashboard/inversions/etfs'} className={classNameFunctionNavLink}>ETFs</NavLink>
             <NavLink to={'/dashboard/inversions/cdears'} className={classNameFunctionNavLink}>Cdears</NavLink>
+            <NavLink to={'/dashboard/inversions/bonuses'} className={classNameFunctionNavLink}>Bonos</NavLink>
+            <NavLink to={'/dashboard/inversions/etfs'} className={classNameFunctionNavLink}>ETFs</NavLink>
           </div>
         </div>
         <div>

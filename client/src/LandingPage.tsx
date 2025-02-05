@@ -49,7 +49,7 @@ const LandingPage = () => {
           className="px-4 py-2 w-full h-[52px] rounded-xl shadow-xl placeholder-opacity-85 bg-rusty text-lightBlue text-base font-openSans tracking-wide"
           onClick={toRegister}
         >
-          Unete a iUPi
+          Únete a iUPi
         </Button>
         <div className="flex items-center justify-items-center">
           <p className="text-[16px] text-lightBlue text-center ml-20 font-poppins">Tu perfil, tus inversiones.</p>

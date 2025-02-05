@@ -1,16 +1,18 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import ShowPassword from "./show-password";
+import SearchItem from "./search-item";
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   asChild?: boolean;
   label?: boolean;
   isPassword?: boolean;
+  isSearchItem?: boolean;
   type?: React.HTMLInputTypeAttribute
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, isPassword, ...props }, ref) => {
+  ({ className, type, isPassword, isSearchItem, ...props }, ref) => {
     const [showPassword, setShowPassword] = React.useState<boolean>(false)
 
     const handlePasswordView = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -31,7 +33,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           {...props}
         />
-        {isPassword && <ShowPassword showPassword={showPassword} onClick={handlePasswordView} className="absolute right-3 h-6 w-6 text-[#8BD0EF]" />}
+        {isPassword && <ShowPassword showPassword={showPassword} onClick={handlePasswordView} className="absolute right-3 h-6 w-6 text-lightBlue" />}
+        {isSearchItem && <SearchItem isSearchItem={isSearchItem} className="absolute right-11 h-6 w-6 text-lightBlue" />}
       </div>
     )
   }
