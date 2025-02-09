@@ -45,8 +45,8 @@
 <div align="center">
   <p style="color: #007bff; font-weight: bold; font-size: 24px;">
   <!-- Imagen destacada o representativa del proyecto -->
-  <p align="center">
-    <img src="https://github.com/No-Country-simulation/h4-05-fintech/blob/ee3d416d29ad343a50605e62f852adf61538d726/img/logo-iupi.png" />
+  <!--<p align="center">
+    <img src="https://github.com/No-Country-simulation/h4-05-fintech/blob/ee3d416d29ad343a50605e62f852adf61538d726/img/logo-iupi.png" /
   </p>
 </div>
 
