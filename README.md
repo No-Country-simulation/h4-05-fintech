@@ -94,12 +94,57 @@ Con iUpi, no solo administras tu dinero, lo haces trabajar por ti, asegurando qu
     </p>
 </section>
 
-
-
-
-
-
 </div>
+
+<!-- Sección: Tecnologías Utilizadas - Backend -->
+<!-- Descripción: Muestra las tecnologías empleadas en el desarrollo del backend con una imagen de presentación alineada a la izquierda y tipografía legible y elegante. -->
+
+<!-- Importar la fuente Poppins desde Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<section style="
+    display: flex; 
+    align-items: center; 
+    max-width: 900px; 
+    margin: 0 auto; 
+    text-align: left; 
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+">
+<!-- Imagen representativa del backend alineada a la izquierda -->
+    <div style="flex: 0 0 220px; margin-right: 20px;">
+        <img src="https://github.com/No-Country-simulation/h4-05-fintech/blob/ee565296d5ebd0143d3ac688d049717482945033/img/BACK.png" 
+             alt="Imagen representativa del backend" width="220">
+    </div>
+<!-- Contenido de Tecnologías -->
+    <div style="flex: 1;">
+        <h3 style="text-align: center; font-weight: 600; font-size: 24px;">Tecnologías Utilizadas - Backend</h3>
+<!-- Badges de tecnologías actualizadas -->
+        <p style="text-align: center;">
+            <img src="https://img.shields.io/badge/-TypeScript-007ACC?style=flat&logo=typescript&logoColor=white" alt="TypeScript">&nbsp;
+            <img src="https://img.shields.io/badge/-NestJS-E0234E?style=flat&logo=nestjs&logoColor=white" alt="NestJS">&nbsp;
+            <img src="https://img.shields.io/badge/-Prisma-2D3748?style=flat&logo=prisma&logoColor=white" alt="Prisma">&nbsp;
+            <img src="https://img.shields.io/badge/-PostgreSQL-4169E1?style=flat&logo=postgresql&logoColor=white" alt="PostgreSQL">&nbsp;
+            <img src="https://img.shields.io/badge/-Redis-DC382D?style=flat&logo=redis&logoColor=white" alt="Redis">&nbsp;
+            <img src="https://img.shields.io/badge/-Swagger-85EA2D?style=flat&logo=swagger&logoColor=white" alt="Swagger">&nbsp;
+            <img src="https://img.shields.io/badge/-Docker-2496ED?style=flat&logo=docker&logoColor=white" alt="Docker">&nbsp;
+            <img src="https://img.shields.io/badge/-AWS-232F3E?style=flat&logo=amazon-aws&logoColor=white" alt="AWS">&nbsp;
+            <img src="https://img.shields.io/badge/-Render-46E3B7?style=flat&logo=render&logoColor=white" alt="Render">&nbsp;
+            <img src="https://img.shields.io/badge/-SendGrid-0080FF?style=flat&logo=sendgrid&logoColor=white" alt="SendGrid">&nbsp;
+            <img src="https://img.shields.io/badge/-Mailtrap-000000?style=flat&logo=mailtrap&logoColor=white" alt="Mailtrap">&nbsp;
+            <img src="https://img.shields.io/badge/-Cloudinary-FAB005?style=flat&logo=cloudinary&logoColor=white" alt="Cloudinary">&nbsp;
+            <img src="https://img.shields.io/badge/-AWS S3-569A31?style=flat&logo=amazonaws&logoColor=white" alt="AWS S3">&nbsp;
+            <img src="https://img.shields.io/badge/-GitHub Actions-2088FF?style=flat&logo=github-actions&logoColor=white" alt="GitHub Actions">
+        </p>
+</section>
+
+
+
+
+
+
+
+
 
 
 
