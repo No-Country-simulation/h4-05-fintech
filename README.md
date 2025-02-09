@@ -138,7 +138,125 @@ Con iUpi, no solo administras tu dinero, lo haces trabajar por ti, asegurando qu
         </p>
 </section>
 
+<!-- Importar la fuente Poppins desde Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
+<!-- Contenedor principal con diseño en dos columnas -->
+<section style="
+    display: flex; 
+    justify-content: space-between; 
+    align-items: flex-start; 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    line-height: 1.6;
+">
+<!-- Tabla de Perfiles (A la Izquierda) -->
+    <div style="flex: 1; text-align: left;">
+        <h2 style="font-weight: 600; font-size: 24px; margin-bottom: 10px; text-align: center;">
+            👥 Equipo de Desarrollo
+        </h2>
+
+ <table style="width: 100%; text-align: center; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>
+                        <img src="https://avatars.githubusercontent.com/u/77815088?v=4" width="120" style="border-radius: 50%;">
+                    </th>
+                    <th>
+                        <img src="https://media.licdn.com/dms/image/v2/D4D35AQHyuUYC98fFjA/profile-framedphoto-shrink_800_800/profile-framedphoto-shrink_800_800/0/1714351837610?e=1738634400&v=beta&t=femcoeZhqSI1adaMKwSfYZI8Ahhphvr42QweT1LerMQ" width="120" style="border-radius: 50%;">
+                    </th>
+                    <th>
+                        <img src="" width="120" style="border-radius: 50%;">
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Alex Marin Mendez</strong></td>
+                    <td><strong>Facundo Castro</strong></td>
+                    <td><strong>Ejemplo</strong></td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/alexmarinmendez">
+                            <img src="https://raw.githubusercontent.com/LionelStaricoff/c16-84-ft-java/615dd2bb3247fd67184c5c9a3c0ff80d58c8da9f/proyecto/github.svg" style="max-width: 40px;">
+                        </a>
+                        <a href="https://www.linkedin.com/in/alexmarinmendez/" rel="nofollow">
+                            <img src="https://raw.githubusercontent.com/LionelStaricoff/c16-84-ft-java/615dd2bb3247fd67184c5c9a3c0ff80d58c8da9f/proyecto/linkedin.svg" style="max-width: 40px;">
+                        </a>
+                    </td>
+                    <td>
+                        <a href="https://github.com/schweigenderFlugel">
+                            <img src="https://raw.githubusercontent.com/LionelStaricoff/c16-84-ft-java/615dd2bb3247fd67184c5c9a3c0ff80d58c8da9f/proyecto/github.svg" style="max-width: 40px;">
+                        </a>
+                        <a href="https://www.linkedin.com/in/facundo-castro-87b864234" rel="nofollow">
+                            <img src="https://raw.githubusercontent.com/LionelStaricoff/c16-84-ft-java/615dd2bb3247fd67184c5c9a3c0ff80d58c8da9f/proyecto/linkedin.svg" style="max-width: 40px;">
+                        </a>
+                    </td>
+                    <td>
+                        <a href="ejemplo aqui">
+                            <img src="https://raw.githubusercontent.com/LionelStaricoff/c16-84-ft-java/615dd2bb3247fd67184c5c9a3c0ff80d58c8da9f/proyecto/github.svg" style="max-width: 40px;">
+                        </a>
+                        <a href="ejemplo aqui" rel="nofollow">
+                            <img src="https://raw.githubusercontent.com/LionelStaricoff/c16-84-ft-java/615dd2bb3247fd67184c5c9a3c0ff80d58c8da9f/proyecto/linkedin.svg" style="max-width: 40px;">
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+<!-- Sección de Tecnologías (A la Derecha) -->
+    <div style="flex: 1; text-align: center; padding-left: 20px;">
+        <h2 style="font-weight: 600; font-size: 28px; margin-bottom: 10px;">
+            🚀 Desarrollo Backend: Tecnologías Implementadas
+        </h2>
+
+<p style="font-size: 16px; font-weight: 300; max-width: 800px; margin: 0 auto 20px;">
+            El equipo de desarrollo backend ha diseñado una arquitectura sólida, escalable y eficiente para 
+            garantizar un rendimiento óptimo y una experiencia fluida. Para ello, hemos seleccionado un 
+            <strong>stack tecnológico moderno y robusto</strong>, enfocado en la seguridad, la eficiencia y 
+            la facilidad de mantenimiento.
+        </p>
+
+<h3 style="font-weight: 600; font-size: 22px; margin-bottom: 15px;">
+            🛠️ Tecnologías Clave
+        </h3>
+
+<ul style="list-style: none; padding: 0; text-align: left; max-width: 750px; margin: 0 auto; font-size: 16px;">
+            <li>✅ <strong>TypeScript & NestJS:</strong> API modular y escalable con Express.</li>
+            <li>✅ <strong>Prisma & PostgreSQL:</strong> ORM robusto y base de datos en AWS.</li>
+            <li>✅ <strong>Redis:</strong> Caché en Docker para optimizar velocidad.</li>
+            <li>✅ <strong>Swagger:</strong> Documentación interactiva para API.</li>
+            <li>✅ <strong>Render & AWS:</strong> Despliegue escalable con Docker.</li>
+            <li>✅ <strong>SendGrid & Mailtrap:</strong> Gestión de correos electrónicos.</li>
+            <li>✅ <strong>Cloudinary & AWS S3:</strong> Almacenamiento de archivos.</li>
+            <li>✅ <strong>GitHub Actions:</strong> CI/CD automatizado con Docker.</li>
+        </ul>
+
+<h3 style="font-weight: 600; font-size: 22px; margin-top: 25px;">
+            📌 Compromiso con la calidad
+        </h3>
+
+ <p style="font-size: 16px; font-weight: 300; max-width: 800px; margin: 0 auto 20px;">
+            Cada decisión tecnológica se ha tomado con un enfoque en la <strong>eficiencia, escalabilidad y seguridad</strong>, 
+            asegurando que el backend pueda adaptarse a futuras mejoras.
+        </p>
+
+<p style="margin-top: 20px;">
+            📖 <strong>¿Quieres conocer más detalles sobre la implementación?</strong>
+        </p>
+
+<p>
+            <a href="https://github.com/No-Country-simulation/h3-09-klowhub/tree/dev/server#readme" 
+               style="color: #007ACC; text-decoration: none; font-weight: 600; font-size: 18px;">
+                ➡️ Explora nuestra documentación aquí
+            </a>
+        </p>
+    </div>
+
+</section>
 
 
 
