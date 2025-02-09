@@ -249,7 +249,164 @@ Con iUpi, no solo administras tu dinero, lo haces trabajar por ti, asegurando qu
         </p>
 
 <p>
-            <a href="https://github.com/No-Country-simulation/h3-09-klowhub/tree/dev/server#readme" 
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipo Backend</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #111;
+            color: #ddd;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            max-width: 1200px;
+            margin: auto;
+            gap: 20px;
+        }
+        .left-section {
+            width: 45%;
+        }
+        .right-section {
+            width: 50%;
+            background-color: #222;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .team-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .team-table th, .team-table td {
+            padding: 15px;
+            text-align: center;
+        }
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: #333;
+        }
+        .social-links img {
+            width: 40px;
+            margin: 5px;
+            border-radius: 10px;
+        }
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .tech-badge {
+            background-color: #007ACC;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        a {
+            color: #007ACC;
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+        <!-- Sección de Perfiles -->
+        <div class="left-section">
+            <h2>👥 Equipo de Desarrollo</h2>
+            <table class="team-table">
+                <thead>
+                    <tr>
+                        <th><img class="avatar" src="https://avatars.githubusercontent.com/u/77815088?v=4" alt="Alex"></th>
+                        <th><img class="avatar" src="https://via.placeholder.com/120" alt="Facundo"></th>
+                        <th><img class="avatar" src="https://via.placeholder.com/120" alt="Ejemplo"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Alex Marín Méndez</strong></td>
+                        <td><strong>Facundo Castro</strong></td>
+                        <td><strong>Ejemplo</strong></td>
+                    </tr>
+                    <tr class="social-links">
+                        <td>
+                            <a href="https://github.com/alexmarinmendez">
+                                <img src="https://raw.githubusercontent.com/LionelStaricoff/c16-84-ft-java/615dd2bb3247fd67184c5c9a3c0ff80d58c8da9f/proyecto/github.svg" alt="GitHub">
+                            </a>
+                            <a href="https://www.linkedin.com/in/alexmarinmendez/">
+                                <img src="https://raw.githubusercontent.com/LionelStaricoff/c16-84-ft-java/615dd2bb3247fd67184c5c9a3c0ff80d58c8da9f/proyecto/linkedin.svg" alt="LinkedIn">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="https://github.com/schweigenderFlugel">
+                                <img src="https://raw.githubusercontent.com/LionelStaricoff/c16-84-ft-java/615dd2bb3247fd67184c5c9a3c0ff80d58c8da9f/proyecto/github.svg" alt="GitHub">
+                            </a>
+                            <a href="https://www.linkedin.com/in/facundo-castro-87b864234">
+                                <img src="https://raw.githubusercontent.com/LionelStaricoff/c16-84-ft-java/615dd2bb3247fd67184c5c9a3c0ff80d58c8da9f/proyecto/linkedin.svg" alt="LinkedIn">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#">
+                                <img src="https://raw.githubusercontent.com/LionelStaricoff/c16-84-ft-java/615dd2bb3247fd67184c5c9a3c0ff80d58c8da9f/proyecto/github.svg" alt="GitHub">
+                            </a>
+                            <a href="#">
+                                <img src="https://raw.githubusercontent.com/LionelStaricoff/c16-84-ft-java/615dd2bb3247fd67184c5c9a3c0ff80d58c8da9f/proyecto/linkedin.svg" alt="LinkedIn">
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+<!-- Sección de Tecnologías -->
+        <div class="right-section">
+            <h2>🚀 Desarrollo Backend: Tecnologías Implementadas</h2>
+            <p>Hemos diseñado una arquitectura escalable y eficiente, utilizando un stack tecnológico moderno.</p>
+
+<h3>🛠️ Tecnologías Clave</h3>
+            <div class="tech-stack">
+                <span class="tech-badge">TypeScript</span>
+                <span class="tech-badge">NestJS</span>
+                <span class="tech-badge">Prisma</span>
+                <span class="tech-badge">PostgreSQL</span>
+                <span class="tech-badge">Redis</span>
+                <span class="tech-badge">Swagger</span>
+                <span class="tech-badge">Docker</span>
+                <span class="tech-badge">AWS</span>
+                <span class="tech-badge">GitHub Actions</span>
+            </div>
+
+<p>📖 <strong>¿Quieres conocer más detalles?</strong></p>
+            <a href="https://github.com/No-Country-simulation/h3-09-klowhub/tree/dev/server#readme">➡️ Explora nuestra documentación aquí</a>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+    
+<a href="https://github.com/No-Country-simulation/h3-09-klowhub/tree/dev/server#readme" 
                style="color: #007ACC; text-decoration: none; font-weight: 600; font-size: 18px;">
                 ➡️ Explora nuestra documentación aquí
             </a>
