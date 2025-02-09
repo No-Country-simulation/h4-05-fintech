@@ -83,6 +83,22 @@ La plataforma analiza tus aspiraciones y construye un portafolio de inversiones 
 Con iUpi, no solo administras tu dinero, lo haces trabajar por ti, asegurando que cada paso financiero que des esté diseñado para acercarte más a lo que realmente importa.
   </p>
 
+<!-- Sección: Misión -->
+<!-- Descripción: Define el propósito central de la organización, enfocándose en la planificación financiera y el crecimiento patrimonial en Argentina. -->
+<section style="text-align: center; max-width: 800px; margin: 0 auto;">
+    <h2>Misión</h2>
+    <p>
+        Promover una mentalidad de planificación financiera y crecimiento patrimonial en Argentina, 
+        ofreciendo soluciones accesibles y personalizadas que permitan a las personas optimizar sus 
+        recursos, alcanzar sus metas y afrontar con resiliencia los cambios del contexto económico.
+    </p>
+</section>
+
+
+
+
+
+
 </div>
 
 
