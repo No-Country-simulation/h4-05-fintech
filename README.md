@@ -61,7 +61,7 @@
   </p>
 
   <!-- Imagen/GIF que muestra una vista previa del video -->
-  <img src="https://github.com/No-Country-simulation/h3-09-klowhub/blob/69353e68157afdb82db467f47ae80327990859d5/pm_imagen/Presentacion_h3-09-klowhub-demo-day.gif" 
+  <img src="https://github.com/No-Country-simulation/h4-05-fintech/blob/54e1cb9da97b4dbf3674c5f3aa5374520e4ca5ce/img/demo-video-toma%201000-diego-VEED.gif" 
        alt="Vista Previa del Video" 
        style="max-width: 100%; border-radius: 10px;">
 </div>
