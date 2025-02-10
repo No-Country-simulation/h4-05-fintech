@@ -247,6 +247,28 @@ Con iUpi, no solo administras tu dinero, lo haces trabajar por ti, asegurando qu
 <p style="margin-top: 20px;">
             📖 <strong>¿Quieres conocer más detalles sobre la implementación?</strong>
         </p>
+-------------------------
+<!-- Sección: Tecnologías Utilizadas - Data Science -->
+<!-- Descripción: Muestra las tecnologías empleadas en el desarrollo de Data Science del proyecto. -->
+
+<section style="text-align: center; max-width: 900px; margin: 0 auto;">
+    <h3>Tecnologías Utilizadas - Data Science</h3>
+
+    <!-- Imagen representativa de Data Science -->
+<p>
+        <img src="https://github.com/No-Country-simulation/h3-09-klowhub/blob/3d4ad58b447b054e11ecb5a372a48aad008e558e/pm_imagen/iso3%20(3).png" 
+             alt="Imagen representativa de Data Science" width="300">
+    </p>
+
+    <!-- Badges de tecnologías actualizadas -->
+<p>
+        <img src="https://img.shields.io/badge/-Python-3776AB?style=flat&logo=python&logoColor=white" alt="Python">&nbsp;
+        <img src="https://img.shields.io/badge/-Scikit--Learn-F7931E?style=flat&logo=scikit-learn&logoColor=white" alt="Scikit-Learn">&nbsp;
+        <img src="https://img.shields.io/badge/-FastAPI-009688?style=flat&logo=fastapi&logoColor=white" alt="FastAPI">
+    </p>
+</section>
+
+
 
 
 
