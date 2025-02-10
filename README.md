@@ -256,7 +256,7 @@ Con iUpi, no solo administras tu dinero, lo haces trabajar por ti, asegurando qu
 
     <!-- Imagen representativa de Data Science -->
 <p>
-        <img src="https://github.com/No-Country-simulation/h3-09-klowhub/blob/3d4ad58b447b054e11ecb5a372a48aad008e558e/pm_imagen/iso3%20(3).png" 
+        <img src="https://github.com/No-Country-simulation/h4-05-fintech/blob/47387bd46cce6f21f8c2107f2f2eb8d58e78a579/img/Recurso%2032%404x-8.png" 
              alt="Imagen representativa de Data Science" width="300">
     </p>
 
